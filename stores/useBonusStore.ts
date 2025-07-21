@@ -285,7 +285,8 @@ export const useBonusStore = defineStore('bonusStore', {
 
         const contentParams = {
           contentKey: 'profileBonusesContent',
-          contentRoute: ['profile', 'bonuses'],
+          contentCollection: 'profile',
+          contentSource: 'bonuses',
         };
         const { getContentData } = useContentLogic<IProfileBonuses>(contentParams);
         const { currentLocaleData, defaultLocaleData } = await getContentData();

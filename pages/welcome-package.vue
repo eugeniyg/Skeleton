@@ -151,7 +151,8 @@
 
   const contentParams = {
     contentKey: 'welcomePageContent',
-    contentRoute: ['pages', 'welcome-bonuses'],
+    contentCollection: 'pages',
+    contentSource: 'welcome-bonuses',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IWelcomeBonusesPage>(contentParams);

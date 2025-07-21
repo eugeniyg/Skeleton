@@ -54,7 +54,8 @@
 
   const contentParams = {
     contentKey: 'providersPageContent',
-    contentRoute: ['pages', 'providers'],
+    contentCollection: 'pages',
+    contentSource: 'providers',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProvidersPage>(contentParams);

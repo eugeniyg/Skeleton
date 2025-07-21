@@ -67,7 +67,8 @@
 
   const contentParams = {
     contentKey: 'homePageContent',
-    contentRoute: ['pages', 'home'],
+    contentCollection: 'pages',
+    contentSource: 'home',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);

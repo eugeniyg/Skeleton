@@ -24,7 +24,8 @@
 
   const contentParams = {
     contentKey: 'loyaltyPageContent',
-    contentRoute: ['pages', 'loyalty'],
+    contentCollection: 'pages',
+    contentSource: 'loyalty',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ILoyaltyPage>(contentParams);

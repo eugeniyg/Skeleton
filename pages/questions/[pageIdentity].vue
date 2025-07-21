@@ -21,8 +21,8 @@
 
   const contentParams = {
     contentKey: `${pageIdentity}-question`,
-    contentRoute: ['question-pages'],
-    where: { pageIdentity },
+    contentCollection: 'question-pages',
+    where: ['pageIdentity', '=', pageIdentity],
     currentOnly: true,
   };
   const { getContentData } = useContentLogic<IQuestionCategory>(contentParams);

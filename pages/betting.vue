@@ -26,7 +26,8 @@
 
   const contentParams = {
     contentKey: 'sportsbookPageContent',
-    contentRoute: ['pages', 'sportsbook'],
+    contentCollection: 'pages',
+    contentSource: 'sportsbook',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);

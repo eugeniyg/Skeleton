@@ -12,7 +12,8 @@
 
   const contentParams = {
     contentKey: 'categoryPageContent',
-    contentRoute: ['pages', 'category'],
+    contentCollection: 'pages',
+    contentSource: 'category',
   };
 
   const route = useRoute();

@@ -54,7 +54,8 @@
 
   const contentParams = {
     contentKey: 'casinoPageContent',
-    contentRoute: ['pages', 'casino'],
+    contentCollection: 'pages',
+    contentSource: 'casino',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);

@@ -15,7 +15,8 @@
 
   const contentParams = {
     contentKey: 'profileSecurityContent',
-    contentRoute: ['profile', 'security'],
+    contentCollection: 'profile',
+    contentSource: 'security',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileSecurity>(contentParams);

@@ -11,23 +11,24 @@
 </template>
 
 <script setup lang="ts">
+  import camelCase from 'lodash/camelCase';
+
   const loyaltyStore = useLoyaltyStore();
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
-  const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    currentLocaleModalsContent,
+    defaultLocaleModalsContent,
+  } = useGlobalStore();
   const { modalsList } = useModalStore();
-
-  const signInContentParams = {
-    contentKey: 'modal-loyalty-level',
-    contentRoute: ['modals', modalsList['loyalty-level'].content as string],
-  };
-  const { getContentData } = useContentLogic(signInContentParams);
-  const { data: loyaltyLevelContent } = await useLazyAsyncData(getContentData);
+  const currentLocaleLoyaltyLevelContent = currentLocaleModalsContent?.[camelCase(modalsList['loyalty-level'].content)];
+  const defaultLocaleLoyaltyLevelContent = defaultLocaleModalsContent?.[camelCase(modalsList['loyalty-level'].content)];
 
   const notifTitle = computed(() => {
     const titleContent = getContent(
-      loyaltyLevelContent.value?.currentLocaleData,
-      loyaltyLevelContent.value?.defaultLocaleData,
+      currentLocaleLoyaltyLevelContent,
+      defaultLocaleLoyaltyLevelContent,
       'gamePageNotification'
     );
     if (!titleContent) return undefined;
@@ -39,8 +40,8 @@
     const currentLevel = loyaltyAccount.value?.currentLevel?.order;
     if (currentLevel) {
       return getContent(
-        globalComponentsContent.value,
-        defaultLocaleGlobalComponentsContent.value,
+        globalComponentsContent,
+        defaultLocaleGlobalComponentsContent,
         `loyalty.levelsImages.${currentLevel - 1}.imageUrl`
       );
     }

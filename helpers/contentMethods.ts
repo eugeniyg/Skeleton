@@ -10,11 +10,11 @@ export const getLocalesContentData = (
     defaultLocaleData: undefined,
   };
 
-  if (currentLocaleContentResponse.status !== 'rejected') {
+  if (currentLocaleContentResponse && currentLocaleContentResponse.status !== 'rejected') {
     contentData.currentLocaleData = currentLocaleContentResponse.value;
   }
 
-  if (defaultLocaleContentResponse.status !== 'rejected') {
+  if (defaultLocaleContentResponse && defaultLocaleContentResponse.status !== 'rejected') {
     contentData.defaultLocaleData = defaultLocaleContentResponse.value;
   }
 

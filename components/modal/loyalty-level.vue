@@ -61,8 +61,8 @@
 
   const levelsBenefitsContentParams = {
     contentKey: 'levels-benefits',
-    contentRoute: ['pages', 'loyalty'],
-    only: ['rewards'],
+    contentCollection: 'pages',
+    contentSource: 'loyalty',
   };
   const { getContentData: getLevelsBenefitsContentData } = useContentLogic(levelsBenefitsContentParams);
   const { data: levelsBenefitsContent } = await useLazyAsyncData(getLevelsBenefitsContentData);

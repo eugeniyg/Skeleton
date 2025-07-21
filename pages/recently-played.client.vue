@@ -32,7 +32,8 @@
 
   const contentParams = {
     contentKey: 'recentlyPageContent',
-    contentRoute: ['pages', 'recently'],
+    contentCollection: 'pages',
+    contentSource: 'recently',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);

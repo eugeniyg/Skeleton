@@ -27,7 +27,8 @@
 
   const contentParams = {
     contentKey: 'favoritesPageContent',
-    contentRoute: ['pages', 'favorites'],
+    contentCollection: 'pages',
+    contentSource: 'favorites',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);

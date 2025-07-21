@@ -17,14 +17,8 @@ import {
   getConstants,
 } from '@skeleton/api/global';
 import { getLocalesContentData } from '@skeleton/helpers/contentMethods';
-
-interface IGlobalContent {
-  alerts: IAlertsContent;
-  fieldsSettings: IFieldsSettingsContent;
-  globalComponents: IGlobalComponentsContent;
-  layout: ILayoutContent;
-  modals: IModalsContent;
-}
+import type { CollectionItemBase, Collections } from '@nuxt/content';
+type CollectionKey = keyof Collections;
 
 interface IGlobalStoreState {
   currencies: ICurrency[];
@@ -258,69 +252,75 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent(): Promise<void> {
-      const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
+      const globalContentCollections = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
+      const currentLocaleContentPromises = globalContentCollections.map(collection => {
+        const collectionName = camelCase(`${this.currentLocale?.code}-${collection}`);
+        return queryCollection(collectionName as CollectionKey).all();
+      });
 
-      const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-        queryContent(this.currentLocale?.code as string)
-          .where({ _dir: { $in: globalContentFolders } })
-          .find(),
-        this.currentLocale?.isDefault
-          ? Promise.reject('Current locale is default locale!')
-          : queryContent(this.defaultLocale?.code as string)
-              .where({ _dir: { $in: globalContentFolders } })
-              .find(),
-      ]);
+      let defaultLocaleContentPromises: unknown[] = [];
+      if (this.currentLocale?.isDefault) {
+        defaultLocaleContentPromises = globalContentCollections.map(collection => {
+          const collectionName = camelCase(`${this.defaultLocale?.code}-${collection}`);
+          return queryCollection(collectionName as CollectionKey).all();
+        });
+      }
 
-      const { currentLocaleData, defaultLocaleData } = getLocalesContentData(
-        currentLocaleContentResponse,
-        defaultLocaleContentResponse
+      const [
+        currentLocaleAlertsResponse,
+        currentLocaleFieldsSettingsResponse,
+        currentLocaleGlobalComponentsResponse,
+        currentLocaleLayoutResponse,
+        currentLocaleModalsResponse,
+        defaultLocaleAlertsResponse,
+        defaultLocaleFieldsSettingsResponse,
+        defaultLocaleGlobalComponentsResponse,
+        defaultLocaleLayoutResponse,
+        defaultLocaleModalsResponse,
+      ] = await Promise.allSettled([...currentLocaleContentPromises, ...defaultLocaleContentPromises]);
+
+      const formatData = <T>(data: CollectionItemBase[] | undefined): T | undefined => {
+        if (!data) return;
+
+        const contentData: { [key: string]: any } = {};
+        data.forEach(collectionItem => {
+          const splitPath = collectionItem.stem.split('/');
+          const contentName = camelCase(splitPath[2]);
+          contentData[contentName] = collectionItem.meta.body;
+        });
+        return contentData as T;
+      };
+
+      const { currentLocaleData: currentLocaleAlerts, defaultLocaleData: defaultLocaleAlerts } = getLocalesContentData(
+        currentLocaleAlertsResponse,
+        defaultLocaleAlertsResponse
       );
+      this.alertsData = formatData<IAlertsContent>(currentLocaleAlerts);
+      this.defaultLocaleAlertsData = formatData<IAlertsContent>(defaultLocaleAlerts);
 
-      if (currentLocaleData) {
-        const formattedCurrentLocaleContent: IGlobalContent = currentLocaleData.reduce(
-          (finalContentObj: any, currentContent: any) => {
-            const splitPath = currentContent._path?.split('/');
-            if (!splitPath) return finalContentObj;
+      const { currentLocaleData: currentLocaleFieldsSettings, defaultLocaleData: defaultLocaleFieldsSettings } =
+        getLocalesContentData(currentLocaleFieldsSettingsResponse, defaultLocaleFieldsSettingsResponse);
+      this.fieldsSettings = formatData<IFieldsSettingsContent>(currentLocaleFieldsSettings);
+      this.defaultLocaleFieldsSettings = formatData<IFieldsSettingsContent>(defaultLocaleFieldsSettings);
 
-            const collection = camelCase(splitPath[2]);
-            const contentName = camelCase(splitPath[3]);
-            return {
-              ...finalContentObj,
-              [collection]: { ...finalContentObj[collection], [contentName]: currentContent },
-            };
-          },
-          {}
-        );
+      const { currentLocaleData: currentLocaleGlobalComponents, defaultLocaleData: defaultLocaleGlobalComponents } =
+        getLocalesContentData(currentLocaleGlobalComponentsResponse, defaultLocaleGlobalComponentsResponse);
+      this.globalComponentsContent = formatData<IGlobalComponentsContent>(currentLocaleGlobalComponents);
+      this.defaultLocaleGlobalComponentsContent = formatData<IGlobalComponentsContent>(defaultLocaleGlobalComponents);
 
-        this.fieldsSettings = formattedCurrentLocaleContent.fieldsSettings;
-        this.layoutData = formattedCurrentLocaleContent.layout;
-        this.alertsData = formattedCurrentLocaleContent.alerts;
-        this.globalComponentsContent = formattedCurrentLocaleContent.globalComponents;
-        this.currentLocaleModalsContent = formattedCurrentLocaleContent.modals;
-      }
+      const { currentLocaleData: currentLocaleLayout, defaultLocaleData: defaultLocaleLayout } = getLocalesContentData(
+        currentLocaleLayoutResponse,
+        defaultLocaleLayoutResponse
+      );
+      this.layoutData = formatData<ILayoutContent>(currentLocaleLayout);
+      this.defaultLocaleLayoutData = formatData<ILayoutContent>(defaultLocaleLayout);
 
-      if (defaultLocaleData) {
-        const formattedDefaultLocaleContent: IGlobalContent = defaultLocaleData.reduce(
-          (finalContentObj: any, currentContent: any) => {
-            const splitPath = currentContent._path?.split('/');
-            if (!splitPath) return finalContentObj;
-
-            const collection = camelCase(splitPath[2]);
-            const contentName = camelCase(splitPath[3]);
-            return {
-              ...finalContentObj,
-              [collection]: { ...finalContentObj[collection], [contentName]: currentContent },
-            };
-          },
-          {}
-        );
-
-        this.defaultLocaleFieldsSettings = formattedDefaultLocaleContent.fieldsSettings;
-        this.defaultLocaleLayoutData = formattedDefaultLocaleContent.layout;
-        this.defaultLocaleAlertsData = formattedDefaultLocaleContent.alerts;
-        this.defaultLocaleGlobalComponentsContent = formattedDefaultLocaleContent.globalComponents;
-        this.defaultLocaleModalsContent = formattedDefaultLocaleContent.modals;
-      }
+      const { currentLocaleData: currentLocaleModals, defaultLocaleData: defaultLocaleModals } = getLocalesContentData(
+        currentLocaleModalsResponse,
+        defaultLocaleModalsResponse
+      );
+      this.currentLocaleModalsContent = formatData<IModalsContent>(currentLocaleModals);
+      this.defaultLocaleModalsContent = formatData<IModalsContent>(defaultLocaleModals);
     },
 
     getRequestCountry(): void {

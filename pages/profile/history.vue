@@ -6,7 +6,7 @@
 
     <tab-history
       v-if="historyTabContent || defaultLocaleHistoryTabContent"
-      :content="historyTabContent || defaultLocaleHistoryTabContent"
+      :content="(historyTabContent || defaultLocaleHistoryTabContent) as IHistory"
     />
   </div>
 </template>
@@ -17,7 +17,8 @@
 
   const pageContentParams = {
     contentKey: 'profileHistoryContent',
-    contentRoute: ['profile', 'history'],
+    contentCollection: 'profile',
+    contentSource: 'history',
     isPage: true,
   };
   const { getContentData: getPageContent } = useContentLogic<IProfileHistory>(pageContentParams);
@@ -25,7 +26,7 @@
 
   const menuContentParams = {
     contentKey: 'profileHistoryMenuContent',
-    contentRoute: ['history'],
+    contentCollection: 'history',
     findAll: true,
   };
   const { getContentData: getMenuContent } = useContentLogic<any>(menuContentParams);
@@ -35,10 +36,10 @@
     if (!menuContent.value?.currentLocaleData?.length) return undefined;
 
     return menuContent.value?.currentLocaleData?.reduce((finalContentObj: any, currentContent: any) => {
-      const splitPath = currentContent._path?.split('/');
+      const splitPath = currentContent.stem?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const contentName = camelCase(splitPath[3]);
+      const contentName = camelCase(splitPath[2]);
       return { ...finalContentObj, [contentName]: currentContent };
     }, {});
   });
@@ -47,10 +48,10 @@
     if (!menuContent.value?.defaultLocaleData?.length) return undefined;
 
     return menuContent.value?.defaultLocaleData?.reduce((finalContentObj: any, currentContent: any) => {
-      const splitPath = currentContent._path?.split('/');
+      const splitPath = currentContent.stem?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const contentName = camelCase(splitPath[3]);
+      const contentName = camelCase(splitPath[2]);
       return { ...finalContentObj, [contentName]: currentContent };
     }, {});
   });

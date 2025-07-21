@@ -33,7 +33,8 @@
 
   const contentParams = {
     contentKey: 'profileLimitsContent',
-    contentRoute: ['profile', 'limits'],
+    contentCollection: 'profile',
+    contentSource: 'limits',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);

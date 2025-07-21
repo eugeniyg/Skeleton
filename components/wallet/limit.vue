@@ -27,8 +27,8 @@
   import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
-    currentLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
-    defaultLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
+    currentLocaleLimitsContent: Maybe<IProfileLimits>;
+    defaultLocaleLimitsContent: Maybe<IProfileLimits>;
   }>();
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');

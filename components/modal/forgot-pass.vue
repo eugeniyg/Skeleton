@@ -96,6 +96,8 @@
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
   import { phoneVerification } from '@skeleton/api/auth';
+  import camelCase from 'lodash/camelCase';
+  import { getContent } from '#imports';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -104,15 +106,16 @@
 
   const modalStore = useModalStore();
   const { modalsList, openModal, closeModal } = modalStore;
+  const {
+    currentLocaleModalsContent,
+    defaultLocaleModalsContent,
+    settingsConstants,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+  } = useGlobalStore();
+  const currentLocaleSignInContent = currentLocaleModalsContent?.[camelCase(modalsList['sing-in'].content)];
+  const defaultLocaleSignInContent = defaultLocaleModalsContent?.[camelCase(modalsList['sing-in'].content)];
 
-  const signInContentParams = {
-    contentKey: 'modal-sign-in',
-    contentRoute: ['modals', modalsList['sign-in'].content as string],
-  };
-  const { getContentData: getSignInContentData } = useContentLogic(signInContentParams);
-  const { data: signInContent } = await useLazyAsyncData(getSignInContentData);
-
-  const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const showPhoneVerification = ref<boolean>(false);
 
   const returnLoginModal = () => {
@@ -131,7 +134,7 @@
   });
 
   const tabsList = computed(() => {
-    const tabsObj = getContent(signInContent.value?.currentLocaleData, signInContent.value?.defaultLocaleData, 'tabs');
+    const tabsObj = getContent(currentLocaleSignInContent, defaultLocaleSignInContent, 'tabs');
     if (!tabsObj) return [];
 
     return Object.keys(tabsObj).map(key => {
