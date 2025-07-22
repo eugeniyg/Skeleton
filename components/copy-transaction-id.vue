@@ -20,13 +20,12 @@
   }>();
 
   const pageContentParams = {
-    contentKey: 'profileTransactionsContent',
     contentCollection: 'history',
     contentSource: 'transactions',
     isPage: false,
   };
   const { getContentData: getPageContent } = useContentLogic<ITransactionsHistory>(pageContentParams);
-  const { data: pageContent } = await useLazyAsyncData(getPageContent);
+  const { data: pageContent } = await useLazyAsyncData('profileTransactionsContent', getPageContent);
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);

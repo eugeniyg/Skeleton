@@ -102,13 +102,12 @@
   });
 
   const contentParams = {
-    contentKey: 'profileBonusesContent',
     contentCollection: 'profile',
     contentSource: 'bonuses',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileBonuses>(contentParams);
-  const { data } = await useLazyAsyncData(getContentData);
+  const { data } = await useLazyAsyncData('profileBonusesContent', getContentData);
   const currentLocaleContent = computed(() => data.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => data.value?.defaultLocaleData);
 

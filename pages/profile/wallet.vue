@@ -38,13 +38,12 @@
   import type { IProfileWallet } from '~/types';
 
   const contentParams = {
-    contentKey: 'profileWalletContent',
     contentCollection: 'profile',
     contentSource: 'wallet',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileWallet>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileWalletContent', getContentData);
 
   const walletStore = useWalletStore();
   const { accounts, currencyTabs } = storeToRefs(walletStore);

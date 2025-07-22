@@ -101,6 +101,18 @@ export default defineNuxtConfig({
       appMiddleware: ['auth'],
     },
   },
+  ignore: [
+    '**/node_modules/**',
+    '**/.output/**',
+    '**/.nuxt/**',
+    '**/dist/**',
+    '**/.git/**',
+    '**/.idea/**',
+    '**/.vscode/**',
+    '**/.cache/**',
+    '**/.pnpm/**',
+    '**/logs/**'
+  ],
   experimental: {
     asyncContext: true,
     defaults: {
@@ -116,6 +128,9 @@ export default defineNuxtConfig({
     },
     pageTransition: true,
     layoutTransition: true,
+  },
+  devtools: {
+    enabled: false,
   },
   css: [
     '@skeleton/assets/styles/style.scss',

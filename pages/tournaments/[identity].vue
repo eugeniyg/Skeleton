@@ -86,14 +86,12 @@
   };
 
   const pageContentParams = {
-    contentKey: `tournamentPage-${routeIdentity}`,
     contentCollection: 'tournaments',
     where: ['pageIdentity', '=', routeIdentity],
     currentOnly: true,
     isPage: true,
   };
   const tournamentCommonParams = {
-    contentKey: 'tournamentsCommonContent',
     contentCollection: 'pages',
     contentSource: 'tournament',
   };

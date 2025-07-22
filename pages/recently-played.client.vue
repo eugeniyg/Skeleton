@@ -31,13 +31,12 @@
   const { isMobile, headerCountry } = storeToRefs(globalStore);
 
   const contentParams = {
-    contentKey: 'recentlyPageContent',
     contentCollection: 'pages',
     contentSource: 'recently',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('recentlyPageContent', getContentData);
 
   const { collectionsByCountry } = useGamesStore();
   const recommendedCategory = collectionsByCountry.find(collection => collection.identity === 'recommended');

@@ -26,13 +26,12 @@
   import type { IFavoritesPage } from '~/types';
 
   const contentParams = {
-    contentKey: 'favoritesPageContent',
     contentCollection: 'pages',
     contentSource: 'favorites',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('favoritesPageContent', getContentData);
 
   const gameStore = useGamesStore();
   const { favoriteGames, collectionsByCountry } = storeToRefs(gameStore);

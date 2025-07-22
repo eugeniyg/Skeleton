@@ -25,13 +25,12 @@
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
 
   const contentParams = {
-    contentKey: 'sportsbookPageContent',
     contentCollection: 'pages',
     contentSource: 'sportsbook',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('sportsbookPageContent', getContentData);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 

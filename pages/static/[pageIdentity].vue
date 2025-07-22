@@ -20,11 +20,10 @@
   const route = useRoute();
   const { pageIdentity } = route.params;
   const contentParams = {
-    contentKey: `${pageIdentity}-static-content`,
     contentCollection: 'static',
     isPage: true,
     where: ['pageIdentity', '=', pageIdentity],
   };
   const { getContentData } = useContentLogic<IStaticPage>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(getContentData);
+  const { status, data: pageContent } = await useLazyAsyncData(`${pageIdentity}-static-content`, getContentData);
 </script>

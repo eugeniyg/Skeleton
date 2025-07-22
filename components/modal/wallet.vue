@@ -15,7 +15,7 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
-        :loading="status === 'pending' || changingAccount"
+        :loading="walletDataLoading || changingAccount"
         @change-tab="changeTab"
         @method-click="showMobileForm = true"
         @changingAccount="changingAccount = $event"
@@ -28,7 +28,7 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
-        :loading="status === 'pending' || changingAccount"
+        :loading="walletDataLoading || changingAccount"
         @change-tab="changeTab"
       />
     </div>
@@ -142,15 +142,20 @@
   const { getTurnOverWager } = useRiskStore();
   const { getDepositBonuses, getDepositBonusCode } = bonusStore;
   const changingAccount = ref(false);
-  const { status } = await useLazyAsyncData(() => {
-    return Promise.allSettled([
+  const walletDataLoading = ref(true);
+  const getWalletData = async (): Promise<void> => {
+    walletDataLoading.value = true;
+    await Promise.allSettled([
       getDepositMethods(),
       getWithdrawMethods(),
       getDepositBonuses(),
       getDepositBonusCode(),
       getTurnOverWager(),
     ]);
-  });
+    walletDataLoading.value = false;
+  };
+
+  onBeforeMount(getWalletData);
 </script>
 
 <style src="~/assets/styles/components/modal/wallet.scss" lang="scss" />

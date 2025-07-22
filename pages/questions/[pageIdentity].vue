@@ -20,13 +20,12 @@
   const { pageIdentity } = route.params;
 
   const contentParams = {
-    contentKey: `${pageIdentity}-question`,
     contentCollection: 'question-pages',
     where: ['pageIdentity', '=', pageIdentity],
     currentOnly: true,
   };
   const { getContentData } = useContentLogic<IQuestionCategory>(contentParams);
-  const { data: categoryContent } = await useLazyAsyncData(getContentData);
+  const { data: categoryContent } = await useLazyAsyncData(`${pageIdentity}-question`, getContentData);
 
   const questionsList = computed(() => {
     return categoryContent.value?.currentLocaleData?.questionList || [];

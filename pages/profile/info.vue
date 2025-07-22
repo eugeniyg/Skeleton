@@ -110,13 +110,12 @@
     storeToRefs(globalStore);
 
   const contentParams = {
-    contentKey: 'profileInfoContent',
     contentCollection: 'profile',
     contentSource: 'info',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileInfoContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

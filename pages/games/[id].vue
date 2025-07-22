@@ -41,7 +41,6 @@
   const { levelNotificationEnabled } = storeToRefs(loyaltyStore);
 
   const contentParams = {
-    contentKey: 'gamePageContent',
     contentCollection: 'pages',
     contentSource: 'game',
   };

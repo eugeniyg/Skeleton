@@ -144,12 +144,11 @@
 
   // << GET CONTENT FOR DEPOSIT LIMIT
   const contentParams = {
-    contentKey: 'coolingOffLimitsContent',
     contentCollection: 'profile',
     contentSource: 'limits',
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('coolingOffLimitsContent', getContentData);
   // >>
 
   const showMobileFormKey = ref<number>(0);

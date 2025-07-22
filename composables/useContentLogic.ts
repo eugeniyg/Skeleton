@@ -5,7 +5,6 @@ import type { CollectionItemBase, Collections } from '@nuxt/content';
 type CollectionKey = keyof Collections;
 
 interface IContentParams {
-  contentKey: string;
   contentCollection: string;
   contentSource?: string;
   where?: unknown[]; // field should be in content.config.ts schema!!!!
@@ -76,37 +75,31 @@ export function useContentLogic<T>(params: IContentParams) {
 
   const getContentData = async (): Promise<IPageContent> => {
     let contentData: IPageContent = { currentLocaleData: undefined, defaultLocaleData: undefined };
-    const { data: nuxtDataContent } = useNuxtData(params.contentKey);
 
-    if (nuxtDataContent.value) contentData = nuxtDataContent.value;
-    else {
-      const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled(getRequestArray());
-      const rawContentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-      if (Array.isArray(rawContentData.currentLocaleData)) {
-        contentData.currentLocaleData = rawContentData.currentLocaleData.map((item: CollectionItemBase) => ({
-          ...(item.meta.body as object),
-          stem: item.stem,
-        })) as T;
-      } else if (rawContentData.currentLocaleData) {
-        contentData.currentLocaleData = {
-          ...rawContentData.currentLocaleData.meta.body,
-          stem: rawContentData.currentLocaleData.stem,
-        };
-      }
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled(getRequestArray());
+    const rawContentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    if (Array.isArray(rawContentData.currentLocaleData)) {
+      contentData.currentLocaleData = rawContentData.currentLocaleData.map((item: CollectionItemBase) => ({
+        ...(item.meta.body as object),
+        stem: item.stem,
+      })) as T;
+    } else if (rawContentData.currentLocaleData) {
+      contentData.currentLocaleData = {
+        ...rawContentData.currentLocaleData.meta.body,
+        stem: rawContentData.currentLocaleData.stem,
+      };
+    }
 
-      if (Array.isArray(rawContentData.defaultLocaleData)) {
-        contentData.defaultLocaleData = rawContentData.defaultLocaleData.map((item: CollectionItemBase) => ({
-          ...(item.meta.body as object),
-          stem: item.stem,
-        })) as T;
-      } else if (rawContentData.defaultLocaleData) {
-        contentData.defaultLocaleData = {
-          ...rawContentData.defaultLocaleData.meta.body,
-          stem: rawContentData.defaultLocaleData.stem,
-        };
-      }
-
-      nuxtDataContent.value = contentData;
+    if (Array.isArray(rawContentData.defaultLocaleData)) {
+      contentData.defaultLocaleData = rawContentData.defaultLocaleData.map((item: CollectionItemBase) => ({
+        ...(item.meta.body as object),
+        stem: item.stem,
+      })) as T;
+    } else if (rawContentData.defaultLocaleData) {
+      contentData.defaultLocaleData = {
+        ...rawContentData.defaultLocaleData.meta.body,
+        stem: rawContentData.defaultLocaleData.stem,
+      };
     }
 
     if (params.isPage && !Array.isArray(contentData.currentLocaleData))

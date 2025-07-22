@@ -51,13 +51,11 @@
   };
 
   const wheelPageContentParams = {
-    contentKey: `wheel-${wheelIdentity}`,
     contentCollection: 'wheels',
     where: ['pageIdentity', '=', wheelIdentity],
     isPage: true,
   };
   const wheelCommonContentParams = {
-    contentKey: `wheels-common`,
     contentCollection: 'pages',
     contentSource: 'wheel',
   };

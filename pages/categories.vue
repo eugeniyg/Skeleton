@@ -79,12 +79,11 @@
   const { gameProviders, collectionsByCountry } = useGamesStore();
 
   const contentParams = {
-    contentKey: 'categoryPageContent',
     contentCollection: 'pages',
     contentSource: 'category',
   };
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData('categoryPageContent', getContentData);
 
   interface IState {
     showNotFound: boolean;

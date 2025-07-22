@@ -53,13 +53,12 @@
   const { showAlert } = useLayoutStore();
 
   const contentParams = {
-    contentKey: 'providersPageContent',
     contentCollection: 'pages',
     contentSource: 'providers',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProvidersPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('providersPageContent', getContentData);
 
   const providersList = ref<IGameProvider[]>([]);
 

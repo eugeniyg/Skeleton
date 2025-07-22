@@ -66,13 +66,12 @@
   const { currentLocale } = storeToRefs(globalStore);
 
   const contentParams = {
-    contentKey: 'homePageContent',
     contentCollection: 'pages',
     contentSource: 'home',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('homePageContent', getContentData);
   const { collectionsByCountry } = useGamesStore();
 
   const aeroCategory = collectionsByCountry.find(

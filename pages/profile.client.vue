@@ -12,12 +12,11 @@
 
   const { getProfileFields } = useFieldsStore();
   const contentParams = {
-    contentKey: 'profilePages',
     contentCollection: 'profile',
     findAll: true,
   };
   const { getContentData } = useContentLogic<IProfilePages>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profilePages', getContentData);
 
   const profileContent = computed<IProfilePages | undefined>(() => {
     if (!pageContent.value?.currentLocaleData?.length) return undefined;
