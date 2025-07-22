@@ -11,14 +11,13 @@
   import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
 
   const contentParams = {
-    contentKey: 'categoryPageContent',
     contentCollection: 'pages',
     contentSource: 'category',
   };
 
   const route = useRoute();
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData('categoryPageContent', getContentData);
 
   const { gameProviders, collectionsByCountry } = useGamesStore();
 

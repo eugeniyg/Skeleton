@@ -53,13 +53,12 @@
   const { openModal, closeModal } = useModalStore();
 
   const contentParams = {
-    contentKey: 'casinoPageContent',
     contentCollection: 'pages',
     contentSource: 'casino',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent } = await useLazyAsyncData('casinoPageContent', getContentData);
 
   const { gameProviders, collectionsByCountry } = useGamesStore();
   const mainCategoriesList =

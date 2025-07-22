@@ -150,13 +150,12 @@
   import { getMinBonusDeposit } from '@skeleton/helpers/amountMethods';
 
   const contentParams = {
-    contentKey: 'welcomePageContent',
     contentCollection: 'pages',
     contentSource: 'welcome-bonuses',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IWelcomeBonusesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent } = await useLazyAsyncData('welcomePageContent', getContentData);
 
   const howGetItems = computed(() => {
     if (pageContent.value?.currentLocaleData?.howGet || pageContent.value?.defaultLocaleData?.howGet) {

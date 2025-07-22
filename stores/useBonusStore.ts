@@ -284,7 +284,6 @@ export const useBonusStore = defineStore('bonusStore', {
         editedMessage = editedMessage.replace('{game}', `<b>${gameInfo.name}</b>`);
 
         const contentParams = {
-          contentKey: 'profileBonusesContent',
           contentCollection: 'profile',
           contentSource: 'bonuses',
         };

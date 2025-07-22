@@ -14,13 +14,12 @@
   import type { IProfileDocuments } from '~/types';
 
   const contentParams = {
-    contentKey: 'profileDocumentsContent',
     contentCollection: 'profile',
     contentSource: 'documents',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileDocuments>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileDocumentsContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

@@ -16,21 +16,19 @@
   import camelCase from 'lodash/camelCase';
 
   const pageContentParams = {
-    contentKey: 'profileHistoryContent',
     contentCollection: 'profile',
     contentSource: 'history',
     isPage: true,
   };
   const { getContentData: getPageContent } = useContentLogic<IProfileHistory>(pageContentParams);
-  const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, getPageContent);
+  const { data: pageContent } = await useLazyAsyncData('profileHistoryContent', getPageContent);
 
   const menuContentParams = {
-    contentKey: 'profileHistoryMenuContent',
     contentCollection: 'history',
     findAll: true,
   };
   const { getContentData: getMenuContent } = useContentLogic<any>(menuContentParams);
-  const { data: menuContent } = await useLazyAsyncData(menuContentParams.contentKey, getMenuContent);
+  const { data: menuContent } = await useLazyAsyncData('profileHistoryMenuContent', getMenuContent);
 
   const historyTabContent = computed<IHistory | undefined>(() => {
     if (!menuContent.value?.currentLocaleData?.length) return undefined;

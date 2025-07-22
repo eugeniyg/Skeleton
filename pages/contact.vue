@@ -76,13 +76,12 @@
   const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const contentParams = {
-    contentKey: 'contactPageContent',
     contentCollection: 'pages',
     contentSource: 'contacts',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IContactsPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent } = await useLazyAsyncData('contactPageContent', getContentData);
 
   const contactFormData = reactive({
     email: '',

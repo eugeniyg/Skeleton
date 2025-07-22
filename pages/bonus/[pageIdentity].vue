@@ -52,13 +52,12 @@
   const { pageIdentity } = route.params;
 
   const contentParams = {
-    contentKey: `${pageIdentity}-bonus-content`,
     contentCollection: 'bonus',
     where: ['pageIdentity', '=', pageIdentity],
     isPage: true,
   };
   const { getContentData } = useContentLogic<IBonusPage>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { status, data: pageContent } = await useLazyAsyncData(`${pageIdentity}-bonus-content`, getContentData);
 
   const detailLabel = computed(() =>
     getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsLabel')

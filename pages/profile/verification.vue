@@ -28,13 +28,12 @@
   const hasPhoneRegistration = computed(() => settingsConstants.value?.player.registration.phone);
 
   const contentParams = {
-    contentKey: 'profileVerificationContent',
     contentCollection: 'profile',
     contentSource: 'verification',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileVerification>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileVerificationContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

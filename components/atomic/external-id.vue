@@ -35,13 +35,12 @@
   });
 
   const contentParams = {
-    contentKey: 'profileInfoContent',
     contentCollection: 'profile',
     contentSource: 'info',
     isPage: false,
   };
   const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileInfoContent', getContentData);
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);

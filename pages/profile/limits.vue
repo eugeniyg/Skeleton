@@ -32,13 +32,12 @@
   const { limitsContent, defaultLimitsContent, isAdvancedModeEnabled } = storeToRefs(limitsStore);
 
   const contentParams = {
-    contentKey: 'profileLimitsContent',
     contentCollection: 'profile',
     contentSource: 'limits',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
+  const { status, data: pageContent } = await useLazyAsyncData('profileLimitsContent', getContentData);
 
   watch(
     status,
