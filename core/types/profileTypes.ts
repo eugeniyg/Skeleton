@@ -244,3 +244,12 @@ export interface IPlayerProfileUpdatedEvent {
     event: 'player.updated';
   };
 }
+
+export interface ILiveChatToken {
+  expiresIn: number;
+  entityId: string;
+  accessToken: string;
+  tokenType: string;
+  creationDate: number;
+  licenseId: string;
+}
