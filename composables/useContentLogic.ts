@@ -106,7 +106,7 @@ export function useContentLogic<T>(params: IContentParams) {
         };
       }
 
-      nuxtDataContent.value = contentData;
+      //nuxtDataContent.value = contentData;
     }
 
     if (params.isPage && !Array.isArray(contentData.currentLocaleData))

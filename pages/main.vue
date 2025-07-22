@@ -59,7 +59,7 @@
     isPage: true,
   };
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
 
   const { gameProviders, collectionsByCountry } = useGamesStore();
   const mainCategoriesList =

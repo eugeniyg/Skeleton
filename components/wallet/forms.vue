@@ -149,7 +149,7 @@
     contentSource: 'limits',
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
   // >>
 
   const showMobileFormKey = ref<number>(0);

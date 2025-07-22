@@ -17,7 +17,7 @@
     findAll: true,
   };
   const { getContentData } = useContentLogic<IProfilePages>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
 
   const profileContent = computed<IProfilePages | undefined>(() => {
     if (!pageContent.value?.currentLocaleData?.length) return undefined;

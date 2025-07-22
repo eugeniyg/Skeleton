@@ -84,7 +84,7 @@
     contentSource: 'category',
   };
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(contentParams.contentKey, getContentData);
 
   interface IState {
     showNotFound: boolean;

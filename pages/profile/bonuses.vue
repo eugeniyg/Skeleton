@@ -108,7 +108,7 @@
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileBonuses>(contentParams);
-  const { data } = await useLazyAsyncData(getContentData);
+  const { data } = await useLazyAsyncData(contentParams.contentKey, getContentData);
   const currentLocaleContent = computed(() => data.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => data.value?.defaultLocaleData);
 

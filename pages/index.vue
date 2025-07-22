@@ -72,7 +72,7 @@
     isPage: true,
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
   const { collectionsByCountry } = useGamesStore();
 
   const aeroCategory = collectionsByCountry.find(

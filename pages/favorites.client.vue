@@ -32,7 +32,7 @@
     isPage: true,
   };
   const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
 
   const gameStore = useGamesStore();
   const { favoriteGames, collectionsByCountry } = storeToRefs(gameStore);

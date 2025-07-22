@@ -103,8 +103,8 @@
   };
   const { getContentData } = useContentLogic<ITournamentsPage>(contentParams);
   const { getContentData: getTournamentsCommonData } = useContentLogic<ITournamentCommon>(tournamentCommonParams);
-  const { data: content } = await useLazyAsyncData(async () => {
-    return await Promise.all([getContentData(), getTournamentsCommonData()]);
+  const { data: content } = await useLazyAsyncData('tournamentsContent', () => {
+    return Promise.all([getContentData(), getTournamentsCommonData()]);
   });
 
   const pageContent = computed<

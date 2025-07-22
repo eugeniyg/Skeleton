@@ -18,7 +18,7 @@
 
   const route = useRoute();
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(contentParams.contentKey, getContentData);
 
   const { gameProviders, collectionsByCountry } = useGamesStore();
 

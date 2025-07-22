@@ -156,7 +156,7 @@
     isPage: true,
   };
   const { getContentData } = useContentLogic<IWelcomeBonusesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, getContentData);
 
   const howGetItems = computed(() => {
     if (pageContent.value?.currentLocaleData?.howGet || pageContent.value?.defaultLocaleData?.howGet) {

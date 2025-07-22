@@ -65,7 +65,7 @@
     contentSource: 'loyalty',
   };
   const { getContentData: getLevelsBenefitsContentData } = useContentLogic(levelsBenefitsContentParams);
-  const { data: levelsBenefitsContent } = await useLazyAsyncData(getLevelsBenefitsContentData);
+  const { data: levelsBenefitsContent } = await useLazyAsyncData(levelsBenefitsContentParams.contentKey, getLevelsBenefitsContentData);
 
   const levelBenefits = computed(() => {
     const contentBenefits = getContent(

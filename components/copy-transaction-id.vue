@@ -26,7 +26,7 @@
     isPage: false,
   };
   const { getContentData: getPageContent } = useContentLogic<ITransactionsHistory>(pageContentParams);
-  const { data: pageContent } = await useLazyAsyncData(getPageContent);
+  const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, getPageContent);
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
