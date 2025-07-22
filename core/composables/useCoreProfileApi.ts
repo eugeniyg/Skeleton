@@ -13,6 +13,9 @@ import type {
   IPlayerLoyaltyAccount,
   ILoyaltyLevelsRequest,
   ILoyaltyLevelsResponse,
+  IReferralsResponse,
+  IReferralsRequest,
+  IReferralsSettings,
   ILiveChatToken,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
@@ -121,6 +124,16 @@ export const useCoreProfileApi = () => {
     return response;
   };
 
+  const getPlayerReferrals = async (params?: IReferralsRequest): Promise<IReferralsResponse> => {
+    const response = await useApiAuthInstance('/api/player/profile/referrals', { params });
+    return response;
+  };
+
+  const getReferralsSettings = async (): Promise<IReferralsSettings> => {
+    const { data } = await useApiAuthInstance('/api/player/referral-settings');
+    return data;
+  };
+
   const getLiveChatToken = async (): Promise<ILiveChatToken> => {
     const { data } = await useApiAuthInstance('/api/player/integrations/livechat/token');
     return data;
@@ -163,6 +176,8 @@ export const useCoreProfileApi = () => {
     getSumsubToken,
     getPlayerLoyaltyAccount,
     getLoyaltyLevels,
+    getReferralsSettings,
+    getPlayerReferrals,
     getLiveChatToken,
     getFreshLiveChatToken,
     checkLiveChatToken,

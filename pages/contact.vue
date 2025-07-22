@@ -12,8 +12,8 @@
       <div class="header">
         <div class="heading">{{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title }}</div>
         <p
-          class="info"
           v-router-links
+          class="info"
           v-html="
             DOMPurify.sanitize(marked.parseInline(descriptionContent || '') as string, { FORBID_TAGS: ['style'] })
           "

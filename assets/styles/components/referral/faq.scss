@@ -1,0 +1,62 @@
+.referral-faq {
+  margin-top: 40px;
+
+  @include media(md) {
+    margin-top: 48px;
+  }
+
+  &__title {
+    @include font($heading-6);
+    color: var(--text-primary);
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__description {
+    @include font($body-2);
+    color: var(--text-tertiary);
+    margin: 4px auto 0;
+
+    @include media(md) {
+      @include upd-font($body-3);
+    }
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__items {
+    margin: 40px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    grid-column-gap: 16px;
+  }
+
+  .expander {
+    padding: 16px 0;
+    flex: 1 1 452px;
+
+    &__content {
+      padding-top: 0;
+
+      p {
+        @include upd-font($body-2-paragraph);
+      }
+    }
+
+    .header .btn .icon {
+      --color: var(--icon-accent);
+    }
+
+    .title {
+      @include upd-font($subheading-3);
+    }
+  }
+
+  &__column {
+    flex: 1 1 440px;
+  }
+}

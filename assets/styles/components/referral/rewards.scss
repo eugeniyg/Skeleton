@@ -1,0 +1,113 @@
+.referral-rewards {
+  --left-top-radius: var(--cornerRadius-mapped-system-default, 20px);
+  --left-bottom-radius: var(--cornerRadius-mapped-system-default, 20px);
+  --right-top-radius: var(--cornerRadius-mapped-system-default, 20px);
+  --right-bottom-radius: var(--cornerRadius-mapped-system-default, 20px);
+  display: grid;
+
+  &__title {
+    @include font($heading-6);
+    color: var(--text-primary);
+    margin-top: 40px;
+
+    @include media(md) {
+      margin-top: 48px;
+    }
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__tb {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 700px;
+
+    &-wrapper {
+      display: grid;
+      width: 100%;
+      margin-top: 24px;
+      overflow-x: auto;
+      @include scrollbar-hide
+    }
+  }
+
+  &__th {
+    @include font($heading-2);
+    color: var(--text-tertiary);
+    height: 32px;
+  }
+
+  &__td {
+    @include font($body-1);
+    color: var(--text-primary);
+    padding: 0 16px;
+    border: 0;
+    height: 50px;
+
+    &:last-of-type {
+      color: var(--text-helper);
+    }
+  }
+
+  &__td, &__th {
+    position: relative;
+    text-align: left;
+    padding: 0 16px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 1px;
+      bottom: 1px;
+      left: 0;
+      right: -1px;
+      background: var(--layer-01);
+    }
+
+    &:first-of-type {
+      &:before {
+        border-radius: var(--left-top-radius) 0 0 var(--left-bottom-radius);
+      }
+    }
+
+    &:last-of-type {
+      &:before {
+        border-radius: 0 var(--right-top-radius) var(--right-bottom-radius) 0;
+      }
+    }
+
+    &-bg {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      grid-column-gap: 4px;
+
+      &.is-empty {
+        color: var(--text-helper);
+      }
+    }
+  }
+
+  &__status-icon {
+    --icon-size: 20px;
+
+    &.is-success {
+      --color: var(--icon-success);
+    }
+
+    &.is-error {
+      --color: var(--icon-alert);
+    }
+
+    &.is-active {
+      --color: var(--icon-primary);
+    }
+  }
+
+  .pagination {
+    margin-top: 24px;
+  }
+}
