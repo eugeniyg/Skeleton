@@ -1,8 +1,8 @@
 <template>
   <div
     ref="rootComponent"
-    class="text-editor"
     v-router-links
+    class="text-editor"
     v-html="DOMPurify.sanitize(marked.parse(props.content || '') as string, { FORBID_TAGS: ['style'] })"
   />
 </template>

@@ -13,6 +13,10 @@ import type {
   IPlayerLoyaltyAccount,
   ILoyaltyLevelsRequest,
   ILoyaltyLevelsResponse,
+  IReferralsResponse,
+  IReferralsRequest,
+  IReferralsSettings,
+  ILiveChatToken,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
@@ -120,6 +124,38 @@ export const useCoreProfileApi = () => {
     return response;
   };
 
+  const getPlayerReferrals = async (params?: IReferralsRequest): Promise<IReferralsResponse> => {
+    const response = await useApiAuthInstance('/api/player/profile/referrals', { params });
+    return response;
+  };
+
+  const getReferralsSettings = async (): Promise<IReferralsSettings> => {
+    const { data } = await useApiAuthInstance('/api/player/referral-settings');
+    return data;
+  };
+
+  const getLiveChatToken = async (): Promise<ILiveChatToken> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/token');
+    return data;
+  };
+
+  const getFreshLiveChatToken = async (): Promise<ILiveChatToken> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/fresh-token', {
+      params: { returnUrl: window.location.origin },
+    });
+    return data;
+  };
+
+  const checkLiveChatToken = async (): Promise<boolean> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/has-token');
+    return data;
+  };
+
+  const invalidateLiveChatToken = async (): Promise<string> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/token', { method: 'DELETE' });
+    return data;
+  };
+
   return {
     getProfile,
     getProfileFields,
@@ -140,5 +176,11 @@ export const useCoreProfileApi = () => {
     getSumsubToken,
     getPlayerLoyaltyAccount,
     getLoyaltyLevels,
+    getReferralsSettings,
+    getPlayerReferrals,
+    getLiveChatToken,
+    getFreshLiveChatToken,
+    checkLiveChatToken,
+    invalidateLiveChatToken,
   };
 };

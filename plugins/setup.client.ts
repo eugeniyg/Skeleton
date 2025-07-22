@@ -51,16 +51,20 @@ export default defineNuxtPlugin(nuxtApp => {
     }
   };
 
-  const startFreshchatLogic = (): void => {
+  const startSupportChat = (): void => {
     const {
-      public: { freshchatParams },
+      public: { liveChat, freshchatParams },
     } = useRuntimeConfig();
-    const { addFreshChatScript, initChat } = useFreshchatStore();
     const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
+    const { projectHasFreshchat, addFreshChatScript } = useFreshchatStore();
+    const { projectHasLiveChat, initializeLiveChat } = useLiveChatStore();
 
-    if (freshchatParams?.guestAvailable) initChat();
-    else if (sessionToken) addFreshChatScript();
+    if (projectHasLiveChat) {
+      if (liveChat.guestAvailable || !!sessionToken) initializeLiveChat();
+    } else if (projectHasFreshchat) {
+      if (freshchatParams.guestAvailable || !!sessionToken) addFreshChatScript();
+    }
   };
 
   const decodeBase64 = (value: string): string | undefined => {
@@ -119,7 +123,7 @@ export default defineNuxtPlugin(nuxtApp => {
     setWindowStaticHeight();
     setWindowHeight();
     window.addEventListener('resize', setWindowHeight);
-    startFreshchatLogic();
+    startSupportChat();
     window.addEventListener('visibilitychange', checkTabVisibility);
   });
 

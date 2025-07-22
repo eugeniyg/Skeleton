@@ -2,16 +2,16 @@
   <div class="text-wrap">
     <div
       v-if="props.visible"
-      class="text-wrap__visible"
       v-router-links
+      class="text-wrap__visible"
       v-html="DOMPurify.sanitize(marked.parse(props.visible || '') as string, { FORBID_TAGS: ['style'] })"
     />
 
     <div
       v-if="props.hidden"
       v-show="showHidden"
-      class="text-wrap__hidden"
       v-router-links
+      class="text-wrap__hidden"
       v-html="DOMPurify.sanitize(marked.parse(props.hidden || '') as string, { FORBID_TAGS: ['style'] })"
     />
 
