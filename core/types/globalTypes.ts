@@ -85,6 +85,11 @@ export interface ICoreConstants extends Record<string, any> {
       bot: string;
       auth_url: string;
     };
+    referral: {
+      enabled: boolean;
+      segmentTypes: IStatus[];
+      qualificationStatuses: IStatus[];
+    };
   };
   payment: {
     invoiceStatuses: IStatus[];

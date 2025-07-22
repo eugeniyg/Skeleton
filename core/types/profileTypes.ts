@@ -35,6 +35,8 @@ export interface IProfile extends Record<string, any> {
   phoneConfirmed: boolean;
   pwaInstalled: boolean;
   externalId: number;
+  referralCode: string | null;
+  qualifiedReferralsCount: number | null;
 }
 
 export interface IAuthorizationRequest extends Record<any, any> {
@@ -194,6 +196,31 @@ export interface ILoyaltyLevel {
 
 export interface ILoyaltyLevelsResponse extends Record<string, any> {
   data: ILoyaltyLevel[];
+  meta: IPaginationMeta;
+}
+
+export interface IReferralsRequest extends Record<string, any> {
+  page?: number;
+  perPage?: number;
+  totalPages?: number;
+  totalRows?: number;
+}
+
+export interface IReferralsSettings {
+  enabled: boolean;
+  maxReferralCount: number | null;
+  ownerBonusId: string | null;
+}
+
+export interface IReferralItem {
+  qualified: number;
+  registrationDate: string;
+  qualificationDate: string | null;
+  qualificationEndDate: string;
+}
+
+export interface IReferralsResponse extends Record<string, any> {
+  referrals: IReferralItem[];
   meta: IPaginationMeta;
 }
 
