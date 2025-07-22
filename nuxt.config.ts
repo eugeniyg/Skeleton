@@ -138,10 +138,7 @@ export default defineNuxtConfig({
     '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css',
   ],
   vite: viteConfig,
-  sourcemap: {
-    server: false,
-    client: true,
-  },
+  sourcemap: false,
   nitro: {
     logLevel: 0,
     inlineDynamicImports: true,
