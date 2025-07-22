@@ -38,7 +38,6 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "accept-language-parser": "^1.5.0",
-    "better-sqlite3": "^12.2.0",
     "body-scroll-lock": "^4.0.0-beta.0",
     "centrifuge": "^3.1.2",
     "copy-to-clipboard": "^3.3.3",
