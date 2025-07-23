@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
   import type { ICountry } from '@skeleton/api/types';
-  import type { IProfileInfo } from '~/types';
+  import type { IProfilePersonal } from '~/types';
   import { changeProfileData } from '@skeleton/api/profile';
 
   const globalStore = useGlobalStore();
@@ -111,16 +111,16 @@
 
   const contentParams = {
     contentCollection: 'profile',
-    contentSource: 'info',
+    contentSource: 'personal',
     isPage: true,
   };
-  const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData('profileInfoContent', getContentData);
+  const { getContentData } = useContentLogic<IProfilePersonal>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData('profilePersonalContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 
-  provide('infoContent', currentLocaleContent);
-  provide('defaultLocaleInfoContent', defaultLocaleContent);
+  provide('personalContent', currentLocaleContent);
+  provide('defaultLocalePersonalContent', defaultLocaleContent);
 
   const runtimeConfig = useRuntimeConfig();
   const showQuestHub = runtimeConfig.public?.questsEnabled;
@@ -170,4 +170,4 @@
   };
 </script>
 
-<style src="~/assets/styles/pages/profile/info.scss" lang="scss" />
+<style src="~/assets/styles/pages/profile/personal.scss" lang="scss" />

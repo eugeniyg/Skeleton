@@ -1,7 +1,6 @@
 <template>
   <div class="user-profile">
     <nav-profile v-if="profileMenu.length" :items="profileMenu" />
-
     <NuxtPage />
   </div>
 </template>
@@ -22,10 +21,10 @@
     if (!pageContent.value?.currentLocaleData?.length) return undefined;
 
     return pageContent.value?.currentLocaleData.reduce((finalContentObj: any, currentContent: any) => {
-      const splitPath = currentContent._path?.split('/');
+      const splitPath = currentContent.stem?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const contentName = camelCase(splitPath[3]);
+      const contentName = camelCase(splitPath[2]);
       return { ...finalContentObj, [contentName]: currentContent };
     }, {});
   });
@@ -34,10 +33,10 @@
     if (!pageContent.value?.defaultLocaleData?.length) return undefined;
 
     return pageContent.value?.defaultLocaleData.reduce((finalContentObj: any, currentContent: any) => {
-      const splitPath = currentContent._path?.split('/');
+      const splitPath = currentContent.stem?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const contentName = camelCase(splitPath[3]);
+      const contentName = camelCase(splitPath[2]);
       return { ...finalContentObj, [contentName]: currentContent };
     }, {});
   });

@@ -24,7 +24,7 @@
               :class="{ disabled: resentVerifyEmail }"
               @click.once="profileStore.resendVerifyEmail"
             >
-              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
+              {{ personalContent?.sendButton || defaultLocalePersonalContent?.sendButton }}
             </span>
           </template>
         </div>
@@ -35,10 +35,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileInfo } from '~/types';
+  import type { IProfilePersonal } from '~/types';
 
-  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
-  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const personalContent = ref<Maybe<IProfilePersonal>>(inject('personalContent'));
+  const defaultLocalePersonalContent = ref<Maybe<IProfilePersonal>>(inject('defaultLocalePersonalContent'));
   const runtimeConfig = useRuntimeConfig();
   const hiddenFieldsWithLoyalty = [
     'nickname',

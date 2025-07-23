@@ -8,7 +8,7 @@
         v-model:value="profileFormData.email"
         type="email"
         :is-disabled="!!profile?.email"
-        :verify-button="infoContent?.verifyButton || defaultLocaleInfoContent?.verifyButton"
+        :verify-button="personalContent?.verifyButton || defaultLocalePersonalContent?.verifyButton"
         :hint="profile?.email ? emailHint : setError('email')"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
@@ -42,11 +42,11 @@
 
     <div class="actions">
       <button-base type="primary" size="md" :is-disabled="sendDisabled" @click="changePersonalData">
-        {{ infoContent?.saveButton || defaultLocaleInfoContent?.saveButton || '' }}
+        {{ personalContent?.saveButton || defaultLocalePersonalContent?.saveButton || '' }}
       </button-base>
 
       <button-base type="ghost" size="md" @click.prevent="emit('toggle-profile-edit')">
-        {{ infoContent?.cancelButton || defaultLocaleInfoContent?.cancelButton || '' }}
+        {{ personalContent?.cancelButton || defaultLocalePersonalContent?.cancelButton || '' }}
       </button-base>
     </div>
 
@@ -56,13 +56,13 @@
 
 <script setup lang="ts">
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
-  import type { IProfileInfo } from '~/types';
+  import type { IProfilePersonal } from '~/types';
   import { changeProfileData } from '@skeleton/api/profile';
   import { setFormData, createValidationRules, getFormRules } from '@skeleton/helpers/formMethods';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
-  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
-  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const personalContent = ref<Maybe<IProfilePersonal>>(inject('personalContent'));
+  const defaultLocalePersonalContent = ref<Maybe<IProfilePersonal>>(inject('defaultLocalePersonalContent'));
 
   const hideFields = ['password', 'password_confirmation', 'receiveSmsPromo', 'receiveEmailPromo'];
 
@@ -87,13 +87,13 @@
     ? {
         variant: 'verified',
         message:
-          infoContent.value?.verifiedLabel || defaultLocaleInfoContent.value?.verifiedLabel || 'Your email is verified',
+          personalContent.value?.verifiedLabel || defaultLocalePersonalContent.value?.verifiedLabel || 'Your email is verified',
       }
     : {
         variant: 'unverified',
         message:
-          infoContent.value?.unverifiedLabel ||
-          defaultLocaleInfoContent.value?.unverifiedLabel ||
+          personalContent.value?.unverifiedLabel ||
+          defaultLocalePersonalContent.value?.unverifiedLabel ||
           'Your email is unverified',
       };
 

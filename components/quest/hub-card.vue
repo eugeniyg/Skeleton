@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
   import type { IPlayerQuest } from '@skeleton/api/types';
-  import type { IProfileInfo } from '~/types';
+  import type { IProfilePersonal } from '~/types';
   import { formatBalance } from '@skeleton/helpers/amountMethods';
   import camelCase from 'lodash/camelCase';
   import { getContent } from '#imports';
@@ -54,8 +54,8 @@
   const currentLocaleQuestsHubContent = currentLocaleModalsContent?.[camelCase(modalsList['quests-hub'].content)];
   const defaultLocaleQuestsHubContent = defaultLocaleModalsContent?.[camelCase(modalsList['quests-hub'].content)];
 
-  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
-  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const personalContent = ref<Maybe<IProfilePersonal>>(inject('personalContent'));
+  const defaultLocalePersonalContent = ref<Maybe<IProfilePersonal>>(inject('defaultLocalePersonalContent'));
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -84,7 +84,7 @@
 
   const { openRewardsModal, openTasksModal } = useQuestsStore();
   const rewardsModalTitle = computed(() => {
-    return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
+    return getContent(personalContent.value, defaultLocalePersonalContent.value, 'questsHub.rewardsTitle') || '';
   });
   const openModal = async (): Promise<void> => {
     await openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
