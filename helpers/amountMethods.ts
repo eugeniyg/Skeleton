@@ -17,16 +17,10 @@ export const formatBalance = (
 
   const subCurrencyConfig = currencyConfig.subCurrencies?.find(subCurrency => subCurrency.subunitToUnit === 1000);
   if (amount === 0) return { currency: subCurrencyConfig?.code || '', amount };
-  let afterDigits;
-  if (amount.toString().split('e-')[1]) {
-    afterDigits = Number(amount.toString().split('e-')[1]) || 0;
-  } else {
-    afterDigits = amount.toString().split('.')[1]?.length || 0;
-  }
 
   return {
     currency: subCurrencyConfig?.code || '',
-    amount: Number((amount * 1000).toFixed(afterDigits < 4 ? 0 : afterDigits - 3)),
+    amount: Number((amount * 1000).toFixed(8))
   };
 };
 
