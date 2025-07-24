@@ -48,9 +48,9 @@
   const replaceVariables = (content: string | undefined, gameInfo: Maybe<IGame>): string | undefined => {
     if (!content || !gameInfo) return undefined;
     return content
-      .replace('{game}', gameInfo.name)
-      .replace('{provider}', gameInfo.provider.name)
-      .replace('{volatility}', gameInfo.volatility);
+      .replace(/\{game}/g, gameInfo.name)
+      .replace(/\{provider}/g, gameInfo.provider.name)
+      .replace(/\{volatility}/g, gameInfo.volatility);
   };
 
   const { data } = await useLazyAsyncData(`game${route.params.id}Info`, async () => {
