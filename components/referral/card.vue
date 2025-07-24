@@ -48,7 +48,7 @@
 
     <div class="referral-card__footer">
       <referral-link-copy v-if="showCreateLink" :value="createLink" name="copyRefLink" />
-      <referral-unavailable-msg v-else />
+      <referral-unavailable-msg v-if="isReferralDisabled" />
     </div>
   </div>
 </template>
@@ -119,6 +119,7 @@
   const referralMaxCount = ref<number | null>();
   const formattedTitle = ref<string>('');
   const bonusValue = ref<Maybe<any>>();
+  const isReferralDisabled = ref<boolean>(false);
 
   const setBonusTitle = (bonus: Maybe<any>): string => {
     if (!bonus || bonus?.type === 1) {
@@ -132,7 +133,7 @@
 
   const getBonusesData = async () => {
     try {
-      const { maxReferralCount, ownerBonusId } = await getReferralsSettings();
+      const { maxReferralCount, ownerBonusId, enabled } = await getReferralsSettings();
 
       const bonusParams = {
         bonusIds: [ownerBonusId],
@@ -142,6 +143,7 @@
 
       const [bonus] = await getBonuses(bonusParams);
       bonusValue.value = bonus;
+      isReferralDisabled.value = !enabled;
       referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
       console.error('Error fetching bonuses:', error);
