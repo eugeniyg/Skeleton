@@ -1,0 +1,156 @@
+.referral-how-it-works {
+  margin-top: 40px;
+
+  @include media(md) {
+    margin-top: 24px;
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-4);
+  }
+
+  &__description {
+    color: var(--text-tertiary);
+    margin-top: 8px;
+    @include font($body-2);
+  }
+
+  &__items {
+    display: flex;
+    padding: 24px 16px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: var(--cornerRadius-mapped-card-md, 24px);
+    border: 2px solid var(--border-accent);
+    background: var(--layer-01);
+    margin-top: 24px;
+    list-style: none;
+    flex-wrap: wrap;
+
+    @include media(md) {
+      padding: 24px;
+      --cornerRadius-mapped-card-md: 20px;
+    }
+  }
+
+  &__picture {
+    display: block;
+    position: relative;
+    z-index: 1;
+
+    &-container {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 16px;
+      margin-top: -4px;
+
+      @include media(md) {
+        width: 64px;
+        height: 64px;
+        right: 24px;
+      }
+    }
+
+    img {
+      display: block;
+      width: 48px;
+      height: 48px;
+
+      @include media(md) {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  }
+
+  &__picture-bg {
+    mix-blend-mode: overlay;
+    width: 92px;
+    height: 92px;
+    position: absolute;
+
+    img {
+      display: block;
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      @include media(md) {
+        width: 96px;
+        height: 96px;
+      }
+    }
+  }
+
+  &__item {
+    display: grid;
+    padding: 12px 100px 16px 16px;
+    align-items: center;
+    align-self: stretch;
+    border-radius: var(--cornerRadius-mapped-card-default, 20px);
+    border: 1px solid var(--border-01);
+    background: var(--layer-02);
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "index title" "description description";
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    flex-basis: 400px;
+
+    @include media(md) {
+      padding: 20px 120px 20px 24px;
+    }
+
+    &-icon {
+      @include font($heading-5);
+      color: var(--text-primary);
+      opacity: 0.32;
+      grid-area: index;
+      min-width: 24px;
+
+      @include media(md) {
+        @include upd-font($heading-7);
+        margin-right: 8px;
+      }
+    }
+
+    &-title {
+      @include font($heading-3);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+      grid-area: title;
+      flex-grow: 1;
+      align-content: flex-start;
+
+      @include media(md) {
+        @include upd-font($heading-4);
+      }
+    }
+
+    &-description {
+      @include font($body-1);
+      color: var(--text-secondary);
+      margin: 0;
+      padding: 0;
+      grid-area: description;
+
+      @include media(md) {
+        @include upd-font($body-2);
+        margin-top: 4px;
+      }
+    }
+  }
+}

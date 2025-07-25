@@ -1,0 +1,6 @@
+.referral {
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-6);
+  }
+}
