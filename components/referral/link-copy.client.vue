@@ -35,6 +35,7 @@
   import copy from 'copy-to-clipboard';
   import debounce from 'lodash/debounce';
   import type { IProfileReferral } from '~/types';
+  import { getContent } from '#imports';
 
   const props = defineProps<{
     name: string;
@@ -43,7 +44,6 @@
 
   const referralContent = ref<Maybe<IProfileReferral>>(inject('referralContent'));
   const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
-  const { getContent } = useProjectMethods();
 
   const btnLabel = computed(() =>
     getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.copyLink.btnLabel')

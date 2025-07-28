@@ -9,6 +9,7 @@ import type {
   IPlayerCashback,
   IBonus,
   IBonusesStatus,
+  IBonusesRequest,
 } from './types';
 import { apiAuthInstance } from './apiAuthInstance';
 
@@ -69,12 +70,12 @@ export const getPlayerCashback = async (currency?: string): Promise<{ data: IPla
   return await apiAuthInstance('/api/game/bonuses/cashback', { params: { currency } });
 };
 
-export const getDepositBonuses = async (currency: string, amount?: number): Promise<IBonus[]> => {
-  const { data } = await apiAuthInstance('/api/game/bonuses', { params: { currency, amount } });
+export const getBonusesStatus = async (bonusIds: string[], currency: string): Promise<IBonusesStatus[]> => {
+  const { data } = await apiAuthInstance('/api/game/bonuses/status', { params: { bonusIds, currency } });
   return data;
 };
 
-export const getBonusesStatus = async (bonusIds: string[], currency: string): Promise<IBonusesStatus[]> => {
-  const { data } = await apiAuthInstance('/api/game/bonuses/status', { params: { bonusIds, currency } });
+export const getBonuses = async (params?: IBonusesRequest): Promise<IBonus[]> => {
+  const { data } = await apiAuthInstance('/api/game/bonuses', { params });
   return data;
 };

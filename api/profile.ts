@@ -10,6 +10,10 @@ import type {
   ISessionsResponse,
   IUpdateLimit,
   IUploadFile,
+  IReferralsResponse,
+  IReferralsRequest,
+  IReferralsSettings,
+  ILiveChatToken,
 } from './types';
 import { apiGuestInstance } from './apiGuestInstance';
 import { apiAuthInstance } from './apiAuthInstance';
@@ -103,5 +107,36 @@ export const updatePlayerLimit = async ({ limitId, period, amount }: IUpdateLimi
 
 export const deletePlayerLimit = async (limitId: string): Promise<IPlayerLimit> => {
   const { data } = await apiAuthInstance(`/api/player/limits/${limitId}`, { method: 'DELETE' });
+  return data;
+};
+
+export const getPlayerReferrals = async (params?: IReferralsRequest): Promise<IReferralsResponse> => {
+  return await apiAuthInstance('/api/player/profile/referrals', { params });
+};
+
+export const getReferralsSettings = async (): Promise<IReferralsSettings> => {
+  const { data } = await apiAuthInstance('/api/player/referral-settings');
+  return data;
+};
+
+export const getLiveChatToken = async (): Promise<ILiveChatToken> => {
+  const { data } = await apiAuthInstance('/api/player/integrations/livechat/token');
+  return data;
+};
+
+export const getFreshLiveChatToken = async (): Promise<ILiveChatToken> => {
+  const { data } = await apiAuthInstance('/api/player/integrations/livechat/fresh-token', {
+    params: { returnUrl: window.location.origin },
+  });
+  return data;
+};
+
+export const checkLiveChatToken = async (): Promise<boolean> => {
+  const { data } = await apiAuthInstance('/api/player/integrations/livechat/has-token');
+  return data;
+};
+
+export const invalidateLiveChatToken = async (): Promise<string> => {
+  const { data } = await apiAuthInstance('/api/player/integrations/livechat/token', { method: 'DELETE' });
   return data;
 };

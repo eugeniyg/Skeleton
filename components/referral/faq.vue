@@ -32,11 +32,10 @@
 
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
+  import { getContent } from '#imports';
 
   const referralContent = ref<Maybe<IProfileReferral>>(inject('referralContent'));
   const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
-  const { getContent } = useProjectMethods();
-
   const firstHalf = ref<IProfileReferral['faq']['items']>([]);
   const secondHalf = ref<IProfileReferral['faq']['items']>([]);
 

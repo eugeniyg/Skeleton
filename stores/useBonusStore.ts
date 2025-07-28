@@ -15,7 +15,7 @@ import {
   getPlayerBonuses as requestPlayerBonuses,
   getPlayerFreeSpins as requestPlayerFreeSpins,
   getPlayerCashback as requestPlayerCashback,
-  getDepositBonuses as requestDepositBonuses,
+  getBonuses,
   getBonusCodes,
 } from '@skeleton/api/bonuses';
 import { getGamesInfo } from '@skeleton/api/games';
@@ -128,7 +128,7 @@ export const useBonusStore = defineStore('bonusStore', {
     async getDepositBonuses(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
-      this.depositBonuses = await requestDepositBonuses({ currency: activeAccount.currency });
+      this.depositBonuses = await getBonuses({ currency: activeAccount.currency });
     },
 
     async getDepositBonusCode(): Promise<void> {

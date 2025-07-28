@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
 import debounce from 'lodash/debounce';
-import type { ILiveChatToken } from '../core/types';
+import type { ILiveChatToken } from '@skeleton/api/types';
+import { getLiveChatToken, getFreshLiveChatToken } from '@skeleton/api/profile';
 
 interface ILiveChatState {
   liveChatNewMessages: number;
@@ -120,8 +120,6 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       const cacheKey = '__lc_cache_data';
       let tokenPromise: Promise<ILiveChatToken> | null = null;
       let cachedToken: ILiveChatToken | null = null;
-
-      const { getLiveChatToken, getFreshLiveChatToken } = useCoreProfileApi();
 
       const isTokenExpired = ({ creationDate, expiresIn }: ILiveChatToken): boolean => {
         return Date.now() >= creationDate + expiresIn;
