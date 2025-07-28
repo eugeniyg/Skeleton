@@ -36,8 +36,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBetHistory, IPaginationMeta } from '@skeleton/core/types';
+  import type { IBetHistory, IPaginationMeta } from '@skeleton/api/types';
   import type { IBetsHistory } from '~/types';
+  import { getBetsHistory } from '@skeleton/api/games';
 
   const props = defineProps<{
     content: IBetsHistory;
@@ -59,7 +60,6 @@
   ];
   const selectedBetsTab = ref<string>(betsTab[0].id);
 
-  const { getBetsHistory } = useCoreGamesApi();
   const betsRequest = async (page: number = 1): Promise<void> => {
     loading.value = true;
     const response = await getBetsHistory(page, 10, selectedBetsTab.value === 'settled');

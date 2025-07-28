@@ -46,13 +46,13 @@
   import { marked } from 'marked';
   import type { ISliderItem } from '~/types';
   import DOMPurify from 'isomorphic-dompurify';
+  import { createSrcSet } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     slideData: ISliderItem;
   }>();
 
   const router = useRouter();
-  const { createSrcSet, localizePath } = useProjectMethods();
   const showButton = computed(() => !!props.slideData.button?.label && !!props.slideData.button?.url);
   const backgroundGradientStyle = computed(
     () => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`

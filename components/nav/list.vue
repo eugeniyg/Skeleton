@@ -29,8 +29,6 @@
   }>();
 
   const route = useRoute();
-
-  const { localizePath } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/nav/list.scss" lang="scss" />

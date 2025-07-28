@@ -2,7 +2,7 @@
   <div class="info-accordeon" :class="{ 'is-open': isOpen }" @resize="updateScrollHeight">
     <div class="info-accordeon__head" @click="toggleOpen">
       <div class="info-accordeon__title">{{ props.title }}</div>
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </div>
 
     <div

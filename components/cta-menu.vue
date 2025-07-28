@@ -31,7 +31,6 @@
   }>();
 
   const route = useRoute();
-  const { localizePath } = useProjectMethods();
   const { openModal } = useModalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

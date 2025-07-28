@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { IGame, IPaginationMeta } from '@skeleton/api/types';
   import type { ITournamentCommon } from '~/types';
 
   const props = defineProps<{
@@ -39,7 +39,6 @@
   }>();
 
   const emit = defineEmits(['getMoreGames']);
-  const { getContent } = useProjectMethods();
   const titleIcon = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'games.icon')
   );

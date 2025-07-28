@@ -52,8 +52,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBetItem } from '@skeleton/core/types';
+  import type { IBetItem } from '@skeleton/api/types';
   import type { IBetsHistory } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     id: string;
@@ -71,7 +72,6 @@
   const betItem = props.items[0];
   const dayjs = useDayjs();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { formatBalance, getContent } = useProjectMethods();
   const betSum = computed(() => {
     const balanceFormat = formatBalance(props.currency, props.amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;

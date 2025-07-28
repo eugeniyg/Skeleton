@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     '@skeleton/modules/optimize-images',
     '@nuxtjs/fontaine',
     '@nuxt/eslint',
+    'nuxt-svgo',
   ],
   dayjs: {
     locales: [
@@ -60,6 +61,9 @@ export default defineNuxtConfig({
     plugins: ['utc', 'localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
     defaultLocale: 'en',
   },
+  svgo: {
+    defaultImport: 'component',
+  },
   lazyLoad: {
     observerConfig: {
       root: null,
@@ -76,9 +80,6 @@ export default defineNuxtConfig({
       },
       '@skeleton/components',
     ],
-  },
-  imports: {
-    dirs: ['core/composables'],
   },
   routeRules: {
     '/profile/**': {
@@ -100,6 +101,18 @@ export default defineNuxtConfig({
       appMiddleware: ['auth'],
     },
   },
+  ignore: [
+    '**/node_modules/**',
+    '**/.output/**',
+    '**/.nuxt/**',
+    '**/dist/**',
+    '**/.git/**',
+    '**/.idea/**',
+    '**/.vscode/**',
+    '**/.cache/**',
+    '**/.pnpm/**',
+    '**/logs/**'
+  ],
   experimental: {
     asyncContext: true,
     defaults: {
@@ -116,16 +129,16 @@ export default defineNuxtConfig({
     pageTransition: true,
     layoutTransition: true,
   },
+  devtools: {
+    enabled: false,
+  },
   css: [
     '@skeleton/assets/styles/style.scss',
     '@skeleton/node_modules/vue-final-modal/dist/style.css',
     '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css',
   ],
   vite: viteConfig,
-  sourcemap: {
-    server: false,
-    client: true,
-  },
+  sourcemap: false,
   nitro: {
     logLevel: 0,
     inlineDynamicImports: true,

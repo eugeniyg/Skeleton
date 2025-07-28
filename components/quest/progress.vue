@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuestTask } from '@skeleton/core/types';
+  import type { IPlayerQuestTask } from '@skeleton/api/types';
 
   const props = defineProps<{
     taskList: IPlayerQuestTask[];

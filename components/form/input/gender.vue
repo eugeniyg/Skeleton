@@ -58,7 +58,6 @@
   }>();
 
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const emit = defineEmits(['update:value', 'focus']);
   const changeValue = (value: string | null): void => {
     emit('focus', value);

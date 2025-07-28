@@ -4,7 +4,7 @@
       <div class="terms-expander__title">{{ props.title }}</div>
 
       <button-base type="ghost" class="terms-expander__toggle" @click.stop="toggle">
-        <atomic-icon id="arrow_expand-open" />
+        <atomic-icon id="arrow-expand-open" />
       </button-base>
     </div>
 

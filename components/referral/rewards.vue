@@ -76,7 +76,8 @@
 
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
-  import type { IReferralItem, IPaginationMeta } from '@skeleton/core/types';
+  import type { IReferralItem, IPaginationMeta } from '@skeleton/api/types';
+  import { getContent } from '#imports';
 
   const props = defineProps<{
     referralsList: IReferralItem[];
@@ -85,7 +86,6 @@
 
   const referralContent = ref<Maybe<IProfileReferral>>(inject('referralContent'));
   const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
-  const { getContent } = useProjectMethods();
   const dayjs = useDayjs();
   const dateFormat = 'DD.MM.YYYY, HH:mm';
   const columnsOrder = ['qualified', 'registrationDate', 'qualificationDate', 'qualificationEndDate'];

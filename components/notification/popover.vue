@@ -38,7 +38,7 @@
         {{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.empty.description') }}
       </div>
 
-      <atomic-icon-colored id="empty-notification" />
+      <atomic-icon id="empty-notification" filled />
     </div>
   </div>
 </template>
@@ -48,7 +48,6 @@
   const { unreadCount, popoverNotifications } = storeToRefs(notificationStore);
   const globalStore = useGlobalStore();
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const { readAllMessages } = notificationStore;
 
   const emit = defineEmits(['hide']);

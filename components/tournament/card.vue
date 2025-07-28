@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/api/types/tournamentsTypes';
   import type { ITournamentCommon, ITournamentPage } from '~/types';
 
   const props = defineProps<{
@@ -72,7 +72,6 @@
   const { openModal } = useModalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/tournament/card.scss" lang="scss" />

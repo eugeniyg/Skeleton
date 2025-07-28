@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerLimit } from '@skeleton/core/types';
+  import type { IPlayerLimit } from '@skeleton/api/types';
 
   const props = defineProps<{
     periods: {
@@ -36,7 +36,6 @@
   }>();
 
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const { openModal } = useModalStore();
 </script>
 

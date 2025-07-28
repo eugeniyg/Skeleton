@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
+  import type { IPlayerBonus, IPlayerFreeSpin } from '@skeleton/api/types';
 
   const props = defineProps<{
     loading?: boolean;
@@ -93,7 +93,6 @@
     '5': 'lost',
   };
 
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 

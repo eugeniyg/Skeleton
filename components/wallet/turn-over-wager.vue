@@ -54,11 +54,11 @@
 
 <script setup lang="ts">
   import type { IWalletModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
 
-  const { getContent, formatBalance } = useProjectMethods();
   const { currencies } = useGlobalStore();
   const riskStore = useRiskStore();
   const { turnOverWagerData } = storeToRefs(riskStore);

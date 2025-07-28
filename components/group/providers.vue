@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from '@skeleton/core/types';
+  import type { IGameProvider } from '@skeleton/api/types';
 
   const props = defineProps<{
     showAllBtn?: boolean;
@@ -41,7 +41,6 @@
   }>();
 
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const contentList: { identity: string }[] =
     getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.items') || [];
 

@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
 
   const props = defineProps<{
     gameInfo: IGame;

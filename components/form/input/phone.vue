@@ -36,7 +36,6 @@
 
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
-  import { storeToRefs } from 'pinia';
   import type { IPhoneCode } from '@skeleton/types';
 
   const props = defineProps<{

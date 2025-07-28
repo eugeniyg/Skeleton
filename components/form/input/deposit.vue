@@ -8,7 +8,7 @@
           <div class="label">{{ balanceFormat.currency }}</div>
         </div>
 
-        <atomic-icon id="arrow_expand-close" class="icon-expand" />
+        <atomic-icon id="arrow-expand-close" class="icon-expand" />
 
         <list-balance :is-open="isShow" @close="isShow = false" @click.stop />
       </div>
@@ -19,10 +19,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const walletStore = useWalletStore();
-  const { formatBalance } = useProjectMethods();
   const { getPlayerBonuses } = useBonusStore();
   const { activeAccount, showEquivalentBalance } = storeToRefs(walletStore);
 

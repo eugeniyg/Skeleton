@@ -59,7 +59,6 @@
     defaultLocaleData: Maybe<IModalsContent['restrictedBets']>;
   }>();
 
-  const { localizePath, getContent } = useProjectMethods();
   const router = useRouter();
   const route = useRoute();
   const currentPage = route.name === 'betting' || route.name === 'locale-betting' ? 'betting' : 'casino';

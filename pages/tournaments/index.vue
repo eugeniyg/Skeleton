@@ -81,27 +81,28 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon, ITournamentPage, ITournamentsPage } from '~/types';
-  import { useCoreTournamentsApi } from '@skeleton/core/composables/useCoreTournamentApi';
-  import type { IPaginationMeta } from '@skeleton/core/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { IPaginationMeta, ITournament } from '@skeleton/api/types';
+  import { getTournaments } from '@skeleton/api/retention';
+  import type { Collections, CollectionItemBase } from '@nuxt/content';
+  import { getContent } from '#imports';
+  type CollectionKey = keyof Collections;
 
   const globalStore = useGlobalStore();
   const { currentLocale, isMobile } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
-    contentKey: 'tournamentsPageContent',
-    contentRoute: ['pages', 'tournaments'],
+    contentCollection: 'pages',
+    contentSource: 'tournaments',
     isPage: true,
   };
   const tournamentCommonParams = {
-    contentKey: 'tournamentsCommonContent',
-    contentRoute: ['pages', 'tournament'],
+    contentCollection: 'pages',
+    contentSource: 'tournament',
   };
   const { getContentData } = useContentLogic<ITournamentsPage>(contentParams);
   const { getContentData: getTournamentsCommonData } = useContentLogic<ITournamentCommon>(tournamentCommonParams);
-  const { data: content } = await useLazyAsyncData(async () => {
-    return await Promise.all([getContentData(), getTournamentsCommonData()]);
+  const { data: content } = await useLazyAsyncData('tournamentsContent', () => {
+    return Promise.all([getContentData(), getTournamentsCommonData()]);
   });
 
   const pageContent = computed<
@@ -142,7 +143,6 @@
     tournamentIdentities: [],
   });
 
-  const { getTournaments } = useCoreTournamentsApi();
   const getFinishedTournaments = async (page = 1): Promise<void> => {
     if (state.finishedLoading) return;
     state.finishedLoading = true;
@@ -178,23 +178,23 @@
     state.activeLoading = false;
   };
 
-  const completeTournamentsObject = (tournamentPages: ITournamentPage[]): { [key: string]: ITournamentPage } => {
+  const completeTournamentsObject = (tournamentPages: CollectionItemBase[]): { [key: string]: ITournamentPage } => {
     const tournamentsObject: { [key: string]: ITournamentPage } = {};
     tournamentPages.forEach(tournamentPage => {
-      tournamentsObject[tournamentPage.identity] = tournamentPage;
+      const contentBody = tournamentPage.meta.body as ITournamentPage;
+      tournamentsObject[contentBody.identity] = contentBody;
     });
     return tournamentsObject;
   };
 
   const getTournamentsData = async (): Promise<void> => {
-    const contentPagesResponse = await queryContent<ITournamentPage>(
-      currentLocale.value?.code as string,
-      'tournaments'
-    ).find();
+    const contentPagesResponse = await queryCollection(
+      `${currentLocale.value?.code}Tournaments` as CollectionKey
+    ).all();
 
     if (contentPagesResponse?.length) {
       state.tournamentsContent = completeTournamentsObject(contentPagesResponse);
-      state.tournamentIdentities = contentPagesResponse.map(item => item.identity);
+      state.tournamentIdentities = contentPagesResponse.map(item => (item.meta.body as ITournamentPage).identity);
       await Promise.all([getActiveTournaments(), getFinishedTournaments()]);
     }
     state.globalLoading = false;

@@ -24,7 +24,7 @@
               :class="{ disabled: resentVerifyEmail }"
               @click.once="profileStore.resendVerifyEmail"
             >
-              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
+              {{ personalContent?.sendButton || defaultLocalePersonalContent?.sendButton }}
             </span>
           </template>
         </div>
@@ -35,11 +35,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IProfileInfo } from '~/types';
+  import type { IProfilePersonal } from '~/types';
 
-  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
-  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const personalContent = ref<Maybe<IProfilePersonal>>(inject('personalContent'));
+  const defaultLocalePersonalContent = ref<Maybe<IProfilePersonal>>(inject('defaultLocalePersonalContent'));
   const runtimeConfig = useRuntimeConfig();
   const hiddenFieldsWithLoyalty = [
     'nickname',
@@ -66,7 +65,6 @@
   const { profile, resentVerifyEmail } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
   const profileViewFields = computed(() => profileFields.value.filter(field => !hiddenFields.includes(field.name)));

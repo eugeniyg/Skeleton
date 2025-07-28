@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
+  import { formatBalance, getEquivalentFromBase } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     loadingBonuses: string[];
@@ -52,8 +53,6 @@
 
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-
-  const { formatBalance, getEquivalentFromBase } = useProjectMethods();
 
   const filteredList = computed(() => props.bonusesList.filter(bonus => [1, 2].includes(bonus.status)));
 

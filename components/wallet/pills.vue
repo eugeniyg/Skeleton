@@ -3,7 +3,7 @@
     <div ref="scrollContainer" class="wallet-pills__container" @scroll="scrollHandler">
       <div class="wallet-pills__control wallet-pills__control-prev">
         <button-base type="ghost-gray" size="xs" @click="clickAction('prev')">
-          <atomic-icon id="arrow_previous" />
+          <atomic-icon id="arrow-previous" />
         </button-base>
       </div>
 
@@ -19,7 +19,7 @@
 
       <div class="wallet-pills__control wallet-pills__control-next">
         <button-base type="ghost-gray" size="xs" @click="clickAction('next')">
-          <atomic-icon id="arrow_next" />
+          <atomic-icon id="arrow-next" />
         </button-base>
       </div>
     </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentPreset } from '@skeleton/core/types';
+  import type { IPaymentPreset } from '@skeleton/api/types';
 
   const props = defineProps<{
     value: string;

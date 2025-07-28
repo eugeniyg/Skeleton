@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/api/types';
   import type { ITournamentCommon } from '~/types';
 
   const props = defineProps<{
@@ -41,7 +41,6 @@
 
   const isActive = [2, 3].includes(props.tournamentData.state);
   const isFinished = [4, 5].includes(props.tournamentData.state);
-  const { getContent } = useProjectMethods();
   const { isAlmostDone, days, hours, minutes, seconds, startTimer } = useTimer();
 
   watch(isAlmostDone, () => {

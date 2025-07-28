@@ -84,55 +84,55 @@ $heading-9: (
 $heading-uppercase-1: (
   font-size: map.get(font-sizes.$font-sizes, 50),
   font-weight: 600,
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-2: (
   font-size: map.get(font-sizes.$font-sizes, 75),
   font-weight: map.get(font-weights.$font-weights, bold),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-3: (
   font-size: map.get(font-sizes.$font-sizes, 100),
   font-weight: map.get(font-weights.$font-weights, bold),
   line-height: map.get(line-heights.$line-heights, 1),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-4: (
   font-size: map.get(font-sizes.$font-sizes, 300),
   font-weight: map.get(font-weights.$font-weights, bold),
   line-height: map.get(line-heights.$line-heights, 1),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-5: (
   font-size: map.get(font-sizes.$font-sizes, 400),
   font-weight: map.get(font-weights.$font-weights, bold),
   line-height: map.get(line-heights.$line-heights, 1),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-6: (
   font-size: map.get(font-sizes.$font-sizes, 500),
   font-weight: map.get(font-weights.$font-weights, bold),
   line-height: map.get(line-heights.$line-heights, 1),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-7: (
   font-size: map.get(font-sizes.$font-sizes, 600),
   font-weight: map.get(font-weights.$font-weights, bold),
   line-height: map.get(line-heights.$line-heights, 1),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $heading-uppercase-8: (
   font-size: map.get(font-sizes.$font-sizes, 900),
   font-weight: map.get(font-weights.$font-weights, bold),
   line-height: map.get(line-heights.$line-heights, 1),
-  text-transform: uppercase
+  text-transform: uppercase,
 );
 
 $subheading-0: (

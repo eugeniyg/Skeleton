@@ -21,12 +21,11 @@
 <script setup lang="ts">
   import DOMPurify from 'isomorphic-dompurify';
   import { marked } from 'marked';
-
   import type { IProfileReferral } from '~/types';
+  import { getContent } from '#imports';
 
   const referralContent = ref<Maybe<IProfileReferral>>(inject('referralContent'));
   const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
-  const { getContent } = useProjectMethods();
 
   const descriptionText = computed(() =>
     getContent(referralContent.value, defaultLocaleReferralContent.value, 'info.description')

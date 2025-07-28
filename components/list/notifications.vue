@@ -15,7 +15,7 @@
       <template v-if="isShowReadAllBtn">
         <atomic-divider />
         <button-base type="ghost" size="xs" @click="emit('read-all')">
-          Read all<atomic-icon id="arrow_next" />
+          Read all<atomic-icon id="arrow-next" />
         </button-base>
       </template>
     </template>

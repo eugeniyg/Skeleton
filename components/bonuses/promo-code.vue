@@ -48,8 +48,8 @@
 
 <script setup lang="ts">
   import type { IProfileBonuses } from '~/types';
+  import { addBonusCode } from '@skeleton/api/bonuses';
 
-  const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 
@@ -87,7 +87,6 @@
     bonusBlocked.value = false;
   };
 
-  const { addBonusCode } = useCoreBonusApi();
   const { showBonusCodeNotification } = useBonusStore();
   const bonusSending = ref<boolean>(false);
   const sendBonus = async (): Promise<void> => {

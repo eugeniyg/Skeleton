@@ -14,12 +14,12 @@
   import type { IProfileSecurity } from '~/types';
 
   const contentParams = {
-    contentKey: 'profileSecurityContent',
-    contentRoute: ['profile', 'security'],
+    contentCollection: 'profile',
+    contentSource: 'security',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileSecurity>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileSecurityContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 
