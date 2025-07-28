@@ -49,7 +49,6 @@
   }>();
 
   const { closeModal, closeAllModals } = useModalStore();
-  const { getContent } = useProjectMethods();
   const modalContent = getContent(props.currentLocaleData, props.defaultLocaleData, 'content');
 </script>
 

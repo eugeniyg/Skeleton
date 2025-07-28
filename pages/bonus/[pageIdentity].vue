@@ -45,21 +45,19 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IBonusPage } from '~/types';
+  import { handleExternalLink } from '@skeleton/helpers/simpleMethods';
 
   const route = useRoute();
   const { pageIdentity } = route.params;
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
-    contentKey: `${pageIdentity}-bonus-content`,
-    contentRoute: ['bonus'],
-    where: { pageIdentity },
+    contentCollection: 'bonus',
+    where: ['pageIdentity', '=', pageIdentity],
     isPage: true,
   };
   const { getContentData } = useContentLogic<IBonusPage>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(getContentData);
+  const { status, data: pageContent } = await useLazyAsyncData(`${pageIdentity}-bonus-content`, getContentData);
 
   const detailLabel = computed(() =>
     getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsLabel')
@@ -73,7 +71,6 @@
   const { openModal, openWalletModal } = useModalStore();
 
   const clickButton = (url: string | undefined): void => {
-    const { handleExternalLink } = useProjectMethods();
     if (url) handleExternalLink(url);
     else if (isLoggedIn.value) openWalletModal('deposit');
     else openModal('sign-up');

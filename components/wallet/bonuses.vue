@@ -40,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IBonus } from '@skeleton/core/types';
+  import type { IBonus } from '@skeleton/api/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
   import type { IWalletModal } from '~/types';
+  import { formatBalance, getEquivalentFromBase } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     crypto?: boolean;
@@ -54,7 +54,6 @@
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const { settingsConstants } = useGlobalStore();
-  const { getContent, formatBalance, getEquivalentFromBase } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const bonusStore = useBonusStore();

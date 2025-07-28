@@ -1,6 +1,7 @@
 import mitt from 'mitt';
 import type { IAnalyticsEvent } from '@skeleton/types';
-import type { IMessage, ISocketInvoice } from '@skeleton/core/types';
+import type { IMessage, ISocketInvoice } from '@skeleton/api/types';
+import type { IAlert } from '~/types';
 
 type ApplicationEvents = {
   changeMobileGameMode: undefined;
@@ -23,6 +24,10 @@ type ApplicationEvents = {
   depositInvoiceUpdated: undefined;
   questActivated: undefined;
   webSocketReconnected: undefined;
+  delayedNotification: IAlert;
+  wheelSpinsIssued: string;
+  invoicesStatisticsUpdated: undefined;
+  loyaltyLevelUpdated: undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();

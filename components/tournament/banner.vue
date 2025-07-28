@@ -42,8 +42,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/api/types';
   import type { ITournamentCommon, ITournamentPage } from '~/types';
+  import { participateTournament } from '@skeleton/api/retention';
 
   const props = defineProps<{
     tournamentData: ITournament;
@@ -56,7 +57,6 @@
   const emit = defineEmits(['statusChanged', 'goToGames']);
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
@@ -86,7 +86,6 @@
     return getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.takePart');
   });
 
-  const { participateTournament } = useCoreTournamentsApi();
   const participating = ref(false);
   const getParticipate = async (): Promise<void> => {
     if (participating.value) return;

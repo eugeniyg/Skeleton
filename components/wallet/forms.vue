@@ -15,7 +15,13 @@
       <div class="identity">ID {{ playerIdentity }}</div>
     </div>
 
-    <template v-if="props.selectedTab === 'deposit'">
+    <div v-if="props.loading" class="wallet-forms__spinner">
+      <div class="wallet-forms__spinner-border">
+        <div class="wallet-forms__spinner-core" />
+      </div>
+    </div>
+
+    <template v-else-if="props.selectedTab === 'deposit'">
       <wallet-limit
         v-if="depositLimitError"
         :current-locale-limits-content="pageContent?.currentLocaleData"
@@ -36,13 +42,7 @@
         />
       </template>
 
-      <div v-else class="wallet-modal__empty-methods">
-        <atomic-icon id="info" />
-
-        <span>
-          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
-        </span>
-      </div>
+      <wallet-missing-methods v-else-if="!props.loading" :selected-tab="props.selectedTab" />
     </template>
 
     <template v-else-if="props.selectedTab === 'withdraw'">
@@ -54,13 +54,7 @@
         v-bind="props.currentWithdrawMethod"
       />
 
-      <div v-else class="wallet-modal__empty-methods">
-        <atomic-icon id="info" />
-
-        <span>
-          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
-        </span>
-      </div>
+      <wallet-missing-methods v-else-if="!props.loading" :selected-tab="props.selectedTab" />
     </template>
 
     <wallet-dots :items-count="2" :active-index="1" />
@@ -68,8 +62,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentMethod } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { IPaymentMethod } from '@skeleton/api/types';
   import type { IProfileLimits, IWalletModal } from '~/types';
 
   const props = defineProps<{
@@ -79,6 +72,7 @@
     currentDepositMethod?: IPaymentMethod;
     currentWithdrawMethod?: IPaymentMethod;
     showMobileForm: boolean;
+    loading: boolean;
   }>();
 
   const emit = defineEmits(['changeTab']);
@@ -87,7 +81,6 @@
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const hasOffset = ref<boolean>(false);
   const scrollBlock = ref();
-  const { getContent } = useProjectMethods();
   const depositMethodKey = ref<number>(0);
 
   const walletStore = useWalletStore();
@@ -151,12 +144,11 @@
 
   // << GET CONTENT FOR DEPOSIT LIMIT
   const contentParams = {
-    contentKey: 'coolingOffLimitsContent',
-    contentRoute: ['profile', 'limits'],
-    only: ['coolingOff'],
+    contentCollection: 'profile',
+    contentSource: 'limits',
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('coolingOffLimitsContent', getContentData);
   // >>
 
   const showMobileFormKey = ref<number>(0);

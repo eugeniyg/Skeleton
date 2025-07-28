@@ -2,7 +2,10 @@
   <div class="loyalty">
     <loyalty-banner />
 
-    <loyalty-how-it-works />
+    <how-it-works
+      :currentLocaleContent="currentLocaleContent?.howItWorks"
+      :defaultLocaleContent="defaultLocaleContent?.howItWorks"
+    />
 
     <loyalty-rewards />
 
@@ -10,7 +13,7 @@
 
     <loyalty-faq />
 
-    <loyalty-terms v-if="termsData?.title && termsData?.content" v-bind="termsData" />
+    <terms-expander v-if="termsData?.title && termsData?.content" v-bind="termsData" />
 
     <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText" />
   </div>
@@ -19,15 +22,13 @@
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
 
-  const { getContent } = useProjectMethods();
-
   const contentParams = {
-    contentKey: 'loyaltyPageContent',
-    contentRoute: ['pages', 'loyalty'],
+    contentCollection: 'pages',
+    contentSource: 'loyalty',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ILoyaltyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('loyaltyPageContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

@@ -19,7 +19,6 @@
   }>();
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
 
   const emit = defineEmits(['action']);
 </script>

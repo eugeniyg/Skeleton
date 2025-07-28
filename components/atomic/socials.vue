@@ -12,7 +12,11 @@
         :class="`socials__item--${connection}`"
         @click="authSocial('direct', connection)"
       >
-        <atomic-icon :id="connection" />
+        <template v-if="connection === 'telegram'">
+          <atomic-socials-telegram :params="settingsTelegramParams" />
+          <atomic-icon id="telegram" />
+        </template>
+        <atomic-icon v-else :id="connection" />
       </span>
 
       <span
@@ -29,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import queryString from 'query-string';
 
   const props = defineProps<{
@@ -38,7 +41,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, settingsConstants } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const componentTitle = computed(() => {
     return getContent(
@@ -49,28 +51,39 @@
   });
 
   const settingsSocialAuthList = settingsConstants.value?.player?.socialAuth || [];
+  const settingsTelegramParams = settingsConstants.value?.player?.telegram;
   const socialAuth0Connections = computed(() => {
     if (!settingsSocialAuthList.includes('auth0')) return [];
 
-    const connectionList: { id: string }[] =
-      getContent(
-        globalComponentsContent.value,
-        defaultLocaleGlobalComponentsContent.value,
-        'socialAuth.socialAuth0Connections'
-      ) || [];
+    const currentLocaleAuth0Connections = globalComponentsContent.value?.socialAuth?.socialAuth0Connections || [];
+    const defaultLocaleAuth0Connections =
+      defaultLocaleGlobalComponentsContent.value?.socialAuth?.socialAuth0Connections || [];
+
+    const connectionList = currentLocaleAuth0Connections.length
+      ? currentLocaleAuth0Connections
+      : defaultLocaleAuth0Connections;
+
     return connectionList.map(connection => connection.id);
   });
 
   const socialDirectConnections = computed(() => {
-    const connectionList: { id: string }[] =
-      getContent(
-        globalComponentsContent.value,
-        defaultLocaleGlobalComponentsContent.value,
-        'socialAuth.socialDirectConnections'
-      ) || [];
+    const currentLocaleDirectConnections = globalComponentsContent.value?.socialAuth?.socialDirectConnections || [];
+    const defaultLocaleDirectConnections =
+      defaultLocaleGlobalComponentsContent.value?.socialAuth?.socialDirectConnections || [];
+
+    const connectionList = currentLocaleDirectConnections.length
+      ? currentLocaleDirectConnections
+      : defaultLocaleDirectConnections;
+
     return connectionList
       .map(connection => connection.id)
-      .filter(connection => settingsSocialAuthList.includes(connection));
+      .filter(connection => {
+        const connectionEnabled = settingsSocialAuthList.includes(connection);
+        if (connection === 'telegram') {
+          return connectionEnabled && settingsTelegramParams?.bot && settingsTelegramParams?.auth_url;
+        }
+        return connectionEnabled;
+      });
   });
 
   const showComponent = computed(() => socialAuth0Connections.value.length || socialDirectConnections.value.length);
@@ -89,13 +102,14 @@
       stag: undefined,
     });
 
-    const backRoute = backQuery ? `${path}?${backQuery}` : path;
-    const authState = { backRoute };
     const locationOrigin = window.location.origin;
+    const backRoute = backQuery ? `${path}?${backQuery}` : path;
+    const authState = { backRoute: encodeURIComponent(backRoute) };
+    const stateParam = new URLSearchParams(`state=${JSON.stringify(authState)}`);
     const authUrl =
       type === 'auth0'
-        ? `/api/player/sessions/social/auth0/redirect?state=${JSON.stringify(authState)}&connection=${connection}`
-        : `/api/player/sessions/social/${connection}/redirect?state=${JSON.stringify(authState)}`;
+        ? `/api/player/sessions/social/auth0/redirect?${stateParam}&connection=${connection}`
+        : `/api/player/sessions/social/${connection}/redirect?${stateParam}`;
     window.location.href = `${locationOrigin}${authUrl}`;
   };
 </script>

@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+  import { replaceContent } from '@skeleton/helpers/contentMethods';
+
   const props = defineProps({
     buttonLabel: {
       type: String,
@@ -15,7 +17,6 @@
       required: true,
     },
   });
-  const { replaceContent } = useProjectMethods();
   const buttonHtml = replaceContent(props.buttonLabel, '*');
   const { openModal } = useModalStore();
 </script>

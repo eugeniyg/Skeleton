@@ -3,17 +3,18 @@
 </template>
 
 <script setup lang="ts">
+  import type { ISocialCallbackData } from '@skeleton/api/types';
+
   const router = useRouter();
-  const { localizePath } = useProjectMethods();
   const { showAlert } = useLayoutStore();
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
-  const sendSocialData = async (code: string, connection: string, appState: string): Promise<void> => {
+  const sendSocialData = async (data: ISocialCallbackData): Promise<void> => {
     try {
       const { loginSocial } = useProfileStore();
-      await loginSocial(code, connection, appState);
+      await loginSocial(data);
     } catch (err: any) {
       const errorCode = err.data?.error?.code;
 
@@ -34,7 +35,9 @@
 
   onBeforeMount(async () => {
     const { query, params } = useRoute();
-    if (!query.code || !params.connection) return;
-    await sendSocialData(query.code as string, params.connection as string, query.state as string);
+    await sendSocialData({
+      connection: params.connection as string,
+      query,
+    });
   });
 </script>

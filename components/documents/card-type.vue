@@ -1,11 +1,6 @@
 <template>
   <div class="documents-card-type">
-    <atomic-svg
-      :key="cardContent?.icon"
-      :src="cardContent?.icon"
-      default-icon="file"
-      class="documents-card-type__logo"
-    />
+    <atomic-svg :src="cardContent?.icon" default-icon="file" class="documents-card-type__logo" />
 
     <div class="documents-card-type__content">
       <div class="documents-card-type__title" data-tooltip-parent>
@@ -49,7 +44,6 @@
     canceled: 'Rejected',
   };
 
-  const { getContent } = useProjectMethods();
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
   const cardContent = computed(() => {

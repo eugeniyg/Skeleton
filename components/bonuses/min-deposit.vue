@@ -11,7 +11,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus } from '@skeleton/core/types';
+  import type { IBonus } from '@skeleton/api/types';
+  import { getMinBonusDeposit } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     bonusInfo: IBonus;
@@ -19,9 +20,7 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
-  const { getMinBonusDeposit } = useProjectMethods();
   const minDeposit = computed(() => getMinBonusDeposit(props.bonusInfo));
 </script>
 

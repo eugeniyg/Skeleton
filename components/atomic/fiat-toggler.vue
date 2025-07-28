@@ -12,7 +12,7 @@
           default-image="/img/currency/placeholder.svg"
         />
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </div>
     </transition>
 
@@ -21,11 +21,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const { equivalentCurrency, layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
   const { setEquivalentCurrency, removeEquivalentCurrency } = globalStore;
 

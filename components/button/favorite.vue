@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const props = defineProps<{ gameId: string }>();
 
   const gameStore = useGamesStore();

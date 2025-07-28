@@ -23,27 +23,23 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
   import type { IRecentlyPage } from '~/types';
+  import { getRecentlyPlayed } from '@skeleton/api/games';
 
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
-    contentKey: 'recentlyPageContent',
-    contentRoute: ['pages', 'recently'],
+    contentCollection: 'pages',
+    contentSource: 'recently',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('recentlyPageContent', getContentData);
 
-  const { getCollectionsList } = useGamesStore();
-  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const recommendedCategory = computed(() =>
-    gameCollections.value?.find(collection => collection.identity === 'recommended')
-  );
+  const { collectionsByCountry } = useGamesStore();
+  const recommendedCategory = collectionsByCountry.find(collection => collection.identity === 'recommended');
 
   const pageMeta = computed(() => ({
     page: 1,
@@ -53,7 +49,6 @@
 
   const recentlyGames = ref<IGame[]>([]);
 
-  const { getRecentlyPlayed } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const loadingData = ref<boolean>(true);

@@ -58,6 +58,7 @@
       :is-required="registrationFormRules[field.name]?.hasOwnProperty('required')"
       :label="getCheckboxLabel(field.name)"
       @change="v$[field.name]?.$touch()"
+      @clickLink="modalStore.modals['sign-up']?.close()"
     />
 
     <button-base tag-name="div" type="primary" size="md" :is-disabled="sendButtonDisabled" @click="signUp">
@@ -75,21 +76,22 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IField, RegistrationType } from '@skeleton/core/types';
+  import type { IField } from '@skeleton/api/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import type { IModalsContent } from '~/types';
+  import { sendOtp } from '@skeleton/api/auth';
+  import { setFormData, createValidationRules, getFormRules } from '@skeleton/helpers/formMethods';
+  import { getNicknameFromEmail } from '@skeleton/helpers/simpleMethods';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
     registrationFields: IField[];
-    registrationType: RegistrationType;
     currentLocaleData: Maybe<IModalsContent['registration']>;
     defaultLocaleData: Maybe<IModalsContent['registration']>;
+    selectedTab: 'email' | 'phone';
   }>();
 
-  const { setFormData, getContent, getFormRules, createValidationRules, getNicknameFromEmail } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
@@ -117,17 +119,23 @@
   });
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
+  const hideCheckboxes = (fieldName: string): boolean => {
+    const hideReceiveSmsPromo = props.selectedTab === 'email' && fieldName === 'receiveSmsPromo';
+    const hideReceiveEmailPromo = props.selectedTab === 'phone' && fieldName === 'receiveEmailPromo';
+    return hideReceiveSmsPromo || hideReceiveEmailPromo;
+  };
+
   const fieldsListByRegistrationType = computed(() => {
-    if (['email', 'phone'].includes(props.registrationType)) {
+    if (['email', 'phone'].includes(props.selectedTab)) {
       const clearFields = props.registrationFields.filter(field => {
-        return field.name !== props.registrationType;
+        return field.name !== props.selectedTab && !hideCheckboxes(field.name);
       });
 
       return [
         {
           id: -1,
-          name: props.registrationType,
-          description: props.registrationType,
+          name: props.selectedTab,
+          description: props.selectedTab,
           editable: true,
           isRequired: true,
           position: 0,
@@ -167,6 +175,9 @@
   };
   const registrationFormData = reactive(setFormData(getFields()));
 
+  const route = useRoute();
+  registrationFormData.referralCode = route.query.ref ? route.query.ref : '';
+
   const getCheckboxLabel = (fieldName: string): string | undefined => {
     if (fieldName === 'receiveEmailPromo')
       return getContent(props.currentLocaleData, props.defaultLocaleData, 'agreeEmailLabel');
@@ -204,7 +215,6 @@
 
   const handlePhoneRegistration = async (): Promise<void> => {
     try {
-      const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: registrationFormData.phone, reason: 'registration' });
       emit('showVerification', registrationFormData);
     } catch (error: any) {
@@ -247,7 +257,7 @@
     }
 
     isLockedAsyncButton.value = true;
-    if (props.registrationType === 'phone') {
+    if (props.selectedTab === 'phone') {
       await handlePhoneRegistration();
     } else {
       await handleCommonRegistration();
@@ -259,6 +269,8 @@
     if (hiddenFields.value.includes(fieldName)) return 'form-input-text';
     return fieldsMap[fieldName]?.component || 'form-input-text';
   };
+
+  const modalStore = useModalStore();
 </script>
 
 <style src="~/assets/styles/components/form/join.scss" lang="scss" />

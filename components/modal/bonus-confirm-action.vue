@@ -37,7 +37,6 @@
     bonusesUpdating?: boolean;
   }>();
 
-  const { getContent } = useProjectMethods();
   const modalStore = useModalStore();
   const componentModals = ['change-active-bonus', 'cancel-active-bonus', 'cancel-issued-bonus'];
   const closeHandle = (): void => {

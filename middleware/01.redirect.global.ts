@@ -4,7 +4,6 @@ export default defineNuxtRouteMiddleware(to => {
   const routeLocaleCode = to.params.locale;
   const globalStore = useGlobalStore();
   const currentLocaleCode = globalStore.currentLocale?.code;
-  const { localizePath } = useProjectMethods();
 
   if (routeLocaleCode && currentLocaleCode !== routeLocaleCode) {
     const pathWithoutLocale = to.fullPath.slice(routeLocaleCode.length + 1);

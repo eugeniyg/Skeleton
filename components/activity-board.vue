@@ -7,7 +7,7 @@
       <div v-click-outside="hideNav" class="activity-board__nav" :class="{ 'is-open': isOpen }">
         <div class="activity-board__nav-selected" @click="toggleMobileNav">
           <span class="activity-board__nav-selected-title">{{ selectedNavTitle }}</span>
-          <atomic-icon id="arrow_expand-close" />
+          <atomic-icon id="arrow-expand-close" />
         </div>
 
         <div class="activity-board__nav-items">
@@ -48,7 +48,7 @@
             >
               <template v-if="id === 'game'">
                 <atomic-image
-                  :src="getImageUrl(row.gameCustomImages, row.gameImages, 'square')"
+                  :src="getGameImageUrl(row.gameCustomImages, row.gameImages, 'square')"
                   class="activity-board__tb-td-img"
                 />
                 <span>{{ row.gameName }}</span>
@@ -79,8 +79,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IEventBet, IWebSocketResponse } from '@skeleton/core/types';
+  import type { IActivityBoardUpdatedEvent, IEventBet } from '@skeleton/api/types';
   import type { IHomePage } from '~/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     title?: string;
@@ -89,20 +90,20 @@
     boards: { title: string; id: string }[];
   }>();
 
-  const { getImageUrl } = useProjectMethods();
   const boardSubscription = ref<any>();
   const boardData = reactive<IEventBet[]>([]);
   const globalStore = useGlobalStore();
   const { baseCurrency } = storeToRefs(globalStore);
   const dayjs = useDayjs();
 
-  const handleBoardsEvent = async (socketData: IWebSocketResponse): Promise<void> => {
+  const handleBoardsEvent = (socketData: IActivityBoardUpdatedEvent): void => {
     const betData = socketData.data.bet;
     if (betData) {
       boardData.unshift(betData);
       if (boardData.length > 11) boardData.pop();
-      await nextTick();
-      isAnimate.value = true;
+      nextTick(() => {
+        isAnimate.value = true;
+      });
     }
   };
 
@@ -115,10 +116,10 @@
 
   const subscribeBoardSocket = async (): Promise<void> => {
     unsubscribeBoardSocket();
-    const { createSubscription } = useWebSocket();
+    const { createSubscription } = useWebSocketStore();
     boardSubscription.value = createSubscription(`activity-board:boards#${selectedNavItem.value}`, handleBoardsEvent);
     try {
-      const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({
+      const resp: { publications: IActivityBoardUpdatedEvent[] } = await boardSubscription.value.history({
         limit: 11,
         since: null,
         reverse: true,

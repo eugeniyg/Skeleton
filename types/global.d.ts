@@ -7,6 +7,8 @@ declare global {
     fcWidgetMessengerConfig?: any;
     fcWidget?: any;
     fcSettings?: any;
+    LiveChatWidget?: any;
+    __lc?: any;
     pwa?: {
       allowInstall: boolean;
       originalEvent: any;

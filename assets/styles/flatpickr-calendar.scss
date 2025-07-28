@@ -61,10 +61,6 @@
   box-shadow: none !important;
 }
 
-.flatpickr-calendar.multiMonth .flatpickr-days .dayContainer:nth-child(n+2) .flatpickr-day.inRange:nth-child(7n+1) {
-  //box-shadow: -2px 0 0 #e6e6e6, 5px 0 0 #e6e6e6;
-}
-
 .flatpickr-calendar .hasWeeks .dayContainer,
 .flatpickr-calendar .hasTime .dayContainer {
   border-bottom: 0;
@@ -442,12 +438,6 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-day.today {
-  background: var(--field-02);
-  border-radius: 50%;
-}
-
-.flatpickr-day.today:hover,
-.flatpickr-day.today:focus {
   color: var(--text-accent);
 }
 
@@ -474,19 +464,11 @@ span.flatpickr-weekday {
   color: var(--text-primary);
 }
 
-.flatpickr-day.selected.startRange,
-.flatpickr-day.startRange.startRange,
-.flatpickr-day.endRange.startRange {
-  border-radius: 50%;
-}
-
-.flatpickr-day.selected.endRange,
-.flatpickr-day.startRange.endRange,
-.flatpickr-day.endRange.endRange {
-  border-radius: 50%;
+.flatpickr-day.endRange {
+  border-radius: 50% !important;
   position: relative;
 
-  &:before {
+  &:not(.startRange):before {
     content: '';
     position: absolute;
     left: 0;
@@ -498,8 +480,11 @@ span.flatpickr-weekday {
   }
 }
 
-.flatpickr-day.selected.startRange {
-  &:before {
+.flatpickr-day.startRange {
+  border-radius: 50% !important;
+  position: relative;
+
+  &:not(.endRange):before {
     content: '';
     position: absolute;
     right: 0;
@@ -525,7 +510,6 @@ span.flatpickr-weekday {
 
 .flatpickr-day.inRange {
   border-radius: 0;
-  //box-shadow: -5px 0 0 #e6e6e6, 5px 0 0 #e6e6e6;
 }
 
 .flatpickr-day.flatpickr-disabled,
@@ -535,7 +519,6 @@ span.flatpickr-weekday {
 .flatpickr-day.notAllowed,
 .flatpickr-day.notAllowed.prevMonthDay,
 .flatpickr-day.notAllowed.nextMonthDay {
-  //background: red !important;
   color: var(--gray-400);
   background: transparent;
   border-color: transparent;
@@ -567,7 +550,6 @@ span.flatpickr-weekday {
 
 .flatpickr-weekwrapper .flatpickr-weeks {
   padding: 0 12px;
-  //box-shadow: 1px 0 0 #e6e6e6;
 }
 
 .flatpickr-weekwrapper .flatpickr-weekday {

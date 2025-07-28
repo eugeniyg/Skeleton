@@ -26,8 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
   import type { IGamePage } from '~/types';
 
   const props = defineProps<{
@@ -39,12 +38,8 @@
   }>();
 
   const emit = defineEmits(['changeMode']);
-
-  const { getCollectionsList, defineBonusWagerInfo } = useGamesStore();
-  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const recommendedCategory = computed(() =>
-    gameCollections.value?.find(collection => collection.identity === 'recommended')
-  );
+  const { defineBonusWagerInfo, collectionsByCountry } = useGamesStore();
+  const recommendedCategory = collectionsByCountry.find(collection => collection.identity === 'recommended');
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

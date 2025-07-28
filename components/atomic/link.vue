@@ -12,6 +12,4 @@
     href?: string;
     targetBlank?: boolean;
   }>();
-
-  const { localizePath } = useProjectMethods();
 </script>

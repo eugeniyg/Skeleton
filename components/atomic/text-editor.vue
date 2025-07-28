@@ -1,6 +1,7 @@
 <template>
   <div
     ref="rootComponent"
+    v-router-links
     class="text-editor"
     v-html="DOMPurify.sanitize(marked.parse(props.content || '') as string, { FORBID_TAGS: ['style'] })"
   />

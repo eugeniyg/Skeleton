@@ -25,14 +25,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus } from '@skeleton/core/types';
+  import type { IPlayerBonus } from '@skeleton/api/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     wageringLabel: string;
     bonusInfo?: IPlayerBonus;
   }>();
-
-  const { formatBalance } = useProjectMethods();
 
   const wageredFormatSum = computed(() => {
     return formatBalance(props.bonusInfo?.currency, props.bonusInfo?.currentWagerAmount);

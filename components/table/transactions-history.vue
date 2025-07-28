@@ -17,6 +17,10 @@
         }}
       </div>
 
+      <div class="td">
+        <copy-transaction-id :value="invoice.id" />
+      </div>
+
       <div class="td">{{ invoice.paymentMethod }}</div>
 
       <div class="td">
@@ -118,7 +122,7 @@
 
 <script setup lang="ts">
   import type { ITransactionsHistory } from '~/types';
-  import type { IInvoice } from '@skeleton/core/types';
+  import type { IInvoice } from '@skeleton/api/types';
 
   const props = defineProps<{
     invoices: IInvoice[];
@@ -130,7 +134,6 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const dayjs = useDayjs();
-  const { getContent } = useProjectMethods();
   const showCodes = ref<string[]>([]);
   const showDetails = ref<string[]>([]);
   const dosafepayTargetMethods: string[] = ['Rocket', 'Nagad', 'Bkash', 'Upay'];

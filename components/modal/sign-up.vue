@@ -23,7 +23,7 @@
 
           <div v-if="showPhoneVerification" class="header__back-btn" @click="showRegistrationForm">
             <span class="header__back-btn-icon">
-              <atomic-icon id="arrow_previous" />
+              <atomic-icon id="arrow-previous" />
             </span>
 
             <span class="header__back-btn-text">
@@ -73,8 +73,8 @@
           v-show="!showPhoneVerification"
           ref="registrationForm"
           :key="`${selectedTab}`"
+          :selected-tab="selectedTab"
           :registration-fields="registrationFields"
-          :registration-type="selectedTab"
           :current-locale-data="props.currentLocaleData"
           :default-locale-data="props.defaultLocaleData"
           @show-verification="showVerification"
@@ -85,8 +85,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { RegistrationType } from '@skeleton/core/types';
+  import type { RegistrationType } from '@skeleton/api/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type { Dayjs } from 'dayjs';
   import { marked } from 'marked';
@@ -103,7 +102,6 @@
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const showPhoneVerification = ref<boolean>(false);
   const formTitle = computed(() => {
@@ -144,7 +142,7 @@
       ];
     return [];
   });
-  const selectedTab = ref<RegistrationType>(
+  const selectedTab = ref<'email' | 'phone'>(
     registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value
   );
   const scrollBlock = ref();
@@ -195,7 +193,7 @@
     }
   };
 
-  const changeTabHandle = (tabId: RegistrationType) => {
+  const changeTabHandle = (tabId: 'email' | 'phone') => {
     if (selectedTab.value === tabId) return;
 
     selectedTab.value = tabId;

@@ -2,9 +2,7 @@
   <div class="balance">
     <div class="balance__rows">
       <div class="row" :class="{ 'row--compact': showEquivalentBalance }">
-        <div class="label">
-          {{ getContent(walletContent, defaultLocaleWalletContent, 'balanceLabel') }}
-        </div>
+        <div class="label">{{ balanceLabel }}</div>
 
         <template v-if="props.withdraw">
           <div v-if="showEquivalentBalance" class="value">
@@ -28,12 +26,12 @@
             <span>{{ balanceFormat.currency }}</span>
           </span>
 
-          <atomic-icon id="arrow_expand-close" class="icon-expand" />
+          <atomic-icon id="arrow-expand-close" class="icon-expand" />
 
           <list-currencies
             :is-open="isSelectOpen"
             hide-balance
-            @hide-currencies-list="isSelectOpen = false"
+            @hide-currencies-list="changingActiveAccount"
             @click.stop.prevent
             @change-active-account="onChangeAccount"
           />
@@ -60,8 +58,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IWalletModal } from '~/types';
+  import { formatBalance, getEquivalentAccount } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps({
     withdraw: {
@@ -70,11 +68,11 @@
     },
   });
 
+  const emit = defineEmits(['changingAccount']);
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const walletStore = useWalletStore();
   const { activeAccount, activeEquivalentAccount, showEquivalentBalance } = storeToRefs(walletStore);
-  const { formatBalance, getContent, getEquivalentAccount } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
@@ -93,12 +91,22 @@
     if (isSelectOpen.value) isSelectOpen.value = false;
   };
 
-  const onChangeAccount = (): void => {
-    const { getTurnOverWager } = useRiskStore();
-    walletStore.getDepositMethods();
-    walletStore.getWithdrawMethods();
-    getTurnOverWager();
+  const changingActiveAccount = (): void => {
+    isSelectOpen.value = false;
+    emit('changingAccount', true);
   };
+
+  const onChangeAccount = async (): Promise<void> => {
+    const { getTurnOverWager } = useRiskStore();
+    await Promise.allSettled([walletStore.getDepositMethods(), walletStore.getWithdrawMethods(), getTurnOverWager()]);
+    emit('changingAccount', false);
+  };
+
+  const balanceLabel = computed(() => {
+    return props.withdraw
+      ? getContent(walletContent, defaultLocaleWalletContent, 'withdraw.balanceLabel')
+      : getContent(walletContent, defaultLocaleWalletContent, 'deposit.balanceLabel');
+  });
 </script>
 
 <style src="~/assets/styles/components/balance.scss" lang="scss" />

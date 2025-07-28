@@ -38,7 +38,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IPromotion } from '~/types';
 
   const globalStore = useGlobalStore();

@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const layoutStore = useLayoutStore();
   const { isGamePage } = storeToRefs(layoutStore);
 

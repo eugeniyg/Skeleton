@@ -45,7 +45,6 @@
   }>();
 
   const { openWalletModal, closeModal, openModal } = useModalStore();
-  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 

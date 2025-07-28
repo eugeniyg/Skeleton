@@ -33,7 +33,6 @@
     packageBonuses: Record<string, any>[][];
   }>();
 
-  const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
   const emit = defineEmits(['activateDeposit', 'openPackageModal']);

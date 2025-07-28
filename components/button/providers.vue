@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/button/providers.scss" lang="scss" />

@@ -42,9 +42,9 @@
 
     <client-only>
       <button-base
-        v-if="projectHasFreshchat"
+        v-if="projectHasLiveChat || projectHasFreshchat"
         class="nav-mob__item"
-        :class="{ 'chat-indicator': newMessages }"
+        :class="{ 'chat-indicator': projectHasLiveChat ? !!liveChatNewMessages : !!freshChatNewMessages }"
         @click="openChat"
       >
         <atomic-icon id="live-support" />
@@ -67,20 +67,17 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openModal, openWalletModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { localizePath, getContent } = useProjectMethods();
   const route = useRoute();
 
   const clickMainButton = (): void => {
     if (isLoggedIn.value) openWalletModal();
-    else openModal('sign-in');
+    else openModal('sign-up');
   };
 
   const gamesButtons = computed(() => {
@@ -91,14 +88,22 @@
   });
 
   const freshchatStore = useFreshchatStore();
-  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+  const { freshChatNewMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+  const liveChatStore = useLiveChatStore();
+  const { liveChatNewMessages, projectHasLiveChat } = storeToRefs(liveChatStore);
+
+  const {
+    public: { freshchatParams, liveChat },
+  } = useRuntimeConfig();
 
   const openChat = () => {
-    const {
-      public: { freshchatParams },
-    } = useRuntimeConfig();
-    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
-    else window.fcWidget?.open();
+    if (projectHasLiveChat.value) {
+      if (!liveChat?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
+      else if (window.LiveChatWidget) window.LiveChatWidget.call('maximize');
+    } else if (projectHasFreshchat.value) {
+      if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
+      else window.fcWidget?.open();
+    }
   };
 </script>
 

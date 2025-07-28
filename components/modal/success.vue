@@ -40,7 +40,6 @@
   }>();
 
   const modalStore = useModalStore();
-  const { getContent } = useProjectMethods();
 
   const description = computed(() => {
     return getContent(props.currentLocaleData, props.defaultLocaleData, 'description') || '';

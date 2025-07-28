@@ -36,8 +36,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IAccount, ICurrency } from '@skeleton/core/types';
+  import type { IAccount, ICurrency } from '@skeleton/api/types';
+  import { formatBalance, getEquivalentAccount } from '@skeleton/helpers/amountMethods';
+  import { sortByAlphabet } from '@skeleton/helpers/simpleMethods';
 
   const props = defineProps({
     isOpen: {
@@ -60,7 +61,6 @@
   const { currencies, cryptoCurrencies } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
-  const { formatBalance, sortByAlphabet, getEquivalentAccount } = useProjectMethods();
 
   const emit = defineEmits(['hide-currencies-list', 'changeActiveAccount']);
 
@@ -77,9 +77,7 @@
   }
 
   const formatCurrenciesList = (list: IDisplayAccount[]) => {
-    return list
-      .filter(item => accounts.value.find(account => account.currency === item.nativeCurrency))
-      .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+    return list.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
   };
 
   const selectedItems = computed(() => {

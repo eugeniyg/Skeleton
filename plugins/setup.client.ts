@@ -1,5 +1,5 @@
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { isStandalonePWA } from 'ua-parser-js/helpers';
+import { preloaderDone } from '@skeleton/helpers/preloaderMethods';
 
 export default defineNuxtPlugin(nuxtApp => {
   const checkAffiliateTag = (): void => {
@@ -52,16 +52,20 @@ export default defineNuxtPlugin(nuxtApp => {
     }
   };
 
-  const startFreshchatLogic = (): void => {
+  const startSupportChat = (): void => {
     const {
-      public: { freshchatParams },
+      public: { liveChat, freshchatParams },
     } = useRuntimeConfig();
-    const { addFreshChatScript, initChat } = useFreshchatStore();
     const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
+    const { projectHasFreshchat, addFreshChatScript } = useFreshchatStore();
+    const { projectHasLiveChat, initializeLiveChat } = useLiveChatStore();
 
-    if (freshchatParams?.guestAvailable) initChat();
-    else if (sessionToken) addFreshChatScript();
+    if (projectHasLiveChat) {
+      if (liveChat.guestAvailable || !!sessionToken) initializeLiveChat();
+    } else if (projectHasFreshchat) {
+      if (freshchatParams.guestAvailable || !!sessionToken) addFreshChatScript();
+    }
   };
 
   const decodeBase64 = (value: string): string | undefined => {
@@ -87,15 +91,8 @@ export default defineNuxtPlugin(nuxtApp => {
       const router = useRouter();
       router.go(0);
     } else if (logoutParallel) {
-      const { localizePath } = useProjectMethods();
       window.location.href = window.location.origin + localizePath('/');
     }
-  };
-
-  const getFingerprintVisitor = async (): Promise<string> => {
-    const fp = await FingerprintJS.load();
-    const result = await fp.get();
-    return result.visitorId;
   };
 
   const checkTabVisibility = (): void => {
@@ -108,14 +105,8 @@ export default defineNuxtPlugin(nuxtApp => {
   };
 
   nuxtApp.hook('app:created', async () => {
-    const { getProviderList, getCollectionsList } = useGamesStore();
-    const { getRegistrationFields } = useFieldsStore();
-    getProviderList();
-    getCollectionsList();
-    getRegistrationFields();
-
-    const profileStore = useProfileStore();
-    profileStore.fingerprintVisitor = getFingerprintVisitor();
+    const { requestRegistrationFields } = useFieldsStore();
+    requestRegistrationFields();
   });
 
   nuxtApp.hook('app:mounted', async () => {
@@ -123,7 +114,7 @@ export default defineNuxtPlugin(nuxtApp => {
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
     window.addEventListener('storage', listeningChangeSession);
-    const { initWebSocket } = useWebSocket();
+    const { initWebSocket } = useWebSocketStore();
     await initWebSocket();
     checkPwaApp();
     startProfileLogic();
@@ -132,7 +123,7 @@ export default defineNuxtPlugin(nuxtApp => {
     setWindowStaticHeight();
     setWindowHeight();
     window.addEventListener('resize', setWindowHeight);
-    startFreshchatLogic();
+    startSupportChat();
     window.addEventListener('visibilitychange', checkTabVisibility);
   });
 
@@ -142,11 +133,8 @@ export default defineNuxtPlugin(nuxtApp => {
     const callbackRoute =
       route.name === 'auth-social-connection-callback' || route.name === 'locale-auth-social-connection-callback';
     const isAuthAutologin = autologinRoute && !!route.query.state;
-    const isAuthCallback = callbackRoute && !!route.query.code && !!route.params.connection;
 
-    if (isAuthAutologin || isAuthCallback) return;
-
-    const { preloaderDone } = useProjectMethods();
+    if (isAuthAutologin || callbackRoute) return;
     preloaderDone();
   });
 });

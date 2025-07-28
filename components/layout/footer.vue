@@ -64,6 +64,7 @@
 
         <div
           v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
+          v-router-links
           class="info__text"
           v-html="customLicenceDescription"
         />
@@ -107,6 +108,7 @@
   const accordeonItems = [
     layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
     layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+    layoutData?.footer?.newsMenu || defaultLocaleLayoutData?.footer?.newsMenu,
     layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
   ].filter(menu => menu?.title && menu?.items?.length);
 

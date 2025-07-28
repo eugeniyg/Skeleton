@@ -7,7 +7,7 @@
     <form-input-dropdown
       v-model:value="codeValue"
       :options="selectItems"
-      placeholder="Select code"
+      :placeholder="countryCodePlaceholder"
       name="phoneCode"
       :hint="props.hint ? { variant: 'error', message: '' } : undefined"
       @focus="onFocus"
@@ -23,7 +23,7 @@
         class="field"
         type="text"
         name="phoneNumber"
-        :placeholder="props.placeholder || 'Enter number'"
+        :placeholder="phoneNumberPlaceholder"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -36,14 +36,16 @@
 
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
-  import { storeToRefs } from 'pinia';
   import type { IPhoneCode } from '@skeleton/types';
 
   const props = defineProps<{
     label?: string;
     value?: string;
     isRequired?: boolean;
-    placeholder?: string;
+    placeholder?: {
+      countryCode: string;
+      phoneNumber: string;
+    };
     hint?: { variant: string; message: string };
   }>();
 
@@ -65,6 +67,16 @@
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
+
+  const countryCodePlaceholder = computed(() => {
+    if (props.placeholder?.countryCode) return props.placeholder.countryCode;
+    return '';
+  });
+
+  const phoneNumberPlaceholder = computed(() => {
+    if (props.placeholder?.phoneNumber) return props.placeholder.phoneNumber;
+    return '';
+  });
 
   const setMobileCode = (countryCode: string): void => {
     const searchPhone = selectItems.find(phoneObj => phoneObj.countryCode === countryCode);

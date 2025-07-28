@@ -20,7 +20,6 @@
   const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
   const questsStore = useQuestsStore();
   const { activeQuests } = storeToRefs(questsStore);
-  const { getContent } = useProjectMethods();
 
   const emptyContentData = computed(() => {
     const image = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.image');

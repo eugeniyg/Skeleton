@@ -23,21 +23,18 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IFavoritesPage } from '~/types';
 
-  const { getContent } = useProjectMethods();
-
   const contentParams = {
-    contentKey: 'favoritesPageContent',
-    contentRoute: ['pages', 'favorites'],
+    contentCollection: 'pages',
+    contentSource: 'favorites',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('favoritesPageContent', getContentData);
 
   const gameStore = useGamesStore();
-  const { favoriteGames } = storeToRefs(gameStore);
+  const { favoriteGames, collectionsByCountry } = storeToRefs(gameStore);
   const currentPage = ref<number>(1);
   const currentFavoriteList = computed(() => favoriteGames.value.slice(0, currentPage.value * 18));
 
@@ -47,11 +44,7 @@
     totalPages: Math.ceil(favoriteGames.value.length / 18),
   }));
 
-  const { getCollectionsList } = gameStore;
-  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const recommendedCategory = computed(() =>
-    gameCollections.value?.find(collection => collection.identity === 'recommended')
-  );
+  const recommendedCategory = collectionsByCountry.value?.find(collection => collection.identity === 'recommended');
 </script>
 
 <style src="~/assets/styles/pages/favorites.scss" lang="scss" />

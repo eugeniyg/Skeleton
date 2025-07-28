@@ -45,21 +45,20 @@
 
 <script setup lang="ts">
   import type { IProvidersPage } from '~/types';
-  import { storeToRefs } from 'pinia';
-  import type { IGameProvider, IProvidersRequest } from '@skeleton/core/types';
+  import type { IGameProvider, IProvidersRequest } from '@skeleton/api/types';
+  import { getGameProviders } from '@skeleton/api/games';
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { showAlert } = useLayoutStore();
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
-    contentKey: 'providersPageContent',
-    contentRoute: ['pages', 'providers'],
+    contentCollection: 'pages',
+    contentSource: 'providers',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProvidersPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('providersPageContent', getContentData);
 
   const providersList = ref<IGameProvider[]>([]);
 
@@ -96,7 +95,6 @@
     );
   };
 
-  const { getGameProviders } = useCoreGamesApi();
   const loadingProviders = ref<boolean>(true);
   const getProviders = async (): Promise<void> => {
     try {

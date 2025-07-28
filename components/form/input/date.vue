@@ -14,7 +14,7 @@
 
       <atomic-icon id="calendar" class="mask-placeholder" />
 
-      <atomic-icon id="arrow_expand-close" class="mask-toggle" />
+      <atomic-icon id="arrow-expand-close" class="mask-toggle" />
     </div>
   </div>
 </template>
@@ -22,7 +22,6 @@
 <script setup lang="ts">
   import flatPickr from 'vue-flatpickr-component';
   import pickrLocales from 'flatpickr/dist/l10n';
-  import { storeToRefs } from 'pinia';
   import type { key } from 'flatpickr/dist/types/locale';
 
   const props = defineProps<{

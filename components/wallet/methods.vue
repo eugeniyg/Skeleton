@@ -10,9 +10,15 @@
 
     <wallet-region />
 
-    <balance :withdraw="props.selectedTab === 'withdraw'">
+    <balance :withdraw="props.selectedTab === 'withdraw'" @changingAccount="emit('changingAccount', $event)">
+      <div v-if="props.loading" class="input-payments">
+        <div class="items">
+          <Skeletor v-for="item in 2" :key="item" class="item" as="div" />
+        </div>
+      </div>
+
       <form-input-payments
-        v-if="props.selectedTab === 'deposit'"
+        v-else-if="props.selectedTab === 'deposit'"
         v-model:active-method="currentDepositMethod"
         :items="depositMethods"
         @update:active-method="handleMethodChanged('deposit')"
@@ -20,20 +26,17 @@
       />
 
       <form-input-payments
-        v-if="props.selectedTab === 'withdraw'"
+        v-else-if="props.selectedTab === 'withdraw'"
         v-model:active-method="currentWithdrawMethod"
         :items="withdrawMethods"
         @update:active-method="handleMethodChanged('withdraw')"
         @method-click="emit('methodClick')"
       />
 
-      <div v-if="showNotAvailableText" class="wallet-modal__empty-methods">
-        <atomic-icon id="info" />
-
-        <span>
-          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
-        </span>
-      </div>
+      <template v-if="showNotAvailableText && !props.loading">
+        <wallet-missing-methods-msg />
+        <wallet-missing-methods :selected-tab="props.selectedTab" />
+      </template>
     </balance>
 
     <wallet-dots :items-count="2" :active-index="0" />
@@ -41,23 +44,19 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IPaymentMethod } from '@skeleton/core/types';
-  import type { IWalletModal } from '~/types';
+  import type { IPaymentMethod } from '@skeleton/api/types';
+  import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{
     showTabs: boolean;
-    selectedTab: string;
+    selectedTab: 'deposit' | 'withdraw';
     modalTitle: string;
+    loading: boolean;
   }>();
 
   const currentDepositMethod = defineModel<IPaymentMethod>('currentDepositMethod');
   const currentWithdrawMethod = defineModel<IPaymentMethod>('currentWithdrawMethod');
-  const walletContent: Maybe<IWalletModal> = inject('walletContent');
-  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-
-  const emit = defineEmits(['changeTab', 'methodClick']);
-  const { getContent } = useProjectMethods();
+  const emit = defineEmits(['changeTab', 'methodClick', 'changingAccount']);
   const walletStore = useWalletStore();
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
 

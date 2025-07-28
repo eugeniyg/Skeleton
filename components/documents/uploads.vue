@@ -2,7 +2,7 @@
   <div class="documents-uploads">
     <div class="documents-uploads__head">
       <button-base type="ghost-gray" size="sm" @click="emit('prevStep')">
-        <atomic-icon id="arrow_previous" />
+        <atomic-icon id="arrow-previous" />
       </button-base>
 
       <div class="documents-uploads__title">
@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
   import type { IProfileDocuments } from '~/types';
-  import type { IDocumentFile } from '@skeleton/core/types';
+  import type { IDocumentFile } from '@skeleton/api/types';
 
   interface IFormData extends Record<string, IDocumentFile[]> {
     identity_front: IDocumentFile[];
@@ -78,7 +78,6 @@
   };
   const emit = defineEmits(['prevStep', 'removeFile', 'addFiles']);
 
-  const { getContent } = useProjectMethods();
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
   const titleTemplate = computed(() =>

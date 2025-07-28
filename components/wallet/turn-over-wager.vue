@@ -1,25 +1,21 @@
 <template>
   <div class="turn-over-wager">
     <div class="turn-over-wager__img">
-      <atomic-image
-        :src="getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'image')"
-      />
+      <atomic-image :src="getContent(walletContent, defaultLocaleWalletContent, 'withdraw.turnOverWager.image')" />
     </div>
 
     <div class="turn-over-wager__title">
-      {{ getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'title') }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.turnOverWager.title') }}
     </div>
 
     <p class="turn-over-wager__description">
-      {{ getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'description') }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.turnOverWager.description') }}
     </p>
 
     <div class="turn-over-wager__info">
       <div class="turn-over-wager__info-wager">
         <span class="turn-over-wager__info-wager-label">
-          {{
-            getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'wagerLabel')
-          }}:
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.turnOverWager.wagerLabel') }}:
         </span>
 
         <span class="turn-over-wager__info-wager-value">
@@ -38,13 +34,7 @@
       <div class="turn-over-wager__info-amount">
         <div>
           <span class="turn-over-wager__info-amount-label">
-            {{
-              getContent(
-                turnOverWagerContent?.currentLocaleData,
-                turnOverWagerContent?.defaultLocaleData,
-                'placedLabel'
-              )
-            }}:
+            {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.turnOverWager.placedLabel') }}:
           </span>
 
           <span class="turn-over-wager__info-amount-value">{{ placedAmount }}</span>
@@ -52,13 +42,7 @@
 
         <div>
           <span class="turn-over-wager__info-amount-label">
-            {{
-              getContent(
-                turnOverWagerContent?.currentLocaleData,
-                turnOverWagerContent?.defaultLocaleData,
-                'totalLabel'
-              )
-            }}:
+            {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.turnOverWager.totalLabel') }}:
           </span>
 
           <span class="turn-over-wager__info-amount-value">{{ totalAmount }}</span>
@@ -69,18 +53,12 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITurnOverWagerModal } from '~/types';
+  import type { IWalletModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
-  const { modalsList } = useModalStore();
-  const turnOverWagerContentParams = {
-    contentKey: 'modal-turn-over-wager',
-    contentRoute: ['modals', modalsList['turn-over-wager'].content as string],
-  };
-  const { getContentData: getTurnOverWagerContentData } =
-    useContentLogic<ITurnOverWagerModal>(turnOverWagerContentParams);
-  const { data: turnOverWagerContent } = await useLazyAsyncData(getTurnOverWagerContentData);
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
 
-  const { getContent, formatBalance } = useProjectMethods();
   const { currencies } = useGlobalStore();
   const riskStore = useRiskStore();
   const { turnOverWagerData } = storeToRefs(riskStore);

@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from '@skeleton/core/types';
+  import type { IGameProvider } from '@skeleton/api/types';
 
   const props = defineProps<{
     showAllBtn?: boolean;
@@ -41,16 +41,14 @@
   }>();
 
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
-  const { getProviderList } = useGamesStore();
-  const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
   const contentList: { identity: string }[] =
     getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.items') || [];
 
+  const { gameProviders } = useGamesStore();
   const providersList = computed(() => {
     const providersArr: IGameProvider[] = [];
     contentList.forEach(contentProvider => {
-      const providerData = gameProviders.value?.find(
+      const providerData = gameProviders.find(
         provider => provider.identity === contentProvider.identity && provider.gameEnabledCount
       );
       if (providerData) providersArr.push(providerData);
@@ -59,7 +57,7 @@
   });
 
   const activeProvidersCount = computed(() => {
-    const filteredArr = gameProviders.value?.filter(provider => !!provider.gameEnabledCount) || [];
+    const filteredArr = gameProviders.filter(provider => !!provider.gameEnabledCount) || [];
     return filteredArr.length;
   });
 
@@ -74,10 +72,6 @@
     prevDisabled.value = scrollLeft === 0;
     nextDisabled.value = scrollWidth < scrollLeft + offsetWidth + 20 && scrollWidth > scrollLeft + offsetWidth - 20;
   };
-
-  watch(gameProviders, () => {
-    scrollHandler();
-  });
 
   const clickAction = (direction: string): void => {
     const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;

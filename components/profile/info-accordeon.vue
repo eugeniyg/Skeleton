@@ -2,11 +2,12 @@
   <div class="info-accordeon" :class="{ 'is-open': isOpen }" @resize="updateScrollHeight">
     <div class="info-accordeon__head" @click="toggleOpen">
       <div class="info-accordeon__title">{{ props.title }}</div>
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </div>
 
     <div
       ref="contentContainer"
+      v-router-links
       class="info-accordeon__content"
       v-html="DOMPurify.sanitize(marked.parseInline(props.description || '') as string, { FORBID_TAGS: ['style'] })"
     />

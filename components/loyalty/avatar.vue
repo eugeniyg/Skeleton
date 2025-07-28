@@ -14,7 +14,6 @@
     size: 'sm' | 'md' | 'lg';
   }>();
 
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
@@ -23,8 +22,11 @@
 
   const avatarImage = computed(() => {
     return (
-      getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'playerMascot.image') ||
-      '/img/avatar-bg.png'
+      getContent(
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        'commonContent.playerMascot'
+      ) || '/img/avatar-bg.png'
     );
   });
 

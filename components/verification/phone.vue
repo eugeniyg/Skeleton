@@ -72,8 +72,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileVerification } from '~/types';
+  import { sendOtp, phoneVerification } from '@skeleton/api/auth';
+  import { changeProfileData } from '@skeleton/api/profile';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
@@ -89,7 +91,6 @@
 
   const showPhoneVerification = ref(false);
   const verificationError = ref<{ variant: string; message: string } | undefined>();
-  const { getFormRules, getContent } = useProjectMethods();
   const verificationRules = {
     phone: [{ rule: 'phone' }],
   };
@@ -106,7 +107,6 @@
   };
 
   const savingPhone = ref(false);
-  const { changeProfileData } = useCoreProfileApi();
   const savePhoneNumber = async (): Promise<void> => {
     if (v$.value.$invalid || savingPhone.value || removingPhone.value) return;
     v$.value.$reset();
@@ -134,7 +134,6 @@
     sendingCode.value = true;
 
     try {
-      const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: profile.value?.phone as string, reason: 'phoneVerification' });
       showPhoneVerification.value = true;
     } catch (error: any) {
@@ -159,7 +158,6 @@
     verifyLoading.value = true;
 
     try {
-      const { phoneVerification } = useCoreAuthApi();
       await phoneVerification({
         phone: profile.value?.phone as string,
         reason: 'phoneVerification',

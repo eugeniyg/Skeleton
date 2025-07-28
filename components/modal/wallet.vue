@@ -15,8 +15,10 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
+        :loading="walletDataLoading || changingAccount"
         @change-tab="changeTab"
         @method-click="showMobileForm = true"
+        @changingAccount="changingAccount = $event"
       />
 
       <wallet-forms
@@ -26,6 +28,7 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
+        :loading="walletDataLoading || changingAccount"
         @change-tab="changeTab"
       />
     </div>
@@ -33,8 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/api/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
 
@@ -47,11 +49,11 @@
   provide('defaultLocaleWalletContent', props.defaultLocaleData);
 
   const walletStore = useWalletStore();
-  const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const bonusStore = useBonusStore();
   const { walletDepositBonus } = storeToRefs(bonusStore);
   const modalStore = useModalStore();
+  const { currentLocaleModalsContent, defaultLocaleModalsContent } = useGlobalStore();
   const { openModal, closeModal } = modalStore;
   const { walletModalType } = storeToRefs(modalStore);
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
@@ -62,6 +64,10 @@
   const currentWithdrawMethod = ref<IPaymentMethod | undefined>(mobileWidth() ? undefined : withdrawMethods.value[0]);
   const selectedTab = ref<'deposit' | 'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
+  const displayCancelDepositModal =
+    defaultLocaleModalsContent?.cancelDeposit?.displayModal ??
+    currentLocaleModalsContent?.cancelDeposit?.displayModal ??
+    true;
 
   const changeTab = (tabId: 'deposit' | 'withdraw'): void => {
     if (tabId === 'withdraw') {
@@ -112,7 +118,7 @@
   );
 
   const closeWallet = (): void => {
-    if (walletModalType?.value === 'deposit') {
+    if (walletModalType?.value === 'deposit' && displayCancelDepositModal) {
       openModal('cancel-deposit');
     } else {
       closeModal('wallet');
@@ -131,6 +137,25 @@
       walletOperationType: selectedTab.value,
     });
   };
+
+  const { getDepositMethods, getWithdrawMethods } = walletStore;
+  const { getTurnOverWager } = useRiskStore();
+  const { getDepositBonuses, getDepositBonusCode } = bonusStore;
+  const changingAccount = ref(false);
+  const walletDataLoading = ref(true);
+  const getWalletData = async (): Promise<void> => {
+    walletDataLoading.value = true;
+    await Promise.allSettled([
+      getDepositMethods(),
+      getWithdrawMethods(),
+      getDepositBonuses(),
+      getDepositBonusCode(),
+      getTurnOverWager(),
+    ]);
+    walletDataLoading.value = false;
+  };
+
+  onBeforeMount(getWalletData);
 </script>
 
 <style src="~/assets/styles/components/modal/wallet.scss" lang="scss" />

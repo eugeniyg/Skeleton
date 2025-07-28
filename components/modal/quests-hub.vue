@@ -23,8 +23,8 @@
             'has-right-offset': hasRightOffset,
           }"
         >
-          <atomic-icon v-show="hasRightOffset" id="arrow_next" class="modal-quest-hub__tabs-next" />
-          <atomic-icon v-show="hasLeftOffset" id="arrow_previous" class="modal-quest-hub__tabs-previous" />
+          <atomic-icon v-show="hasRightOffset" id="arrow-next" class="modal-quest-hub__tabs-next" />
+          <atomic-icon v-show="hasLeftOffset" id="arrow-previous" class="modal-quest-hub__tabs-previous" />
 
           <div ref="tabsScrollBlock" class="modal-quest-hub__tabs" @scroll="handleTabsScroll">
             <div
@@ -67,7 +67,6 @@
     return [];
   });
 
-  const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const selectedTab = ref<string>('active');
   const tabsScrollBlock = ref();

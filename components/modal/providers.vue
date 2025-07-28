@@ -67,8 +67,9 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import debounce from 'lodash/debounce';
-  import type { IGameProvider, IProvidersRequest } from '@skeleton/core/types';
+  import type { IGameProvider, IProvidersRequest } from '@skeleton/api/types';
   import type { IModalsContent } from '~/types';
+  import { getGameProviders } from '@skeleton/api/games';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['providers']>;
@@ -77,20 +78,16 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getProviderList } = useGamesStore();
-  const { getContent } = useProjectMethods();
+  const { gameProviders } = useGamesStore();
 
   const searchValue = ref<string>('');
   const searchProviders = ref<IGameProvider[]>([]);
   const isShowEmpty = ref<boolean>(false);
   const inputRef = ref();
 
-  const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
-
   const emit = defineEmits(['select']);
-
   const providersList = computed(() => {
-    const providers = (!searchProviders.value.length ? gameProviders.value : searchProviders.value) || [];
+    const providers = (!searchProviders.value.length ? [...gameProviders] : searchProviders.value) || [];
     return providers.filter(provider => !!provider.gameEnabledCount);
   });
 
@@ -116,8 +113,6 @@
   });
 
   const { showAlert } = useLayoutStore();
-
-  const { getGameProviders } = useCoreGamesApi();
 
   const getProviders = async (): Promise<void> => {
     try {

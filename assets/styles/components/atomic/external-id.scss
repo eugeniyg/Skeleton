@@ -1,0 +1,68 @@
+.external-id {
+  --label-color: var(--text-primary);
+  --value-color: var(--text-primary);
+  --icon-color: var(--icon-secondary);
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  margin-top: 2px;
+  margin-bottom: 12px;
+  @include font($body-1);
+
+  .row-user & {
+    margin-top: -8px;
+    margin-bottom: 8px;
+    line-height: normal;
+  }
+
+  @include use-hover {
+    &:hover:not(.is-active) {
+      --label-color: var(--text-primary);
+      --value-color: var(--text-primary);
+      --icon-color: var(--text-primary);
+    }
+  }
+
+  &.is-active {
+    --label-color: var(--text-accent);
+    --value-color: var(--text-accent);
+    --icon-color: var(--text-accent);
+  }
+
+  &__label {
+    color: var(--label-color);
+    transition: color 0.2s ease-in-out;
+  }
+
+  &__value {
+    color: var(--value-color);
+    margin-left: 4px;
+    transition: color 0.2s ease-in-out;
+  }
+
+  &__icon {
+    --icon-size: 16px;
+    --color: var(--icon-color);
+    margin-left: 2px;
+  }
+
+  .btn-copy__tooltip {
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    bottom: calc(100% + 2px);
+    color: var(--text-primary);
+    white-space: nowrap;
+    display: inline-flex;
+    padding: 2px 8px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--corner-radius-mapped-system-tooltip, 4px);
+    background: var(--support-system-low-contrast);
+    box-shadow: 0 0 12px 0 var(--dark-shadow-layer);
+    @include font($body-1);
+  }
+}

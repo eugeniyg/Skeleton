@@ -14,22 +14,21 @@
       <loyalty-new-level-notif v-if="levelNotificationEnabled" />
     </transition>
 
-    <atomic-seo-text
-      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
-      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
-    />
+    <atomic-seo-text v-if="seoTextContent" v-bind="seoTextContent" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IGamePage } from '~/types';
+  import type { IGame } from '@skeleton/api/types';
+  import { getGamesInfo, getStartGame } from '@skeleton/api/games';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
+  import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
   const isDemo = ref<boolean>(route.query.real !== 'true');
   const gameStart = ref<string>();
-  const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
@@ -42,15 +41,42 @@
   const { levelNotificationEnabled } = storeToRefs(loyaltyStore);
 
   const contentParams = {
-    contentKey: 'gamePageContent',
-    contentRoute: ['pages', 'game'],
-    isPage: true,
+    contentCollection: 'pages',
+    contentSource: 'game',
   };
   const { getContentData } = useContentLogic<IGamePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
-  const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () =>
-    getGamesInfo(route.params.id as string)
-  );
+  const replaceVariables = (content: string | undefined, gameInfo: Maybe<IGame>): string | undefined => {
+    if (!content || !gameInfo) return undefined;
+    return content
+      .replace(/\{game}/g, gameInfo.name)
+      .replace(/\{provider}/g, gameInfo.provider.name)
+      .replace(/\{volatility}/g, gameInfo.volatility);
+  };
+
+  const { data } = await useLazyAsyncData(`game${route.params.id}Info`, async () => {
+    const [pageContent, gameInfo] = await Promise.all([getContentData(), getGamesInfo(route.params.id as string)]);
+    const pageMetaContent = pageContent.currentLocaleData?.pageMeta;
+    const metaTitleContent = pageMetaContent?.title;
+    const metaTitle = replaceVariables(metaTitleContent, gameInfo);
+    const metaDescriptionContent = pageMetaContent?.description;
+    const metaDescription = replaceVariables(metaDescriptionContent, gameInfo);
+    const gameThumb = getGameImageUrl(gameInfo?.customImages, gameInfo?.images, 'square');
+    setPageMeta({ ...pageMetaContent, title: metaTitle, description: metaDescription, image: gameThumb });
+    return { pageContent, gameInfo };
+  });
+
+  const pageContent = computed(() => data.value?.pageContent);
+  const gameInfo = computed(() => data.value?.gameInfo);
+
+  const seoTextContent = computed(() => {
+    const seoTextContent = pageContent.value?.currentLocaleData?.pageMeta?.seoText;
+    if (!seoTextContent) return undefined;
+    return {
+      visible: replaceVariables(seoTextContent.visible, gameInfo.value),
+      hidden: replaceVariables(seoTextContent.hidden, gameInfo.value),
+      button: seoTextContent.button,
+    };
+  });
 
   watch(gameInfo, () => {
     if (pageMounted.value) checkGame();
@@ -80,7 +106,6 @@
       return { data: startResponse };
     } catch (err: any) {
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
-        const { localizePath } = useProjectMethods();
         await openModal('game-limit-reached');
         await router.push({ path: localizePath('/profile/limits'), query: {} });
         return { error: { ...err, fatal: false } };
@@ -126,7 +151,6 @@
   };
 
   const redirectLimitedPlayer = (): void => {
-    const { localizePath } = useProjectMethods();
     router.push(localizePath('/'));
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };

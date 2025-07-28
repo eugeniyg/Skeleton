@@ -56,7 +56,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { localizePath, getContent } = useProjectMethods();
   const router = useRouter();
 
   const handleCancel = async (): Promise<void> => {

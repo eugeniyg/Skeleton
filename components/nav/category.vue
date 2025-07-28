@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection } from '@skeleton/core/types';
+  import type { ICollection } from '@skeleton/api/types';
 
   const props = defineProps<{
     hideItems?: boolean;
@@ -59,7 +59,8 @@
 
   const emit = defineEmits(['clickCategory', 'openProviders']);
   const { gameCategoriesObj } = useGlobalStore();
-  const filteredCategories = ref<ICollection[]>([]);
+  const { collectionsByCountry } = useGamesStore();
+  const filteredCategories = collectionsByCountry.filter(collection => !collection.isHidden);
   const dropdownItems = ref<ICollection[]>([]);
   const isCategoriesButtonDisabled = ref<boolean>(false);
 
@@ -70,7 +71,7 @@
 
   const setDropdownItems = () => {
     if (props.hideItems) {
-      dropdownItems.value = filteredCategories.value;
+      dropdownItems.value = [...filteredCategories];
     } else {
       const itemsY = itemsRef.value?.getBoundingClientRect().y;
       const dropdownHiddenItems: string[] = [];
@@ -83,7 +84,7 @@
         }
       });
 
-      dropdownItems.value = filteredCategories.value.filter(item => dropdownHiddenItems.includes(item.identity));
+      dropdownItems.value = filteredCategories.filter(item => dropdownHiddenItems.includes(item.identity));
     }
   };
 
@@ -108,9 +109,6 @@
   };
 
   onMounted(async () => {
-    const { getCollectionsList } = useGamesStore();
-    const gameCollections = await getCollectionsList();
-    filteredCategories.value = gameCollections.filter(collection => !collection.isHidden);
     window.addEventListener('resize', resizeHandler);
     await nextTick(() => {
       window.dispatchEvent(new Event('resize'));

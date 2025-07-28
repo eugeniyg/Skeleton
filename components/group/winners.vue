@@ -27,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IWebSocketResponse, IWinner } from '@skeleton/core/types';
+  import type { IGameWinnerEvent, IWinner } from '@skeleton/api/types';
   import throttle from 'lodash/throttle';
+  import { getLatestWinners } from '@skeleton/api/games';
 
   const props = defineProps({
     showArrows: {
@@ -44,7 +44,6 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, isMobile, headerCountry } =
     storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
 
@@ -52,7 +51,6 @@
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
   const showArrowButtons = ref<boolean>(props.showArrows);
-  const { getLatestWinners } = useCoreGamesApi();
 
   const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
@@ -74,7 +72,7 @@
   };
 
   const updateWinners = throttle(
-    (winnerData: IWebSocketResponse): void => {
+    (winnerData: IGameWinnerEvent): void => {
       const { winner } = winnerData.data;
       const filteredWinners = latestWinners.value.filter(item => item.gameId !== winner?.gameId);
       if (winner) latestWinners.value = [winner, ...filteredWinners].slice(0, 12);
@@ -84,7 +82,7 @@
   );
 
   const subscribeWinnersSocket = (): void => {
-    const { createSubscription } = useWebSocket();
+    const { createSubscription } = useWebSocketStore();
     winnersSubscription.value = createSubscription(
       `game:winners:${isMobile.value ? 'mobile' : 'desktop'}:${profile.value?.country || headerCountry.value || 'UA'}`,
       updateWinners

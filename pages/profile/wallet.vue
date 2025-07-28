@@ -34,17 +34,16 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IAccount } from '@skeleton/core/types';
+  import type { IAccount } from '@skeleton/api/types';
   import type { IProfileWallet } from '~/types';
 
   const contentParams = {
-    contentKey: 'profileWalletContent',
-    contentRoute: ['profile', 'wallet'],
+    contentCollection: 'profile',
+    contentSource: 'wallet',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileWallet>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileWalletContent', getContentData);
 
   const walletStore = useWalletStore();
   const { accounts, currencyTabs } = storeToRefs(walletStore);

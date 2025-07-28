@@ -46,9 +46,8 @@
       overflow-x: hidden;
       border-radius: 16px;
       width: rem(664px);
-      height: auto;
-      min-height: 400px;
-      max-height: rem(768px);
+      height: 768px;
+      max-height: 90vh;
     }
 
     &::-webkit-scrollbar {
@@ -135,21 +134,6 @@
       span:nth-child(2) {
         @include upd-font($body-1);
       }
-    }
-  }
-
-  .wallet-modal__empty-methods {
-    display: flex;
-    gap: rem(4px);
-    @include font($body-0);
-    color: var(--text-primary);
-    padding: rem(12px);
-    border: 1px solid var(--support-warning-default);
-    border-radius: rem(8px);
-
-    .icon {
-      --icon-size: 20px;
-      --color: var(--icon-warning);
     }
   }
 }

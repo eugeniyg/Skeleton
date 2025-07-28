@@ -24,13 +24,12 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
+  import { getRecentlyPlayed } from '@skeleton/api/games';
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, isMobile, headerCountry } =
     storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
@@ -76,7 +75,6 @@
     selectedTabs.value = [id];
   };
 
-  const { getRecentlyPlayed } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const loadingRecently = ref<boolean>(true);

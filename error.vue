@@ -36,7 +36,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
+  import { preloaderDone } from '@skeleton/helpers/preloaderMethods';
+  import { getContent } from '#imports';
 
   const props = defineProps({
     error: {
@@ -53,7 +54,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const route = useRoute();
   const goHome = () => {
@@ -61,6 +61,8 @@
     const siteOrigin = window.location.origin;
     window.location.href = urlLocale ? `${siteOrigin}/${urlLocale}` : siteOrigin;
   };
+
+  onMounted(preloaderDone);
 </script>
 
 <style src="~/assets/styles/error.scss" lang="scss" />

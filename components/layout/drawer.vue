@@ -48,16 +48,18 @@
 
       <atomic-select-lang />
 
-      <client-only>
-        <div v-if="projectHasFreshchat" class="nav-list">
-          <div class="item" :class="{ 'chat-indicator': newMessages }">
-            <div class="link" @click="openChat">
-              <atomic-icon id="live-support" />
-              <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}</div>
-            </div>
+      <div v-if="projectHasLiveChat || projectHasFreshchat" class="nav-list">
+        <div
+          class="item"
+          :class="{ 'chat-indicator': projectHasLiveChat ? !!liveChatNewMessages : !!freshChatNewMessages }"
+        >
+          <div class="link" @click="openChat">
+            <atomic-icon id="live-support" />
+            <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}</div>
           </div>
         </div>
-      </client-only>
+      </div>
+
       <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')" />
 
       <template v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.isShow')">
@@ -72,11 +74,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IIconLink } from '~/types';
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
 
   const layoutStore = useLayoutStore();
   const { openModal } = useModalStore();
@@ -95,14 +95,22 @@
   );
 
   const freshchatStore = useFreshchatStore();
-  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+  const { freshChatNewMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+  const liveChatStore = useLiveChatStore();
+  const { liveChatNewMessages, projectHasLiveChat } = storeToRefs(liveChatStore);
 
   const {
-    public: { freshchatParams, loyaltyEnabled },
+    public: { freshchatParams, liveChat, loyaltyEnabled },
   } = useRuntimeConfig();
+
   const openChat = () => {
-    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-up');
-    else window.fcWidget?.open();
+    if (projectHasLiveChat.value) {
+      if (!liveChat?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
+      else if (window.LiveChatWidget) window.LiveChatWidget.call('maximize');
+    } else if (projectHasFreshchat.value) {
+      if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
+      else window.fcWidget?.open();
+    }
   };
 </script>
 

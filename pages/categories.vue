@@ -25,7 +25,7 @@
         :sortOrderValue="state.sortOrder"
         :sortByValue="state.sortBy"
         :sortLabel="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortLabel')"
-        :sortOptions="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')"
+        :sortOptions="sortOptions"
         @change="changeSort"
       />
 
@@ -51,36 +51,39 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/api/types';
   import type { ICategoryPage } from '~/types';
   import debounce from 'lodash/debounce';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   definePageMeta({
     middleware: async function (to) {
       if (to.params.categoryIdentity) return;
 
-      const { getCollectionsList } = useGamesStore();
-      const gameCategories = await getCollectionsList();
-      if (!gameCategories.length) return;
-      const { localizePath } = useProjectMethods();
-      return navigateTo({ path: localizePath(`/categories/${gameCategories[0].identity}`), query: { ...to.query } });
+      const { collectionsByCountry } = useGamesStore();
+      if (!collectionsByCountry.length) return;
+      return navigateTo({
+        path: localizePath(`/categories/${collectionsByCountry[0].identity}`),
+        query: { ...to.query },
+      });
     },
   });
 
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
-  const { getContent, localizePath } = useProjectMethods();
   const route = useRoute();
   const router = useRouter();
   const { openModal, closeModal } = useModalStore();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { gameProviders, collectionsByCountry } = useGamesStore();
 
   const contentParams = {
-    contentKey: 'categoryPageContent',
-    contentRoute: ['pages', 'category'],
+    contentCollection: 'pages',
+    contentSource: 'category',
   };
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData('categoryPageContent', getContentData);
 
   interface IState {
     showNotFound: boolean;
@@ -97,8 +100,8 @@
 
   const state = reactive<IState>({
     showNotFound: false,
-    sortBy: 'default',
-    sortOrder: 'asc',
+    sortBy: '',
+    sortOrder: '',
     providerIds: [],
     currentCategory: undefined,
     searchValue: '',
@@ -108,7 +111,6 @@
     pageMeta: undefined,
   });
 
-  const { getFilteredGames } = useCoreGamesApi();
   const getData = async (nextPage: boolean): Promise<void> => {
     state.loadingGames = true;
 
@@ -151,10 +153,8 @@
   };
 
   const tags = ref<IGameProvider[]>([]);
-  const { getProviderList, getCollectionsList } = useGamesStore();
   const selectProviders = async (providersIds: string[]) => {
     await closeModal('providers');
-    const gameProviders = await getProviderList();
     const selectedProvidersData = gameProviders.filter(
       provider => providersIds.includes(provider.id) && !!provider.gameEnabledCount
     );
@@ -183,15 +183,31 @@
     { leading: false }
   );
 
-  const resetFilters = (): void => {
-    state.searchValue = '';
-    state.sortBy = (route.query.sortBy as string) || 'default';
-    state.sortOrder = (route.query.sortOrder as string) || 'asc';
+  const sortOptions = computed(() => {
+    const optionsContent: ICategoryPage['sortOptions'] =
+      getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'sortOptions') || [];
+
+    const filteredOptions: ICategoryPage['sortOptions'] = [];
+    optionsContent.forEach(option => {
+      if (option.sortBy !== 'score' || isLoggedIn.value) filteredOptions.push(option);
+    });
+    return filteredOptions;
+  });
+
+  const setDefaultSort = (): void => {
+    const routeSortBy = route.query.sortBy as string;
+    const findSortOption = sortOptions.value.find(option => option.sortBy === routeSortBy);
+    state.sortBy = findSortOption?.sortBy || sortOptions.value[0].sortBy || 'score';
+    state.sortOrder = findSortOption?.sortOrder || sortOptions.value[0].sortOrder || 'asc';
   };
 
-  const setProviders = async (): Promise<void> => {
+  const resetFilters = (): void => {
+    state.searchValue = '';
+    setDefaultSort();
+  };
+
+  const setProviders = (): void => {
     const routerProviders = route.query.provider;
-    const gameProviders = await getProviderList();
     const providersIdentities = Array.isArray(routerProviders) ? routerProviders : [routerProviders];
 
     const selectedProvidersData = gameProviders.filter(
@@ -203,10 +219,9 @@
 
   const loadCategoryData = async () => {
     resetFilters();
-    await setProviders();
+    setProviders();
 
-    const gameCollections = await getCollectionsList();
-    state.currentCategory = gameCollections.find(category => category.identity === route.params.categoryIdentity);
+    state.currentCategory = collectionsByCountry.find(category => category.identity === route.params.categoryIdentity);
     if (!state.currentCategory) {
       state.showNotFound = true;
       return;
@@ -226,8 +241,18 @@
     }
   );
 
-  onMounted(async () => {
-    await loadCategoryData();
+  watch(isLoggedIn, async newValue => {
+    if (newValue) await loadCategoryData();
+  });
+
+  onMounted(() => {
+    watch(
+      contentStatus,
+      async newValue => {
+        if (newValue && ['success', 'error'].includes(newValue)) await loadCategoryData();
+      },
+      { immediate: true }
+    );
   });
 </script>
 

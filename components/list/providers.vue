@@ -58,8 +58,7 @@
 
 <script setup lang="ts">
   import type { IProvidersPage } from '~/types';
-  import type { IGameProvider } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { IGameProvider } from '@skeleton/api/types';
 
   const props = defineProps<{
     staticProvider?: IGameProvider;
@@ -70,7 +69,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent, localizePath } = useProjectMethods();
   const defaultCategory = computed(() =>
     getContent(
       globalComponentsContent.value,

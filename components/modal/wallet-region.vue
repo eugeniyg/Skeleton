@@ -66,9 +66,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type { ICountry } from '@skeleton/core/types';
+  import type { ICountry } from '@skeleton/api/types';
   import debounce from 'lodash/debounce';
   import type { IModalsContent } from '~/types';
 
@@ -80,7 +79,6 @@
   const { closeModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { countriesSelectOptions } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
 

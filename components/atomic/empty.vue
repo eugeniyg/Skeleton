@@ -1,7 +1,7 @@
 <template>
   <div class="empty" :class="currentClass">
     <atomic-image v-if="props.image" class="empty__image" :src="props.image" />
-    <atomic-icon-colored v-else-if="currentIcon" :id="currentIcon" />
+    <atomic-icon v-else-if="currentIcon" :id="currentIcon" filled />
     <div class="title">{{ props.title }}</div>
     <div
       class="sub-title"

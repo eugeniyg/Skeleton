@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILocale } from '@skeleton/core/types';
+  import type { ILocale } from '@skeleton/api/types';
 
   const { currentLocale, countries, headerCountry, locales } = useGlobalStore();
 
@@ -15,7 +15,7 @@
     if (!headerCountry) return undefined;
     const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
 
-    return currentCountryObj?.restrict;
+    return currentCountryObj?.restrict && currentCountryObj?.restrictType === 1;
   };
   const layout = isCurrentCountryRestrict() ? 'geo-restricted' : 'default';
   const { origin } = useRequestURL();

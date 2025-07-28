@@ -19,9 +19,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
+  import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/api/types';
   import debounce from 'lodash/debounce';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   const props = defineProps<{
     isShow?: boolean;
@@ -31,7 +31,6 @@
   const globalStore = useGlobalStore();
   const { layoutData, defaultLocaleLayoutData } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
   const loadPage = ref<number>(1);
@@ -42,7 +41,6 @@
     () => !!gameItems.value.length && (pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)
   );
 
-  const { getFilteredGames } = useCoreGamesApi();
   const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
       page: loadPage.value,
@@ -93,19 +91,23 @@
 
   const defaultGames = ref<IGame[]>([]);
   const getDefaultGames = async (): Promise<IGamesResponse> => {
-    const { getCollectionsList } = useGamesStore();
-    const gameCollections = await getCollectionsList();
-    const getTurbogamesId = gameCollections.find(collection => collection.identity === 'turbogames')?.id;
+    const { collectionsByCountry } = useGamesStore();
+    const getTurbogamesId = collectionsByCountry.find(collection => collection.identity === 'turbogames')?.id;
     const requestParams = {
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId ? [getTurbogamesId] : [gameCollections[0]?.id],
+      collectionId: getTurbogamesId ? [getTurbogamesId] : [collectionsByCountry[0]?.id],
       countries: headerCountry.value ? [headerCountry.value] : undefined,
       sortBy: 'default',
       sortOrder: 'asc',
     };
 
-    return await getFilteredGames(requestParams);
+    try {
+      return await getFilteredGames(requestParams);
+    } catch {
+      console.error('Search default games loading failed!');
+      return { data: [], meta: { page: 1, perPage: 4, totalPages: 0, totalRows: 0 } };
+    }
   };
 
   onMounted(async () => {

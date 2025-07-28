@@ -29,7 +29,6 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
-  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['demoGame']>;
@@ -37,7 +36,6 @@
   }>();
 
   const emit = defineEmits(['playReal']);
-  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn } = storeToRefs(profileStore);

@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
 
@@ -41,7 +40,6 @@
     lossPeriods,
     isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
-  const { getContent } = useProjectMethods();
   const { openModal } = useModalStore();
 
   const selectedPeriod = ref<string>('');

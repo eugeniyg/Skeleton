@@ -34,7 +34,6 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type { ICollection } from '@skeleton/core/types';
   import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
@@ -43,9 +42,9 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent, localizePath } = useProjectMethods();
   const { gameCategoriesObj } = useGlobalStore();
-  const categories = ref<ICollection[]>([]);
+  const { collectionsByCountry } = useGamesStore();
+  const categories = collectionsByCountry.filter(collection => !collection.isHidden);
   const route = useRoute();
   const router = useRouter();
 
@@ -54,12 +53,6 @@
     await router.push(localizePath(`/categories/${categoryIdentity}`));
     await closeModal('categories');
   };
-
-  onMounted(async () => {
-    const { getCollectionsList } = useGamesStore();
-    const gameCollections = await getCollectionsList();
-    categories.value = gameCollections.filter(collection => !collection.isHidden);
-  });
 </script>
 
 <style src="~/assets/styles/components/modal/categories.scss" lang="scss" />

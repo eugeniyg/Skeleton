@@ -1,0 +1,61 @@
+.wheel-general {
+  position: relative;
+  max-width: 844px;
+  width: 100%;
+  margin: 0 auto;
+
+  @include media(xl) {
+    max-width: 1280px;
+  }
+
+  &__bg {
+    position: absolute;
+    top: -24px;
+    left: -100%;
+    right: -100%;
+    bottom: 0;
+    z-index: -1;
+
+    @include media(md) {
+      top: -64px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    @include media(md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 88px;
+    }
+
+    @include media(xl) {
+      gap: 120px;
+    }
+  }
+
+  &__title {
+    @include font($heading-7);
+    color: var(--text-primary);
+    margin: 0 0 8px;
+
+    @include media(md) {
+      margin-bottom: 4px;
+      @include font($heading-8);
+    }
+  }
+
+  &__subtitle {
+    @include font($heading-uppercase-4);
+    color: var(--text-accent);
+    margin: 0 0 44px;
+
+    @include media(md) {
+      margin-bottom: 52px;
+      @include font($heading-uppercase-5);
+    }
+  }
+}

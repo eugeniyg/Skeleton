@@ -21,9 +21,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGameImages } from '@skeleton/core/types';
+  import type { IGameImages } from '@skeleton/api/types';
   import { Skeletor } from 'vue-skeletor';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     nickname: Maybe<string>;
@@ -39,7 +40,6 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { localizePath, getImageUrl, formatBalance } = useProjectMethods();
 
   const gameUrl = computed(() => {
     if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}`);
@@ -48,7 +48,7 @@
 
   const formatedSum = computed(() => formatBalance(props.currency, props.payout));
 
-  const src = computed(() => getImageUrl(props.gameCustomImages, props.gameImages, 'vertical'));
+  const src = computed(() => getGameImageUrl(props.gameCustomImages, props.gameImages, 'vertical'));
 </script>
 
 <style src="~/assets/styles/components/card/latest-winners.scss" lang="scss" />

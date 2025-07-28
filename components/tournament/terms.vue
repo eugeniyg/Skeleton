@@ -4,7 +4,7 @@
       <div class="title">{{ props.title }}</div>
 
       <button-base>
-        <atomic-icon id="arrow_expand-open" />
+        <atomic-icon id="arrow-expand-open" />
       </button-base>
     </div>
 

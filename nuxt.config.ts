@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     '@skeleton/modules/optimize-images',
     '@nuxtjs/fontaine',
     '@nuxt/eslint',
+    'nuxt-svgo',
   ],
   dayjs: {
     locales: [
@@ -57,8 +58,11 @@ export default defineNuxtConfig({
       'da',
       'nl',
     ],
-    plugins: ['localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
+    plugins: ['utc', 'localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
     defaultLocale: 'en',
+  },
+  svgo: {
+    defaultImport: 'component',
   },
   lazyLoad: {
     observerConfig: {
@@ -74,16 +78,8 @@ export default defineNuxtConfig({
         path: '@skeleton/components/form/input',
         prefix: 'FormInput',
       },
-      {
-        global: true,
-        path: '@skeleton/components/tab/history',
-        prefix: 'TabHistory',
-      },
       '@skeleton/components',
     ],
-  },
-  imports: {
-    dirs: ['core/composables'],
   },
   routeRules: {
     '/profile/**': {
@@ -105,6 +101,18 @@ export default defineNuxtConfig({
       appMiddleware: ['auth'],
     },
   },
+  ignore: [
+    '**/node_modules/**',
+    '**/.output/**',
+    '**/.nuxt/**',
+    '**/dist/**',
+    '**/.git/**',
+    '**/.idea/**',
+    '**/.vscode/**',
+    '**/.cache/**',
+    '**/.pnpm/**',
+    '**/logs/**'
+  ],
   experimental: {
     asyncContext: true,
     defaults: {
@@ -121,27 +129,28 @@ export default defineNuxtConfig({
     pageTransition: true,
     layoutTransition: true,
   },
+  devtools: {
+    enabled: false,
+  },
   css: [
     '@skeleton/assets/styles/style.scss',
     '@skeleton/node_modules/vue-final-modal/dist/style.css',
     '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css',
   ],
   vite: viteConfig,
-  sourcemap: {
-    server: false,
-    client: true,
-  },
+  sourcemap: false,
   nitro: {
     logLevel: 0,
     inlineDynamicImports: true,
     devProxy: {
       '/api': {
-        target: 'https://qa3.dev.getplatform.tech/api',
+        target: 'https://qa1.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },
   },
   runtimeConfig: {
+    internalApiSecret: '14f9515a9965bff047f4a9a59ed3f0da8571db576798307f271e2d5ec37348a4',
     public: {
       gamehubCdn: 'https://dev.gcdn.tech',
     },
