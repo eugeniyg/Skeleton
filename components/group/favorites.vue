@@ -20,11 +20,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
-
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
   const container = ref();

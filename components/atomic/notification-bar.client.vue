@@ -19,7 +19,6 @@
   import DOMPurify from 'isomorphic-dompurify';
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const dayjs = useDayjs();
   const currentTime = ref(dayjs.utc());
   const bar = ref();

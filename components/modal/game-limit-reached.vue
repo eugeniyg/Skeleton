@@ -28,7 +28,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/modal/game-limit-reached.scss" lang="scss" />

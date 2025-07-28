@@ -13,8 +13,6 @@
 
 <script setup lang="ts">
   import copy from 'copy-to-clipboard';
-  import { storeToRefs } from 'pinia';
-
   import type { ITransactionsHistory } from '~/types';
 
   const props = defineProps<{
@@ -22,16 +20,15 @@
   }>();
 
   const pageContentParams = {
-    contentKey: 'profileTransactionsContent',
-    contentRoute: ['history', 'transactions'],
+    contentCollection: 'history',
+    contentSource: 'transactions',
     isPage: false,
   };
   const { getContentData: getPageContent } = useContentLogic<ITransactionsHistory>(pageContentParams);
-  const { data: pageContent } = await useLazyAsyncData(getPageContent);
+  const { data: pageContent } = await useLazyAsyncData('profileTransactionsContent', getPageContent);
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);

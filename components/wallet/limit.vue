@@ -23,18 +23,17 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileLimits, IWalletModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
-    currentLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
-    defaultLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
+    currentLocaleLimitsContent: Maybe<IProfileLimits>;
+    defaultLocaleLimitsContent: Maybe<IProfileLimits>;
   }>();
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const { closeModal } = useModalStore();
-  const { getContent, formatBalance, localizePath } = useProjectMethods();
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);

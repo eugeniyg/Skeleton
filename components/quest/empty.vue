@@ -1,6 +1,6 @@
 <template>
   <div class="quest-empty">
-    <atomic-image class="quest-empty__image" :src="props.image" />
+    <atomic-image v-if="props.image" class="quest-empty__image" :src="props.image" />
 
     <div class="quest-empty__title">
       {{ props.title }}

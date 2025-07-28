@@ -31,8 +31,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus, IPaginationMeta, IPlayerFreeSpin, IPlayerBonusesRequest } from '@skeleton/core/types';
+  import type { IPlayerBonus, IPaginationMeta, IPlayerFreeSpin, IPlayerBonusesRequest } from '@skeleton/api/types';
   import type { IBonusesHistory } from '~/types';
+  import { getPlayerBonuses, getPlayerFreeSpins } from '@skeleton/api/bonuses';
 
   const props = defineProps<{
     content: IBonusesHistory;
@@ -54,7 +55,6 @@
 
   const selectedTab = ref<'cashBonuses' | 'freeSpins'>('cashBonuses');
 
-  const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
   const getBonusesData = async (page = 1): Promise<void> => {
     state.loading = true;
     const requestParams: IPlayerBonusesRequest = {

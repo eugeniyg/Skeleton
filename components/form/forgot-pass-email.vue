@@ -27,8 +27,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IModalsContent } from '~/types';
+  import { forgotProfilePassword } from '@skeleton/api/profile';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -39,14 +40,12 @@
   const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const forgotFormData = reactive({ email: '' });
-  const { getFormRules, getContent } = useProjectMethods();
   const forgotRules = {
     email: [{ rule: 'required' }, { rule: 'email' }],
   };
   const forgotFormRules = getFormRules(forgotRules);
   const { serverFormErrors, v$, onFocus, setError } = useFormValidation(forgotFormRules, forgotFormData);
 
-  const { forgotProfilePassword } = useCoreProfileApi();
   const isLockedAsyncButton = ref<boolean>(false);
 
   const sendEmail = async (): Promise<void> => {

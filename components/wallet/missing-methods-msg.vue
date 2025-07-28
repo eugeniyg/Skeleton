@@ -13,7 +13,6 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/wallet/missing-methods-msg.scss" lang="scss" />

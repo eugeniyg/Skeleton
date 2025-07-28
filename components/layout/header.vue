@@ -9,7 +9,7 @@
     <div ref="appHeader" class="app-header" :class="headerClassValue">
       <client-only>
         <button v-if="isGamePage && isLoggedIn" class="app-header__back-btn" @click="backToHomePage">
-          <atomic-icon id="arrow_previous" />
+          <atomic-icon id="arrow-previous" />
         </button>
       </client-only>
 
@@ -104,14 +104,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const emit = defineEmits(['logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, compactDrawer } = layoutStore;
   const { openModal } = useModalStore();

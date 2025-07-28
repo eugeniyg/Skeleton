@@ -39,7 +39,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IWheelRewardModal } from '~/types';
-  import type { IWheelSector } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheelSector } from '@skeleton/api/types/wheelsTypes';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IWheelRewardModal>;
@@ -49,7 +49,6 @@
     hideButton: boolean;
   }>();
 
-  const { getContent, localizePath } = useProjectMethods();
   const { closeModal, openWalletModal } = useModalStore();
   const router = useRouter();
   const buttonUrl = getContent(props.currentLocaleData, props.defaultLocaleData, 'button.url');

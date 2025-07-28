@@ -7,7 +7,6 @@ export default defineNuxtPlugin(nuxtApp => {
       const clickRouterLink = async (e: any): Promise<void> => {
         e.preventDefault();
         const router = useRouter();
-        const { localizePath } = useProjectMethods();
         const targetElement = e.target as HTMLElement;
         const linkHref = targetElement.getAttribute('href') || '';
         await router.push(localizePath(linkHref));

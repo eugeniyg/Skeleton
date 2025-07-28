@@ -1,7 +1,7 @@
 <template>
   <div class="pagination">
     <button class="prev" :disabled="props.page === 1" @click="changePage(props.page - 1)">
-      <atomic-icon id="arrow_previous" />
+      <atomic-icon id="arrow-previous" />
     </button>
 
     <button
@@ -15,7 +15,7 @@
     </button>
 
     <button class="next" :disabled="props.page === props.totalPages" @click="changePage(props.page + 1)">
-      <atomic-icon id="arrow_next" />
+      <atomic-icon id="arrow-next" />
     </button>
   </div>
 </template>

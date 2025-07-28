@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileVerification } from '~/types';
 
   const globalStore = useGlobalStore();
@@ -29,12 +28,12 @@
   const hasPhoneRegistration = computed(() => settingsConstants.value?.player.registration.phone);
 
   const contentParams = {
-    contentKey: 'profileVerificationContent',
-    contentRoute: ['profile', 'verification'],
+    contentCollection: 'profile',
+    contentSource: 'verification',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileVerification>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileVerificationContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

@@ -16,14 +16,14 @@
 </template>
 
 <script setup lang="ts">
+  import { replaceContent } from '@skeleton/helpers/contentMethods';
+
   const props = defineProps<{
     levelBenefits: {
       label: string;
       checked: boolean;
     }[];
   }>();
-
-  const { replaceContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/loyalty/level-benefits.scss" lang="scss" />

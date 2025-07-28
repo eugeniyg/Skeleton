@@ -20,7 +20,6 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { getContent } = useProjectMethods();
   const warningContent = computed(() => ({
     description: getContent(walletContent, defaultLocaleWalletContent, 'deposit.destinationTag.warning'),
   }));

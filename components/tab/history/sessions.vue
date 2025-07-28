@@ -54,8 +54,9 @@
 
 <script setup lang="ts">
   import { UAParser } from 'ua-parser-js';
-  import type { IPaginationMeta, ISession } from '@skeleton/core/types';
+  import type { IPaginationMeta, ISession } from '@skeleton/api/types';
   import type { ISessionsHistory } from '~/types';
+  import { getUserSessions, closeActiveSession } from '@skeleton/api/profile';
 
   const props = defineProps<{
     content: ISessionsHistory;
@@ -65,7 +66,6 @@
   const headTitles = ['', ...Object.values(props.content?.tableColumns || {})];
   const dateFormat = 'DD.MM.YYYY, HH:mm';
 
-  const { getUserSessions, closeActiveSession } = useCoreProfileApi();
   const sessions = ref<ISession[]>([]);
   const pageMeta = ref<IPaginationMeta>();
 

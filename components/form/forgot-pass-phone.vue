@@ -10,7 +10,7 @@
       :hint="setError('phone')"
       @blur="v$.phone?.$touch()"
       @focus="onFocus('phone')"
-      @submit="sendOtp"
+      @submit="sendOtpRequest"
     />
 
     <button-base
@@ -18,7 +18,7 @@
       size="md"
       tag-name="div"
       :is-disabled="v$.$invalid || isLockedAsyncButton"
-      @click="sendOtp"
+      @click="sendOtpRequest"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'sendOtpButton') }}
@@ -27,8 +27,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IModalsContent } from '~/types';
+  import { sendOtp } from '@skeleton/api/auth';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -41,7 +42,6 @@
 
   const emit = defineEmits(['sendOtp']);
   const forgotFormData = reactive({ phone: '' });
-  const { getFormRules, getContent } = useProjectMethods();
   const forgotRules = {
     phone: [{ rule: 'required' }, { rule: 'phone' }],
   };
@@ -50,7 +50,7 @@
 
   const isLockedAsyncButton = ref<boolean>(false);
 
-  const sendOtp = async (): Promise<void> => {
+  const sendOtpRequest = async (): Promise<void> => {
     if (v$.value.$invalid) return;
 
     v$.value.$reset();
@@ -59,7 +59,6 @@
 
     try {
       isLockedAsyncButton.value = true;
-      const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: forgotFormData.phone, reason: 'changingPass' });
       emit('sendOtp', forgotFormData);
     } catch (error: any) {

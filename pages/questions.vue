@@ -36,22 +36,20 @@
   });
 
   const route = useRoute();
-  const { localizePath } = useProjectMethods();
   const pageContentParams = {
-    contentKey: 'questionPageContent',
-    contentRoute: ['pages', 'question'],
+    contentCollection: 'pages',
+    contentSource: 'question',
     isPage: true,
   };
   const { getContentData: getPageContentData } = useContentLogic<IQuestionPage>(pageContentParams);
-  const { data: pageContent } = await useLazyAsyncData(getPageContentData);
+  const { data: pageContent } = await useLazyAsyncData('questionPageContent', getPageContentData);
 
   const categoryContentParams = {
-    contentKey: 'questionCategoryContent',
-    contentRoute: ['question-pages'],
+    contentCollection: 'question-pages',
     findAll: true,
   };
   const { getContentData: getCategoryContentData } = useContentLogic<IQuestionCategory[]>(categoryContentParams);
-  const { data: categoryContent } = await useLazyAsyncData(getCategoryContentData);
+  const { data: categoryContent } = await useLazyAsyncData('questionCategoryContent', getCategoryContentData);
 
   const checkRedirect = (): void => {
     const needRedirect =

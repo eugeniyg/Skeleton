@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
   const emit = defineEmits(['logout']);
-  const { getContent } = useProjectMethods();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
 </script>
 

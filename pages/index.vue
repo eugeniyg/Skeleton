@@ -57,22 +57,21 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IHomePage } from '~/types';
-  import type { ICollection } from '@skeleton/core/types';
+  import type { ICollection } from '@skeleton/api/types';
+  import { addBetsyScript } from '@skeleton/helpers/transformDomMethods';
+  import { initObserver } from '@skeleton/helpers/observer';
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
 
-  const { localizePath, getContent, addBetsyScript } = useProjectMethods();
-
   const contentParams = {
-    contentKey: 'homePageContent',
-    contentRoute: ['pages', 'home'],
+    contentCollection: 'pages',
+    contentSource: 'home',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('homePageContent', getContentData);
   const { collectionsByCountry } = useGamesStore();
 
   const aeroCategory = collectionsByCountry.find(
@@ -133,7 +132,6 @@
   const hasBetsyIntegration =
     runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
   const sportsContainer = ref();
-  const { initObserver } = useProjectMethods();
   const widgetsObserver = ref();
 
   const initBetsy = (): void => {

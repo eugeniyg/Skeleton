@@ -42,7 +42,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent, localizePath } = useProjectMethods();
   const { gameCategoriesObj } = useGlobalStore();
   const { collectionsByCountry } = useGamesStore();
   const categories = collectionsByCountry.filter(collection => !collection.isHidden);

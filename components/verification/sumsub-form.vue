@@ -11,14 +11,13 @@
 <script setup lang="ts">
   import snsWebSdk from '@sumsub/websdk';
   import type { IProfileVerification } from '~/types';
+  import { getSumsubToken } from '@skeleton/api/profile';
 
   const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
   const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
-  const { getContent } = useProjectMethods();
 
   const getAccessToken = async () => {
     try {
-      const { getSumsubToken } = useCoreProfileApi();
       const { token } = await getSumsubToken();
       return token;
     } catch {

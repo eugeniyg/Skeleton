@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
   import type { IModalsContent } from '~/types';
+  import { formatBalance, getEquivalentFromBase, getSumFromAmountItems } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['bonusDetails']>;
@@ -50,7 +51,6 @@
 
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-  const { formatBalance, getEquivalentFromBase, getContent, getSumFromAmountItems } = useProjectMethods();
   const { gameProviders } = useGamesStore();
 
   const getParamLabel = (paramName: string): string | undefined => {

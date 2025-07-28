@@ -63,11 +63,12 @@
     ITournament,
     ITournamentEntryUpdatedEvent,
     ITournamentLeaderboardUpdatedEvent,
-  } from '@skeleton/core/types';
+  } from '@skeleton/api/types';
+  import { getFilteredGames } from '@skeleton/api/games';
+  import { getTournaments, getTournament } from '@skeleton/api/retention';
 
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const route = useRoute();
@@ -75,7 +76,6 @@
   const routeFinished = route.query.finished as string;
   const { collectionsByCountry } = useGamesStore();
 
-  const { getTournaments, getTournament } = useCoreTournamentsApi();
   const getTournamentGeneralData = async (): Promise<ITournament> => {
     const { data: tournamentsList } = await getTournaments({
       identity: [routeIdentity],
@@ -86,38 +86,42 @@
   };
 
   const pageContentParams = {
-    contentKey: `tournamentPage-${routeIdentity}`,
-    contentRoute: ['tournaments'],
-    where: { identity: routeIdentity },
+    contentCollection: 'tournaments',
+    where: ['pageIdentity', '=', routeIdentity],
     currentOnly: true,
     isPage: true,
   };
   const tournamentCommonParams = {
-    contentKey: 'tournamentsCommonContent',
-    contentRoute: ['pages', 'tournament'],
+    contentCollection: 'pages',
+    contentSource: 'tournament',
   };
   const { getContentData } = useContentLogic<ITournamentPage>(pageContentParams);
   const { getContentData: getTournamentsCommonData } = useContentLogic<ITournamentCommon>(tournamentCommonParams);
 
   const nuxtApp = useNuxtApp();
   if (!import.meta.server && !nuxtApp.isHydrating) clearNuxtData(`tournamentData-${routeIdentity}`);
-  const { data: pageData, status: pageDataStatus } = await useLazyAsyncData(
-    `tournamentData-${routeIdentity}`,
-    async () => {
-      const [pageContentResponse, tournamentCommonResponse, generalDataResponse] = await Promise.all([
-        getContentData(),
-        getTournamentsCommonData(),
-        getTournamentGeneralData(),
-      ]);
-      if (!pageContentResponse?.currentLocaleData || !generalDataResponse) return undefined;
-      return {
-        pageContent: pageContentResponse.currentLocaleData,
-        currentLocaleCommonContent: tournamentCommonResponse?.currentLocaleData,
-        defaultLocaleCommonContent: tournamentCommonResponse?.defaultLocaleData,
-        tournamentGeneralData: generalDataResponse,
-      };
-    }
-  );
+  const {
+    data: pageData,
+    status: pageDataStatus,
+    error,
+  } = await useLazyAsyncData(`tournamentData-${routeIdentity}`, async () => {
+    const [pageContentResponse, tournamentCommonResponse, generalDataResponse] = await Promise.all([
+      getContentData(),
+      getTournamentsCommonData(),
+      getTournamentGeneralData(),
+    ]);
+    if (!pageContentResponse?.currentLocaleData || !generalDataResponse)
+      throw createError({ statusCode: 404, statusMessage: 'Tournament Not Found' });
+
+    return {
+      pageContent: pageContentResponse.currentLocaleData,
+      currentLocaleCommonContent: tournamentCommonResponse?.currentLocaleData,
+      defaultLocaleCommonContent: tournamentCommonResponse?.defaultLocaleData,
+      tournamentGeneralData: generalDataResponse,
+    };
+  });
+
+  if (error.value) throw createError(error.value);
 
   const tournamentDefiniteData = ref<ITournament | undefined>();
   const tournamentData = computed(() => tournamentDefiniteData.value || pageData.value?.tournamentGeneralData);
@@ -141,7 +145,6 @@
     gamesData: [],
     gamesMeta: undefined,
   });
-  const { getFilteredGames } = useCoreGamesApi();
   const getTournamentGames = async (page = 1): Promise<void> => {
     const nonExistentCollections =
       tournamentData.value?.conditions?.gameCollectionsExcluded === false &&
@@ -180,7 +183,7 @@
 
   const leaderboardSubscription = ref<any>(undefined);
   const playerEntrySubscription = ref<any>(undefined);
-  const { createSubscription } = useWebSocket();
+  const { createSubscription } = useWebSocketStore();
 
   const updateLeaderboard = (webSocketResponse: ITournamentLeaderboardUpdatedEvent) => {
     if (tournamentDefiniteData.value) {

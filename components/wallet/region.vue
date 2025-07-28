@@ -24,7 +24,6 @@
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { countriesSelectOptions } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
 

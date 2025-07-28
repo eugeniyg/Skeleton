@@ -31,7 +31,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/modal/profile-confirmed.scss" lang="scss" />

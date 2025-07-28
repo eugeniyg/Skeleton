@@ -1,6 +1,6 @@
 <template>
   <button :class="classes" @click="onClick">
-    <atomic-icon id="arrow_expand-close" />
+    <atomic-icon id="arrow-expand-close" />
   </button>
 </template>
 

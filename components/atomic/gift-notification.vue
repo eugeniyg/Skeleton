@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-  const { localizePath } = useProjectMethods();
   const router = useRouter();
   const toBonuses = async (): Promise<void> => {
     await router.push(localizePath('/profile/bonuses'));

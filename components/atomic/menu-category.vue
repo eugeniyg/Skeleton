@@ -35,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const props = defineProps<{
     label: string;
     icon: string;
@@ -48,7 +46,6 @@
   const layoutStore = useLayoutStore();
   const { isDrawerCompact } = storeToRefs(layoutStore);
 
-  const { localizePath } = useProjectMethods();
   const route = useRoute();
 
   const checkUrl = (): boolean => props.items.some((link: any) => localizePath(link.url) === route.fullPath);

@@ -22,8 +22,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuestReward } from '@skeleton/core/types';
+  import type { IPlayerQuestReward } from '@skeleton/api/types';
   import type { IQuestsHubModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     rewards: IPlayerQuestReward[];
@@ -42,7 +43,6 @@
       })
     : props.rewards;
 
-  const { formatBalance, getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const rewardsValue = computed(() => {

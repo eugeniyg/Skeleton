@@ -33,7 +33,6 @@
     defaultLocaleData: Maybe<IModalsContent['geoRestrictedGame']>;
   }>();
 
-  const { getContent, localizePath } = useProjectMethods();
   const { closeModal } = useModalStore();
   const router = useRouter();
 
