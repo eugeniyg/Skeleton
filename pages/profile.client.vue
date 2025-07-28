@@ -10,6 +10,8 @@
   import camelCase from 'lodash/camelCase';
 
   const { getProfileFields } = useFieldsStore();
+  const { settingsConstants } = useGlobalStore();
+
   const contentParams = {
     contentCollection: 'profile',
     findAll: true,
@@ -48,7 +50,11 @@
   const profileMenu = computed<{ id: string; title: string; url: string }[]>(() => {
     if (!profilePages?.children?.length) return [];
 
-    return profilePages.children.map(page => {
+    const filteredChildren = !settingsConstants?.player?.referral?.enabled
+      ? profilePages.children.filter(page => page.path !== 'referral')
+      : profilePages.children;
+
+    return filteredChildren.map(page => {
       const pageId = page.path;
       return {
         id: pageId,

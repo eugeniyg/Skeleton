@@ -128,7 +128,7 @@ export const useBonusStore = defineStore('bonusStore', {
     async getDepositBonuses(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
-      this.depositBonuses = await requestDepositBonuses(activeAccount.currency);
+      this.depositBonuses = await requestDepositBonuses({ currency: activeAccount.currency });
     },
 
     async getDepositBonusCode(): Promise<void> {

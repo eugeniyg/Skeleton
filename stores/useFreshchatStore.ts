@@ -2,21 +2,20 @@ import debounce from 'lodash/debounce.js';
 import { changeProfileData } from '@skeleton/api/profile';
 
 interface IFreshchatState {
-  newMessages: number;
   initialize: boolean;
   scriptAdded: boolean;
+  freshChatNewMessages: number;
 }
 
 export const useFreshchatStore = defineStore('freshchatStore', {
   state: (): IFreshchatState => ({
-    newMessages: 0,
     initialize: true,
     scriptAdded: false,
+    freshChatNewMessages: 0,
   }),
 
   getters: {
     projectHasFreshchat() {
-      if (!window) return undefined;
       const {
         public: { freshchatParams },
       } = useRuntimeConfig();
@@ -161,11 +160,11 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       });
 
       window.fcWidget.on('unreadCount:notify', ({ count }: { count: number }) => {
-        this.newMessages = count;
+        this.freshChatNewMessages = count;
       });
     },
 
-    async updateChat(): Promise<void> {
+    async updateFreshChat(): Promise<void> {
       const {
         public: { freshchatParams },
       } = useRuntimeConfig();

@@ -1,0 +1,43 @@
+.referral-info {
+  &__description {
+    color: var(--text-tertiary);
+    margin: 8px 0 0;
+    @include font($body-2);
+
+    @include media(md) {
+      @include font($body-3);
+    }
+
+    &:not(.is-expanded) {
+      @include line-clamp(2);
+    }
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__more-btn {
+    --width: fit-content;
+    --padding: 2px 8px 2px 0;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    gap: 4px;
+
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      @include font($heading-1);
+    }
+
+    .icon {
+      --icon-size: 20px;
+      --color: var(--button-icn-ghost-high-contrast);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+}

@@ -35,10 +35,10 @@
     return {
       ...categoryMetaContent,
       title: categoryMetaContent.title
-        ? categoryMetaContent.title.replace('{category}', currentCategoryName)
+        ? categoryMetaContent.title.replace(/\{category}/g, currentCategoryName)
         : undefined,
       description: categoryMetaContent.description
-        ? categoryMetaContent.description.replace('{category}', currentCategoryName)
+        ? categoryMetaContent.description.replace(/\{category}/g, currentCategoryName)
         : undefined,
     };
   };
@@ -55,10 +55,10 @@
     return {
       ...providerMetaContent,
       title: providerMetaContent.title
-        ? providerMetaContent.title.replace('{category}', categoryName).replace('{provider}', providerName)
+        ? providerMetaContent.title.replace(/\{category}/g, categoryName).replace(/\{provider}/g, providerName)
         : undefined,
       description: providerMetaContent.description
-        ? providerMetaContent.description.replace('{category}', categoryName).replace('{provider}', providerName)
+        ? providerMetaContent.description.replace(/\{category}/g, categoryName).replace(/\{provider}/g, providerName)
         : undefined,
       image: providerImage,
       canonicalUrl: `${requestUrl.origin}${route.fullPath}`,
@@ -102,10 +102,10 @@
       return {
         ...providerSeoText,
         visible: providerSeoText.visible
-          ? providerSeoText.visible.replace('{category}', categoryName).replace('{provider}', providerData.name)
+          ? providerSeoText.visible.replace(/\{category}/g, categoryName).replace(/\{provider}/g, providerData.name)
           : undefined,
         hidden: providerSeoText.hidden
-          ? providerSeoText.hidden.replace('{category}', categoryName).replace('{provider}', providerData.name)
+          ? providerSeoText.hidden.replace(/\{category}/g, categoryName).replace(/\{provider}/g, providerData.name)
           : undefined,
       };
     }
@@ -113,8 +113,8 @@
     if (categorySeoText) {
       return {
         ...categorySeoText,
-        visible: categorySeoText.visible ? categorySeoText.visible.replace('{category}', categoryName) : undefined,
-        hidden: categorySeoText.hidden ? categorySeoText.hidden.replace('{category}', categoryName) : undefined,
+        visible: categorySeoText.visible ? categorySeoText.visible.replace(/\{category}/g, categoryName) : undefined,
+        hidden: categorySeoText.hidden ? categorySeoText.hidden.replace(/\{category}/g, categoryName) : undefined,
       };
     }
 

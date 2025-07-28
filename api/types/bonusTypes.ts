@@ -189,6 +189,15 @@ export interface IBonusesStatus {
   status: number;
 }
 
+export interface IBonusesRequest extends Record<string, any> {
+  currency: string;
+  amount?: number;
+  bonusIds?: string[];
+  questId?: string;
+  triggerType?: number;
+  skipCondition?: number[];
+}
+
 export interface IPlayerBonusUpdatedEvent {
   data: {
     event: 'player.bonus.created' | 'player.bonus.updated';

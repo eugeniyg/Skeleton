@@ -175,6 +175,9 @@
   };
   const registrationFormData = reactive(setFormData(getFields()));
 
+  const route = useRoute();
+  registrationFormData.referralCode = route.query.ref ? route.query.ref : '';
+
   const getCheckboxLabel = (fieldName: string): string | undefined => {
     if (fieldName === 'receiveEmailPromo')
       return getContent(props.currentLocaleData, props.defaultLocaleData, 'agreeEmailLabel');
