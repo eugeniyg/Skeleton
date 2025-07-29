@@ -170,8 +170,7 @@ export const useProfileStore = defineStore('profileStore', {
       return this.refreshPromise;
     },
 
-    startProfileDependencies(): void {
-      const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
+    startBonusDependencies(): void {
       const {
         getPlayerBonuses,
         getPlayerFreeSpins,
@@ -181,21 +180,6 @@ export const useProfileStore = defineStore('profileStore', {
         subscribeBonusSocket,
         subscribeFreeSpinsSocket,
       } = useBonusStore();
-      const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
-      const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
-      const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
-      const { subscribeAccountSocket, subscribeInvoicesSocket, getPaymentStatistics } = useWalletStore();
-      const { subscribeTournamentSocket } = useTournamentsStore();
-      const { subscribeWheelsSocket } = useWheelsStore();
-      const { setEquivalentCurrency } = useGlobalStore();
-      const runtimeConfig = useRuntimeConfig();
-
-      getFavoriteGames();
-      if (runtimeConfig.public?.questsEnabled) getActiveQuests();
-      if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
-      getPopoverNotifications();
-      getPlayerCashback();
-      getPaymentStatistics();
 
       const route = useRoute();
       const bonusesRoute = route.name === 'profile-bonuses' || route.name === 'locale-profile-bonuses';
@@ -205,18 +189,49 @@ export const useProfileStore = defineStore('profileStore', {
         getDepositBonuses();
       }
 
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
+      getPlayerCashback();
       subscribeBonusCodeSocket();
       subscribeBonusSocket();
       subscribeFreeSpinsSocket();
-      subscribeBetsSocket();
-      this.subscribeOnlineSocket();
+    },
+
+    startRetentionDependencies(): void {
+      const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
+      const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
+      const { subscribeTournamentSocket } = useTournamentsStore();
+      const { subscribeWheelsSocket } = useWheelsStore();
+
+      const runtimeConfig = useRuntimeConfig();
+      if (runtimeConfig.public?.questsEnabled) getActiveQuests();
+      if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       if (runtimeConfig.public?.questsEnabled) subscribeQuestsSocket();
       if (runtimeConfig.public?.loyaltyEnabled) subscribeLoyaltySocket();
-      subscribeNotificationSocket();
       subscribeTournamentSocket();
       subscribeWheelsSocket();
+    },
+
+    startPaymentDependencies(): void {
+      const { subscribeAccountSocket, subscribeInvoicesSocket, getPaymentStatistics } = useWalletStore();
+      getPaymentStatistics();
+      subscribeAccountSocket();
+      subscribeInvoicesSocket();
+    },
+
+    startProfileDependencies(): void {
+      this.startBonusDependencies();
+      this.startRetentionDependencies();
+      this.startPaymentDependencies();
+
+      const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
+      const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
+      const { setEquivalentCurrency } = useGlobalStore();
+
+      getFavoriteGames();
+      getPopoverNotifications();
+
+      subscribeBetsSocket();
+      this.subscribeOnlineSocket();
+      subscribeNotificationSocket();
 
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
       if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
