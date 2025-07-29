@@ -36,7 +36,7 @@
             <span class="referral-card__item-title">
               {{ getContent(referralContent, defaultLocaleReferralContent, 'card.qualifiedPlayers.title') }}
             </span>
-            <atomic-tooltip :text="qualifiedPlayersTooltip" />x
+            <atomic-tooltip :text="qualifiedPlayersTooltip" />
           </div>
 
           <div class="referral-card__item-counter">
@@ -170,4 +170,4 @@
   onMounted(getBonusesData);
 </script>
 
-<style src="@skeleton/assets/styles/components/referral/card.scss" lang="scss" />
+<style src="~/assets/styles/components/referral/card.scss" lang="scss" />
