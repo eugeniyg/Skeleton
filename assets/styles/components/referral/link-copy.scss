@@ -122,7 +122,7 @@
     align-self: stretch;
     border-radius: var(--cornerRadius-mapped-button-md, 16px);
     margin-top: 8px;
-    color: var(--text-primary);
+    color: var(--button-text-primary);
     @include font($heading-2);
 
     @extend %btn-primary;
