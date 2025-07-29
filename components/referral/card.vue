@@ -36,7 +36,7 @@
             <span class="referral-card__item-title">
               {{ getContent(referralContent, defaultLocaleReferralContent, 'card.qualifiedPlayers.title') }}
             </span>
-            <atomic-tooltip :text="qualifiedPlayersTooltip" />
+            <atomic-tooltip :text="qualifiedPlayersTooltip" />x
           </div>
 
           <div class="referral-card__item-counter">
@@ -143,7 +143,7 @@
 
       const [bonus] = await getBonuses(bonusParams);
       bonusValue.value = bonus;
-      isReferralDisabled.value = !enabled;
+      isReferralDisabled.value = !enabled || profile.value?.referralCode === null;
       referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
       console.error('Error fetching bonuses:', error);
@@ -161,10 +161,13 @@
     [() => bonusValue.value, () => cardBonusTitle.value, () => formattedTitle.value, () => cashBonusLabel.value],
     () => {
       bonusTitle.value = setBonusTitle(bonusValue.value);
+    },
+    {
+      immediate: true,
     }
   );
 
   onMounted(getBonusesData);
 </script>
 
-<style src="~/assets/styles/components/referral/card.scss" lang="scss" />
+<style src="@skeleton/assets/styles/components/referral/card.scss" lang="scss" />
