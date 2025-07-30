@@ -35,7 +35,6 @@
 
   const loyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('loyaltyContent'));
   const defaultLocaleLoyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('defaultLocaleLoyaltyContent'));
-  const { getContent } = useProjectMethods();
 
   const firstHalf = ref<ILoyaltyPage['faq']['items']>([]);
   const secondHalf = ref<ILoyaltyPage['faq']['items']>([]);

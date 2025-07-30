@@ -32,8 +32,10 @@
 
 <script setup lang="ts">
   import type { IAlert, IWheelCommon, IWheelPage } from '~/types';
-  import type { IWheel, IWheelSector } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheel, IWheelSector } from '@skeleton/api/types';
   import BezierEasing from 'bezier-easing';
+  import { spinWheel as requestApiSpin } from '@skeleton/api/retention';
+  import { getRandomInt } from '@skeleton/helpers/simpleMethods';
 
   const props = defineProps<{
     wheelData: IWheel;
@@ -48,7 +50,6 @@
   const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { getContent, getRandomInt, localizePath } = useProjectMethods();
   const currentPlayerSpins = defineModel<IWheel['playerSpins']>('currentPlayerSpins', { required: true });
 
   const wheelImage = computed(() =>
@@ -151,9 +152,8 @@
 
   const winningSector = ref<IWheelSector | undefined>();
   const spinRequest = async (): Promise<void> => {
-    const { spinWheel } = useCoreWheelsApi();
     try {
-      winningSector.value = await spinWheel(props.wheelData.id);
+      winningSector.value = await requestApiSpin(props.wheelData.id);
       currentPlayerSpins.value.shift();
     } catch (err: any) {
       createSpinError(err.data?.error?.code);

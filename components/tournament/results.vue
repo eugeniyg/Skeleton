@@ -94,7 +94,7 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon } from '~/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/api/types';
 
   const props = defineProps<{
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
@@ -102,7 +102,6 @@
     tournamentDefiniteData: Maybe<ITournament>;
   }>();
 
-  const { getContent } = useProjectMethods();
   const winnersDefaultNickname = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'leaderboard.defaultNickname')
   );

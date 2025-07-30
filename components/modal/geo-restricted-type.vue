@@ -50,7 +50,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent } = useProjectMethods();
 
   const description = getContent(props.currentLocaleData, props.defaultLocaleData, 'description');
 </script>

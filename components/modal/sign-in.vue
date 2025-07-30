@@ -49,7 +49,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent } = useProjectMethods();
   const loginType = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabsDisplay') || 'both';
 
   const tabsList = computed(() => {

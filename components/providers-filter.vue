@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
   import debounce from 'lodash/debounce';
-  import type { IProvidersRequest } from '@skeleton/core/types';
+  import type { IProvidersRequest } from '@skeleton/api/types';
   import type { IProvidersPage } from '~/types';
 
   const props = defineProps<{
@@ -32,8 +32,6 @@
     defaultLocaleContent: Maybe<IProvidersPage>;
     filters: IProvidersRequest;
   }>();
-
-  const { getContent } = useProjectMethods();
 
   const searchValue = ref<string>(props.filters.name || '');
   const isShowSort = ref<boolean>(!!props.filters.sortBy || !!props.filters.sortOrder);

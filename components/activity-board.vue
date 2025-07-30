@@ -7,7 +7,7 @@
       <div v-click-outside="hideNav" class="activity-board__nav" :class="{ 'is-open': isOpen }">
         <div class="activity-board__nav-selected" @click="toggleMobileNav">
           <span class="activity-board__nav-selected-title">{{ selectedNavTitle }}</span>
-          <atomic-icon id="arrow_expand-close" />
+          <atomic-icon id="arrow-expand-close" />
         </div>
 
         <div class="activity-board__nav-items">
@@ -48,7 +48,7 @@
             >
               <template v-if="id === 'game'">
                 <atomic-image
-                  :src="getImageUrl(row.gameCustomImages, row.gameImages, 'square')"
+                  :src="getGameImageUrl(row.gameCustomImages, row.gameImages, 'square')"
                   class="activity-board__tb-td-img"
                 />
                 <span>{{ row.gameName }}</span>
@@ -79,8 +79,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IActivityBoardUpdatedEvent, IEventBet } from '@skeleton/core/types';
+  import type { IActivityBoardUpdatedEvent, IEventBet } from '@skeleton/api/types';
   import type { IHomePage } from '~/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     title?: string;
@@ -89,7 +90,6 @@
     boards: { title: string; id: string }[];
   }>();
 
-  const { getImageUrl } = useProjectMethods();
   const boardSubscription = ref<any>();
   const boardData = reactive<IEventBet[]>([]);
   const globalStore = useGlobalStore();
@@ -116,7 +116,7 @@
 
   const subscribeBoardSocket = async (): Promise<void> => {
     unsubscribeBoardSocket();
-    const { createSubscription } = useWebSocket();
+    const { createSubscription } = useWebSocketStore();
     boardSubscription.value = createSubscription(`activity-board:boards#${selectedNavItem.value}`, handleBoardsEvent);
     try {
       const resp: { publications: IActivityBoardUpdatedEvent[] } = await boardSubscription.value.history({

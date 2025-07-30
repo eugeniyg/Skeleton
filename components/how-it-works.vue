@@ -62,8 +62,6 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openModal, openWalletModal } = useModalStore();
 
-  const { getContent } = useProjectMethods();
-
   const loadingModal = ref(false);
   const clickButton = async (): Promise<void> => {
     if (loadingModal.value) return;

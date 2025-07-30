@@ -69,10 +69,12 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/api/types';
   import { Skeletor } from 'vue-skeletor';
   import type { IAeroGroupComponent } from '~/types';
+  import { getFilteredGames, getGamesInfo } from '@skeleton/api/games';
+  import { createSrcSet } from '@skeleton/helpers/urlBuildMethods';
+  import { initObserver } from '@skeleton/helpers/observer';
 
   const props = defineProps<{
     currentLocaleContent: Maybe<IAeroGroupComponent>;
@@ -88,7 +90,6 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
-  const { getContent, createSrcSet } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
   const router = useRouter();
 
@@ -98,9 +99,6 @@
   const showArrowButtons = ref<boolean>(props.showArrows);
   const games = ref<IGame[]>([]);
   const pageMeta = ref<IPaginationMeta>();
-  const { getFilteredGames } = useCoreGamesApi();
-  const { localizePath } = useProjectMethods();
-  const { getGamesInfo } = useCoreGamesApi();
 
   const gameInfo = ref<IGame>();
 
@@ -182,7 +180,6 @@
   };
 
   const loadMore = ref();
-  const { initObserver } = useProjectMethods();
   const loadMoreObserver = ref();
 
   const initGroupGames = async (): Promise<void> => {

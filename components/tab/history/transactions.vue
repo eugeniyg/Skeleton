@@ -55,9 +55,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IInvoice, IInvoicesRequestOptions, IPaginationMeta } from '@skeleton/core/types';
+  import type { IInvoice, IInvoicesRequestOptions, IPaginationMeta } from '@skeleton/api/types';
   import type { ITransactionsHistory } from '~/types';
+  import { getPlayerInvoices, cancelInvoice } from '@skeleton/api/wallet';
 
   const props = defineProps<{
     content: ITransactionsHistory;
@@ -66,7 +66,6 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, alertsData, defaultLocaleAlertsData } =
     storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const optionsDefaultValue = { value: props.content?.allFilterOption, code: 'all' };
 
   const typeOptions = computed(() => {
@@ -118,7 +117,6 @@
 
   const invoices = ref<IInvoice[]>([]);
   const pageMeta = ref<IPaginationMeta>();
-  const { getPlayerInvoices, cancelInvoice } = useCoreWalletApi();
   const loading = ref<boolean>(true);
   const resolveInvoicesRequest = async (): Promise<void> => {
     loading.value = true;

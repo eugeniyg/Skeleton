@@ -3,12 +3,12 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from '@skeleton/core/types';
+  import type { IGameProvider } from '@skeleton/api/types';
+  import { getProviderImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     providerData: IGameProvider;
   }>();
 
-  const { getProviderImageUrl } = useProjectMethods();
   const logoSrc = computed(() => getProviderImageUrl(props.providerData));
 </script>

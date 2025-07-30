@@ -33,7 +33,8 @@
 
 <script setup lang="ts">
   import type { IWheelPage, IWheelCommon } from '~/types';
-  import type { IWheel } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheel } from '@skeleton/api/types';
+  import { getWheels } from '@skeleton/api/retention';
 
   const route = useRoute();
   const wheelIdentity = route.params.wheelIdentity as string;
@@ -41,7 +42,6 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
-  const { getWheels } = useCoreWheelsApi();
   const getWheelData = async (): Promise<IWheel | undefined> => {
     const { data } = await getWheels(!isLoggedIn.value, {
       identity: [wheelIdentity],
@@ -51,14 +51,13 @@
   };
 
   const wheelPageContentParams = {
-    contentKey: `wheel-${wheelIdentity}`,
-    contentRoute: ['wheels'],
-    where: { identity: wheelIdentity },
+    contentCollection: 'wheels',
+    where: ['pageIdentity', '=', wheelIdentity],
     isPage: true,
   };
   const wheelCommonContentParams = {
-    contentKey: `wheels-common`,
-    contentRoute: ['pages', 'wheel'],
+    contentCollection: 'pages',
+    contentSource: 'wheel',
   };
   const { getContentData: getWheelPageContent } = useContentLogic<IWheelPage>(wheelPageContentParams);
   const { getContentData: getWheelCommonContent } = useContentLogic<IWheelCommon>(wheelCommonContentParams);
@@ -91,7 +90,6 @@
     return ['error', 'success'].includes(status.value) && (emptyContent || wheelNotFound);
   });
 
-  const { getContent } = useProjectMethods();
   const showHowItWorks = computed(() =>
     getContent(
       wheelPageContent.value?.currentLocaleData,

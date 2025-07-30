@@ -35,7 +35,6 @@
     defaultLocaleData: Maybe<IModalsContent['depositError']>;
   }>();
 
-  const { getContent } = useProjectMethods();
   const { closeModal, openWalletModal } = useModalStore();
 
   const tryAgain = async (): Promise<void> => {

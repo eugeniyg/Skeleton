@@ -10,13 +10,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import copy from 'copy-to-clipboard';
-  import type { IProfileInfo } from '~/types';
+  import type { IProfilePersonal } from '~/types';
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
 
   const showTooltip = (): void => {
     tooltipVisible.value = true;
@@ -37,12 +35,12 @@
   });
 
   const contentParams = {
-    contentKey: 'profileInfoContent',
-    contentRoute: ['profile', 'info'],
+    contentCollection: 'profile',
+    contentSource: 'personal',
     isPage: false,
   };
-  const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { getContentData } = useContentLogic<IProfilePersonal>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData('profilePersonalContent', getContentData);
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);

@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
 
@@ -45,7 +44,6 @@
   const gamesStore = useGamesStore();
   const { isBonusWagering, minimumBonusWagerMultiplier } = storeToRefs(gamesStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
 
   const tooltip = ref<HTMLElement>();
   const tooltipContentContainer = ref<HTMLElement>();

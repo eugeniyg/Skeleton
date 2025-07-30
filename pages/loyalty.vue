@@ -22,15 +22,13 @@
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
 
-  const { getContent } = useProjectMethods();
-
   const contentParams = {
-    contentKey: 'loyaltyPageContent',
-    contentRoute: ['pages', 'loyalty'],
+    contentCollection: 'pages',
+    contentSource: 'loyalty',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ILoyaltyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('loyaltyPageContent', getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

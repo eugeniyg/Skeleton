@@ -16,10 +16,9 @@
 
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
-  import type { IPaginationMeta, IReferralItem, IReferralsRequest } from '@skeleton/core/types';
-
-  const { getContent } = useProjectMethods();
-  const { getPlayerReferrals } = useCoreProfileApi();
+  import type { IPaginationMeta, IReferralItem, IReferralsRequest } from '@skeleton/api/types';
+  import { getPlayerReferrals } from '@skeleton/api/profile';
+  import { getContent, localizePath } from '#imports';
 
   const referralsList = ref<IReferralItem[]>([]);
   const pageMeta = ref<Maybe<IPaginationMeta>>(undefined);
@@ -27,7 +26,6 @@
 
   definePageMeta({
     middleware: async function (to) {
-      const { localizePath } = useProjectMethods();
       const { settingsConstants } = useGlobalStore();
       if (!settingsConstants?.player?.referral?.enabled) {
         return navigateTo({ path: localizePath(`/profile/info`), query: { ...to.query } });
@@ -36,12 +34,12 @@
   });
 
   const contentParams = {
-    contentKey: 'profileReferralContent',
-    contentRoute: ['profile', 'referral'],
+    contentCollection: 'profile',
+    contentSource: 'referral',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileReferral>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('profileReferralContent', getContentData);
 
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);

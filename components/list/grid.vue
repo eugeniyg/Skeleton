@@ -7,14 +7,14 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { IGame, IPaginationMeta } from '@skeleton/api/types';
+  import { initObserver } from '@skeleton/helpers/observer';
 
   const props = defineProps<{
     items: IGame[];
     meta: IPaginationMeta | undefined;
   }>();
   const emit = defineEmits(['loadMore']);
-  const { initObserver } = useProjectMethods();
 
   const observerLoadMore = (): void => {
     if (props.meta && props.meta.totalPages > props.meta.page) emit('loadMore');

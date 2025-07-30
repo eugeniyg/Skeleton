@@ -40,20 +40,18 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IWalletModal } from '~/types';
+  import { addBonusCode, deleteBonusCode } from '@skeleton/api/bonuses';
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const emit = defineEmits(['openBonusCode']);
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
-  const { getContent } = useProjectMethods();
 
   const bonusValue = ref<string>('');
   const bonusChecking = ref<boolean>(false);
 
-  const { addBonusCode, deleteBonusCode } = useCoreBonusApi();
   const bonusStore = useBonusStore();
   const { showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
 

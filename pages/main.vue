@@ -43,24 +43,22 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { ICasinoPage } from '~/types';
-  import type { ICollection } from '@skeleton/core/types';
+  import type { ICollection } from '@skeleton/api/types';
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
-  const { localizePath, getContent } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const { openModal, closeModal } = useModalStore();
 
   const contentParams = {
-    contentKey: 'casinoPageContent',
-    contentRoute: ['pages', 'casino'],
+    contentCollection: 'pages',
+    contentSource: 'casino',
     isPage: true,
   };
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('casinoPageContent', getContentData);
 
   const { gameProviders, collectionsByCountry } = useGamesStore();
   const mainCategoriesList =

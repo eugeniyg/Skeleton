@@ -24,12 +24,12 @@
 
         <span v-if="rewardsValue.length > 1" class="quest-hub-card__amount-more" @click.stop="openModal">
           +{{ rewardsValue.length - 1 }}
-          {{ getContent(questsHubContent?.currentLocaleData, questsHubContent?.defaultLocaleData, 'moreLabel') }}
+          {{ getContent(currentLocaleQuestsHubContent, defaultLocaleQuestsHubContent, 'moreLabel') }}
         </span>
       </div>
 
       <span class="quest-hub-card__arrow">
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </span>
     </div>
 
@@ -38,8 +38,11 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuest } from '@skeleton/core/types';
-  import type { IProfileInfo, IQuestsHubModal } from '~/types';
+  import type { IPlayerQuest } from '@skeleton/api/types';
+  import type { IProfilePersonal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+  import camelCase from 'lodash/camelCase';
+  import { getContent } from '#imports';
 
   const props = defineProps<{
     questInfo: IPlayerQuest;
@@ -47,17 +50,13 @@
   }>();
 
   const { modalsList } = useModalStore();
-  const questsHubContentParams = {
-    contentKey: 'modal-quests-hub',
-    contentRoute: ['modals', modalsList['quests-hub'].content as string],
-  };
-  const { getContentData: getQuestsHubContentData } = useContentLogic<IQuestsHubModal>(questsHubContentParams);
-  const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);
+  const { currentLocaleModalsContent, defaultLocaleModalsContent } = useGlobalStore();
+  const currentLocaleQuestsHubContent = currentLocaleModalsContent?.[camelCase(modalsList['quests-hub'].content)];
+  const defaultLocaleQuestsHubContent = defaultLocaleModalsContent?.[camelCase(modalsList['quests-hub'].content)];
 
-  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
-  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const personalContent = ref<Maybe<IProfilePersonal>>(inject('personalContent'));
+  const defaultLocalePersonalContent = ref<Maybe<IProfilePersonal>>(inject('defaultLocalePersonalContent'));
 
-  const { getContent, formatBalance } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const rewardsValue = computed(() => {
@@ -72,11 +71,7 @@
 
   const questImages = computed(() => {
     const imgObjArr: { src: string }[] =
-      getContent(
-        questsHubContent.value?.currentLocaleData,
-        questsHubContent.value?.defaultLocaleData,
-        'questsImages'
-      ) || [];
+      getContent(currentLocaleQuestsHubContent, defaultLocaleQuestsHubContent, 'questsImages') || [];
     return imgObjArr.map(imgObj => imgObj.src);
   });
 
@@ -89,7 +84,7 @@
 
   const { openRewardsModal, openTasksModal } = useQuestsStore();
   const rewardsModalTitle = computed(() => {
-    return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
+    return getContent(personalContent.value, defaultLocalePersonalContent.value, 'questsHub.rewardsTitle') || '';
   });
   const openModal = async (): Promise<void> => {
     await openRewardsModal(rewardsValue.value, rewardsModalTitle.value);

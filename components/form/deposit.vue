@@ -61,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type {
     IBonus,
     IPaymentField,
@@ -69,10 +68,13 @@
     IPaymentPreset,
     IResponseDeposit,
     ISocketInvoice,
-  } from '@skeleton/core/types';
+  } from '@skeleton/api/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
   import type { IWalletModal } from '~/types';
+  import { depositAccount } from '@skeleton/api/wallet';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
+  import { formatBalance, getMainBalanceFormat, getEquivalentFromBase } from '@skeleton/helpers/amountMethods';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -115,7 +117,6 @@
     depositFormData[field.key] = field.value ?? undefined;
   });
 
-  const { getFormRules, getEquivalentFromBase } = useProjectMethods();
   const depositRules = props.fields.reduce((finalRules, currentField) => {
     const rulesArr: { rule: string; arguments?: string }[] = [];
     if (currentField.isRequired) rulesArr.push({ rule: 'required' });
@@ -170,7 +171,6 @@
   const { openModal, closeModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
-  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const minAmountContent = `${getContent(walletContent, defaultLocaleWalletContent, 'deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`;
@@ -259,7 +259,6 @@
   const depositRequest = async (): Promise<void> => {
     isSending.value = true;
 
-    const { depositAccount } = useCoreWalletApi();
     const params = getRequestParams();
     windowReference.value = null;
 

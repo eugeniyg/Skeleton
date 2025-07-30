@@ -6,18 +6,19 @@
 
 <script setup lang="ts">
   import type { ICategoryPage, IPageMeta } from '~/types';
-  import type { IGameProvider } from '@skeleton/core/types';
+  import type { IGameProvider } from '@skeleton/api/types';
+  import { getProviderImageUrl } from '@skeleton/helpers/urlBuildMethods';
+  import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
 
   const contentParams = {
-    contentKey: 'categoryPageContent',
-    contentRoute: ['pages', 'category'],
+    contentCollection: 'pages',
+    contentSource: 'category',
   };
 
   const route = useRoute();
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData('categoryPageContent', getContentData);
 
-  const { setPageMeta, getProviderImageUrl } = useProjectMethods();
   const { gameProviders, collectionsByCountry } = useGamesStore();
 
   const getCategoryName = (): string => {

@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IDocumentFile } from '@skeleton/core/types';
+  import type { IDocumentFile } from '@skeleton/api/types';
   import type { IProfileDocuments } from '~/types';
 
   const props = defineProps<{
@@ -47,7 +47,6 @@
 
   const emit = defineEmits(['remove', 'change']);
 
-  const { getContent } = useProjectMethods();
   const isActive = ref(false);
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));

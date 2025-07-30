@@ -2,7 +2,7 @@
   <nav class="nav-faq" :class="{ 'is-open': isOpen }">
     <button class="selected" @click="toggle">
       {{ selected?.title }}
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </button>
 
     <div class="items" @mouseleave="close">
@@ -26,7 +26,6 @@
   const props = defineProps<{
     items: IQuestionCategory[];
   }>();
-  const { localizePath } = useProjectMethods();
   const isOpen = ref<boolean>(false);
   const route = useRoute();
   const selected = computed(() =>

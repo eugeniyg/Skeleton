@@ -11,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
+  import { createSrcSet } from '@skeleton/helpers/urlBuildMethods';
+
   const props = defineProps<{
     src?: string;
     notLazy?: boolean;
   }>();
-
-  const { createSrcSet } = useProjectMethods();
 </script>

@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { IGame } from '@skeleton/api/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     game: IGame;
@@ -33,10 +33,9 @@
 
   const globalStore = useGlobalStore();
   const { setReturnGame } = useLayoutStore();
-  const { getImageUrl, getContent, localizePath } = useProjectMethods();
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
 
-  const gameImage = computed(() => getImageUrl(props.game.customImages, props.game.images, 'square'));
+  const gameImage = computed(() => getGameImageUrl(props.game.customImages, props.game.images, 'square'));
 </script>
 
 <style src="~/assets/styles/components/layout/game-return.scss" lang="scss" />

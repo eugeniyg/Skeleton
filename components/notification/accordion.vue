@@ -34,14 +34,14 @@
         :target-blank="props.message.content.link.url.startsWith('http')"
       >
         <span>{{ props.message.content.link.label }}</span>
-        <atomic-icon id="arrow_next" />
+        <atomic-icon id="arrow-next" />
       </atomic-link>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IMessage } from '@skeleton/core/types';
+  import type { IMessage } from '@skeleton/api/types';
 
   const props = defineProps<{
     message: IMessage;
@@ -51,7 +51,6 @@
 
   const globalStore = useGlobalStore();
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const dayjs = useDayjs();
   const runtimeConfig = useRuntimeConfig();
   const customerCdn = runtimeConfig.public.customerCdn;

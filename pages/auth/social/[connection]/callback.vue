@@ -3,10 +3,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { ISocialCallbackData } from '@skeleton/core/types';
+  import type { ISocialCallbackData } from '@skeleton/api/types';
 
   const router = useRouter();
-  const { localizePath } = useProjectMethods();
   const { showAlert } = useLayoutStore();
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();

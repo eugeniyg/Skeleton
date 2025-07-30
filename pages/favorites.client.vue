@@ -23,18 +23,15 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IFavoritesPage } from '~/types';
 
-  const { getContent } = useProjectMethods();
-
   const contentParams = {
-    contentKey: 'favoritesPageContent',
-    contentRoute: ['pages', 'favorites'],
+    contentCollection: 'pages',
+    contentSource: 'favorites',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData('favoritesPageContent', getContentData);
 
   const gameStore = useGamesStore();
   const { favoriteGames, collectionsByCountry } = storeToRefs(gameStore);

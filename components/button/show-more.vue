@@ -1,7 +1,7 @@
 <template>
   <button class="btn-show-more" @click="onClick">
     <slot />
-    <atomic-icon id="arrow_expand-close" />
+    <atomic-icon id="arrow-expand-close" />
   </button>
 </template>
 

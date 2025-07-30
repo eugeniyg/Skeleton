@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon } from '~/types';
-  import type { ITournament, ITournamentParticipant } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament, ITournamentParticipant } from '@skeleton/api/types';
 
   const props = defineProps<{
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
@@ -79,7 +79,6 @@
     tournamentDefiniteData: ITournament;
   }>();
 
-  const { getContent } = useProjectMethods();
   const rewardImage = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'leaderboard.table.prizeIcon')
   );

@@ -1,6 +1,5 @@
 <template>
   <div :class="layoutClasses">
-    <atomic-preloader />
     <layout-header @logout="logout" />
     <layout-drawer @toggle-open="toggleOpen" />
 
@@ -31,13 +30,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { ModalsContainer } from 'vue-final-modal';
 
   const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { localizePath } = useProjectMethods();
 
   const { isMobile } = storeToRefs(globalStore);
 

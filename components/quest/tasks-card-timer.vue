@@ -46,7 +46,6 @@
   const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
 
-  const { getContent } = useProjectMethods();
   const { days, hours, minutes, seconds, startTimer } = useTimer();
   const format = (value: string | number): number | string => (Number(value) < 10 ? `0${value}` : value);
 

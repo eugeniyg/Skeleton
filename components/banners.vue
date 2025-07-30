@@ -13,7 +13,7 @@
 
     <div v-show="props.items.length > 1" class="banners__nav" @mouseover="onMouseOver" @mouseleave="onMouseLeave">
       <div class="banners__btn banners__btn--prev" @click="scrollPrev">
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </div>
 
       <div class="banners__bullets">
@@ -27,7 +27,7 @@
       </div>
 
       <div class="banners__btn banners__btn--next" @click="scrollNext">
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </div>
     </div>
   </div>

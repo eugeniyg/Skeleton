@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
 
@@ -47,7 +46,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent, localizePath } = useProjectMethods();
   const loyaltyStore = useLoyaltyStore();
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
 
@@ -62,12 +60,11 @@
   });
 
   const levelsBenefitsContentParams = {
-    contentKey: 'levels-benefits',
-    contentRoute: ['pages', 'loyalty'],
-    only: ['rewards'],
+    contentCollection: 'pages',
+    contentSource: 'loyalty',
   };
   const { getContentData: getLevelsBenefitsContentData } = useContentLogic(levelsBenefitsContentParams);
-  const { data: levelsBenefitsContent } = await useLazyAsyncData(getLevelsBenefitsContentData);
+  const { data: levelsBenefitsContent } = await useLazyAsyncData('levels-benefits', getLevelsBenefitsContentData);
 
   const levelBenefits = computed(() => {
     const contentBenefits = getContent(

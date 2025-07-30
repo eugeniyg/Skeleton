@@ -18,8 +18,6 @@
     items: ISiteSidebar['topMenu']['items'][0]['sportsbookList'];
     isCompact?: boolean;
   }>();
-
-  const { localizePath } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/list/sportsbook.scss" lang="scss" />
