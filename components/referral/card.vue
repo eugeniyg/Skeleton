@@ -141,7 +141,7 @@
 
       const [bonus] = await getBonuses(bonusParams);
       bonusValue.value = bonus;
-      isReferralDisabled.value = !enabled;
+      isReferralDisabled.value = !enabled || profile.value?.referralCode === null;
       referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
       console.error('Error fetching bonuses:', error);
@@ -159,6 +159,9 @@
     [() => bonusValue.value, () => cardBonusTitle.value, () => formattedTitle.value, () => cashBonusLabel.value],
     () => {
       bonusTitle.value = setBonusTitle(bonusValue.value);
+    },
+    {
+      immediate: true,
     }
   );
 

@@ -12,7 +12,7 @@
     cursor: pointer;
   }
 
-  &:active, &.is-active, .is-open &  {
+  &.is-active, .is-open &  {
     --bg: var(--gray-700);
     --color: var(--yellow-500);
     --deg: -180deg;
