@@ -28,7 +28,7 @@
     middleware: async function (to) {
       const { settingsConstants } = useGlobalStore();
       if (!settingsConstants?.player?.referral?.enabled) {
-        return navigateTo({ path: localizePath(`/profile/info`), query: { ...to.query } });
+        return navigateTo({ path: localizePath(`/profile/personal`), query: { ...to.query } });
       }
     },
   });
