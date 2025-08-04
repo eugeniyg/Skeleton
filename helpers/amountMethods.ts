@@ -1,4 +1,5 @@
 import type { IAmountRangeItem, IBonus } from '@skeleton/api/types';
+import fromExponential from 'from-exponential';
 
 export const formatBalance = (
   currency: string | undefined,
@@ -8,12 +9,18 @@ export const formatBalance = (
   if (!currency) return { currency: '', amount: amount || 0 };
   if (amount === undefined) return { currency, amount: 0 };
 
+  const specialCurrencies = ['BTC', 'ETH'];
   const { currencies } = useGlobalStore();
   const currencyConfig = currencies.find(item => item.code === currency);
-  if (!currencyConfig) return { currency, amount };
+  if (!currencyConfig || currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
 
-  const specialCurrencies = ['BTC', 'ETH'];
-  if (currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
+  const { public: { useAtomicUnits } } = useRuntimeConfig();
+  if (useAtomicUnits) {
+    return {
+      currency,
+      amount: Number(fromExponential(amount)),
+    }
+  }
 
   const subCurrencyConfig = currencyConfig.subCurrencies?.find(subCurrency => subCurrency.subunitToUnit === 1000);
   if (amount === 0) return { currency: subCurrencyConfig?.code || '', amount };
@@ -25,6 +32,9 @@ export const formatBalance = (
 };
 
 export const getMainBalanceFormat = (currency: string, amount: number): { currency: string; amount: number } => {
+  const { public: { useAtomicUnits } } = useRuntimeConfig();
+  if (useAtomicUnits) return { currency, amount };
+
   const { currencies } = useGlobalStore();
   const currencyConfig = currencies.find(item => {
     if (!item.subCurrencies?.length) return item.code === currency;
