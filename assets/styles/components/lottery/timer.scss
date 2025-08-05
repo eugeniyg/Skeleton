@@ -1,9 +1,9 @@
-.lotteries-timer {
+.lottery-timer {
   &__header {
-    @include font($body-1);
     color: var(--text-tertiary);
     padding-top: 16px;
     text-align: center;
+    @include font($body-1);
   }
 
   &__body {
@@ -13,12 +13,12 @@
   }
 
   &__dots {
-    @include font($heading-6);
     color: var(--text-helper);
     height: 36px;
     width: 7px;
     margin: 0 8px;
     transform: translateY(-2px);
+    @include font($heading-6);
   }
 
   &__item {
@@ -29,12 +29,14 @@
       height: 36px;
       @include font($heading-6);
 
-      &.has-null {
-        color: var(--text-helper);
-      }
+      & {
+        &.has-null {
+          color: var(--text-helper);
+        }
 
-      &:not(.has-null) {
-        color: var(--text-accent);
+        &:not(.has-null) {
+          color: var(--text-accent);
+        }
       }
     }
 
@@ -45,5 +47,7 @@
     }
   }
 
-  color:white
+  & {
+    color:white
+  }
 }

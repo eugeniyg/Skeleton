@@ -1,0 +1,42 @@
+.lottery-tickets-types {
+  max-width: 1280px;
+  margin: 60px auto 0;
+
+  @include media(md) {
+    margin: 104px auto 0;
+  }
+
+  &__title {
+    color: var(--text-primary, #FFF);
+    text-align: center;
+    @include font($heading-6);
+  }
+
+  &__description {
+    color: var(--text-tertiary, #9E9E9E);
+    text-align: center;
+    max-width: 624px;
+    margin: 4px auto 0;
+    @include font($body-2);
+
+    @include media(md) {
+      @include font($body-3);
+    }
+  }
+
+  &__tickets {
+    display: grid;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 40px;
+    grid-template-columns: 1fr;
+
+    @include media (sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media (md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}

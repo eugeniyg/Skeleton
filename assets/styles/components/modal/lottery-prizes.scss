@@ -1,0 +1,62 @@
+.modal-lottery-prizes {
+  @extend %modal-info;
+
+  .vfm__content {
+    --content-gap: 24px;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__items {
+    display: grid;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--cornerRadius-base-sharp, 8px);
+    border: 1px solid var(--border-01);
+    padding: 0;
+  }
+
+  &__picture {
+    align-self: center;
+    display: flex;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      margin-right: 8px;
+    }
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin: 0;
+
+    &:nth-of-type(odd) {
+      background-color: var(--layer-01);
+    }
+
+    &:nth-of-type(even) {
+      background: var(--layer-03-low-contrast);
+    }
+
+    &-title {
+      padding: 12px;
+      color: var(--text-primary);
+      @include font($heading-1);
+    }
+
+    &-description {
+      padding: 12px;
+      color: var(--text-tertiary);
+      @include font($body-1);
+    }
+  }
+}
