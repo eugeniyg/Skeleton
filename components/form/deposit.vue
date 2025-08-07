@@ -36,7 +36,10 @@
       @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
     />
-
+    
+    <atomic-divider />
+    <wallet-lotteries :amount="amountValue"/>
+    
     <atomic-divider />
     <wallet-bonuses :amount="amountValue" />
     <atomic-divider />

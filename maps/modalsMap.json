@@ -207,5 +207,9 @@
     "component": "wheel-reward",
     "content": "wheel-reward",
     "onlyLogged": true
+  },
+  "cancel-lottery": {
+    "component": "cancel-lottery",
+    "content": "cancel-lottery"
   }
 }

@@ -1,0 +1,42 @@
+.input-lottery-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: var(--top, 8px);
+  right: var(--right, 8px);
+
+  &__label {
+    border: 2px solid var(--border-color, var(--border-02-low-contrast));
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--dot-bg, transparent);
+      border-radius: 50%;
+    }
+
+    &:hover {
+      cursor: pointer;
+      --border-color: var(--support-success-default);
+    }
+  }
+
+  &__input {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  &.is-checked {
+    --dot-bg: var(--support-success-default);
+    --border-color: var(--support-success-default);
+  }
+}

@@ -1,0 +1,79 @@
+.modal-cancel-lottery {
+  @extend %modal-info;
+
+  .vfm__content {
+    --content-gap: 24px;
+  }
+
+  .img {
+    display: block;
+    margin-bottom: 16px;
+    width: auto;
+    max-height: 180px;
+    height: 100%;
+    max-width: 100%;
+
+    &.lazyLoad {
+      opacity: 0;
+      transition: opacity .2s ease-out;
+
+      &.isLoaded {
+        opacity: 1;
+      }
+    }
+  }
+
+  .title {
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    text-align: center;
+    align-self: stretch;
+    @include font($heading-5);
+
+    @include media(md) {
+      @include upd-font($heading-6);
+    }
+  }
+
+  .scroll {
+    grid-row-gap: 0;
+  }
+
+  &__actions {
+    display: grid;
+    grid-gap: 8px;
+    margin-top: 24px;
+  }
+
+  .btn-primary {
+    @include upd-font($heading-2);
+    margin-top: 0;
+    --width: 100%;
+  }
+
+  .btn-ghost {
+    @include upd-font($heading-1);
+    --color: var(--button-text-ghost-low-contrast);
+    --width: 100%;
+
+    @include use-hover {
+      &:hover {
+        --color: var(--button-text-secondary-hover);
+      }
+    }
+  }
+
+  .text {
+    color: var(--gray-300);
+    @include upd-font($body-1);
+
+    @include media(md) {
+      @include upd-font($body-2);
+    }
+  }
+
+  .actions {
+    display: grid;
+    grid-gap: 8px;
+  }
+}

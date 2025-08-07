@@ -1,0 +1,83 @@
+.wallet-lottery {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  grid-template-areas: "radio title timer" "icon hints hints";;
+  align-items: center;
+  grid-column-gap: 8px;
+  position: relative;
+  cursor: pointer;
+
+  &__title {
+    color: var(--text-secondary);
+    flex: 1;
+    @include font($heading-2);
+    grid-area: title;
+  }
+
+  &__hints {
+    grid-area: hints;
+    margin-top: 4px;
+  }
+
+  .wallet-lottery-timer {
+    grid-area: timer;
+  }
+
+
+  .input-lottery-radio {
+    --top: 6px;
+    --right: auto;
+    grid-area: radio;
+  }
+
+  &__hint {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 4px;
+
+    &-icon {
+      display: flex;
+      align-self: center;
+
+      img {
+        width: 16px;
+        height: 16px;
+        max-width: 100%;
+        max-height: 100%;
+        display: flex;
+        align-self: center;
+        object-fit: contain;
+      }
+    }
+
+    b {
+      @include font($heading-0);
+    }
+  }
+
+  &__hint-label {
+    @include font($body-0);
+    color: var(--text-tertiary);
+
+
+    &.has-accent {
+      color: var(--text-alert);
+    }
+
+    &.has-deposit {
+      color: var(--text-warning);
+    }
+  }
+
+  .input-lottery-radio {
+    .input-lottery-radio__label {
+      --border-color: var(--border-02);
+    }
+
+    &.is-checked {
+      .input-lottery-radio__label {
+        --border-color: var(--support-success-default);
+      }
+    }
+  }
+}

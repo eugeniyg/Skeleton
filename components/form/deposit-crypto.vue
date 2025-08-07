@@ -33,6 +33,11 @@
         :value="walletNumber"
         :copy-tooltip="getContent(walletContent, defaultLocaleWalletContent, 'deposit.copiedLabel')"
       />
+      
+      <atomic-divider />
+      <wallet-lotteries :amount="amountValue"/>
+      
+      <pre>{{ props.amountMax }}</pre>
 
       <atomic-divider />
       <wallet-bonuses crypto />

@@ -1,0 +1,60 @@
+.wallet-lotteries {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .wallet-lotteries__decline {
+    .slider {
+      --thumb-bg: var(--layer-02);
+      order: 1;
+    }
+
+    .label {
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-3);
+  }
+
+  &__info {
+    background: var(--layer-03-low-contrast);
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    align-items: flex-start;
+    grid-column-gap: 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+
+    &-icon {
+      background: var(--field-02);
+      border-radius: 8px;
+      display: flex;
+      padding: 4px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .icon {
+        --icon-size: 20px;
+        --color: var(--icon-contrast);
+      }
+    }
+
+    &-description {
+      color: var(--text-tertiary);
+      @include font($body-0);
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-row-gap: 8px;
+  }
+}
