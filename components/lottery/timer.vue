@@ -1,8 +1,8 @@
 <template>
   <div class="lottery-timer">
-    <div class="lottery-timer__header">{{ activeLotteryTitle || plannedLotteryTitle }}</div>
+    <div v-if="props.label" class="lottery-timer__header">{{ props.label }}</div>
     
-    <div class="lottery-timer__body" v-if="!isAlmostDone">
+    <div class="lottery-timer__body">
       <span class="lottery-timer__item">
         <span class="lottery-timer__item-digit" :class="{ 'has-null': days === 0 }">
           {{ format(days) }}
@@ -47,30 +47,29 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILotteryPage } from "~/types";
+  import type { ILotteryCommon } from "~/types";
   import { getContent } from "#imports";
-  import dayjs from "dayjs";
   
-  const { days, hours, minutes, seconds, startTimer, isAlmostDone } = useTimer();
+  const props = defineProps<{
+    label: string;
+    date: string;
+  }>();
+  
+  const { days, hours, minutes, seconds, startTimer } = useTimer();
   
   const format = (value: string | number): number | string => (Number(value) < 10 ? `0${ value }` : value);
   
-  const lotteryContent = ref<Maybe<ILotteryPage>>(inject('lotteryContent'));
-  const defaultLocaleLotteryContent = ref<Maybe<ILotteryPage>>(inject('defaultLocaleLotteryContent'));
+  const lotteryContent = ref<Maybe<ILotteryCommon>>(inject('lotteryContent'));
+  const lotteryDefaultContent = ref<Maybe<ILotteryCommon>>(inject('lotteryDefaultContent'));
   
-  const activeLotteryTitle = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'banner.timer.activeTitle'));
-  const plannedLotteryTitle = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'banner.timer.plannedTitle'));
-  const daysLabel = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'banner.timer.daysLabel'));
-  const hoursLabel = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'banner.timer.hoursLabel'));
-  const minutesLabel = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'banner.timer.minutesLabel'));
-  const secondsLabel = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'banner.timer.secondsLabel'));
+  const daysLabel = computed(() => getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.timer.daysLabel'));
+  const hoursLabel = computed(() => getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.timer.hoursLabel'));
+  const minutesLabel = computed(() => getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.timer.minutesLabel'));
+  const secondsLabel = computed(() => getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.timer.secondsLabel'));
   
-  onMounted(() => {
-    const now = dayjs()
-    const expiredAt = now.add(40, 'minute').format();
-    
-    startTimer(expiredAt);
-  });
+  watch(() => props.date, (newDate) => {
+    if (newDate) startTimer(newDate);
+  }, { immediate: true });
 </script>
 
 <style src="~/assets/styles/components/lottery/timer.scss" lang="scss"/>

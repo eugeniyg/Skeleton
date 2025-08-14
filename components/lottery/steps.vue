@@ -14,26 +14,25 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILotteryPage } from "~/types";
+  import type { ILotteryCommon, ILotteryPage } from "~/types";
   import { getContent } from "#imports";
   
-  const lotteryContent = ref<Maybe<ILotteryPage>>(inject('lotteryContent'));
-  const defaultLocaleLotteryContent = ref<Maybe<ILotteryPage>>(inject('defaultLocaleLotteryContent'));
+  const lotteryContent = ref<Maybe<ILotteryCommon>>(inject('lotteryContent'));
+  const lotteryDefaultContent = ref<Maybe<ILotteryCommon>>(inject('lotteryDefaultContent'));
   
-  const label = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'howGet.label'));
-  const image = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'howGet.image'));
+  const label = computed(() => getContent(lotteryContent.value, lotteryDefaultContent.value, 'howGet.label'));
+  const image = computed(() => getContent(lotteryContent.value, lotteryDefaultContent.value, 'howGet.image'));
   
   const howGetItems = computed(() => {
-    if (lotteryContent.value?.howGet || defaultLocaleLotteryContent.value?.howGet) {
+    if (lotteryContent.value?.howGet || lotteryDefaultContent.value?.howGet) {
       return [
-        getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'howGet.first'),
-        getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'howGet.second'),
-        getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'howGet.third'),
+        getContent(lotteryContent.value, lotteryDefaultContent.value, 'howGet.first'),
+        getContent(lotteryContent.value, lotteryDefaultContent.value, 'howGet.second'),
+        getContent(lotteryContent.value, lotteryDefaultContent.value, 'howGet.third'),
       ];
     }
     return [];
   });
-
 </script>
 
 <style src="~/assets/styles/components/lottery/steps.scss" lang="scss"/>

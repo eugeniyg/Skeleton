@@ -208,8 +208,8 @@
     "content": "wheel-reward",
     "onlyLogged": true
   },
-  "lottery-prizes": {
-    "component": "lottery-prizes",
-    "content": "lottery-prizes"
+  "lottery-reward": {
+    "component": "lottery-reward",
+    "content": "lottery-reward"
   }
 }

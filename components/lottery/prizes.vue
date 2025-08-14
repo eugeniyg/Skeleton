@@ -17,17 +17,13 @@
           class="lottery-prizes__list-item"
           :class="{ 'is-numeric': !item.image }"
         >
-          
-          
           <div v-if="!item.image" class="lottery-prizes__list-item-icon">
             {{ index + 1 }}
           </div>
           <atomic-picture else class="lottery-prizes__list-item-icon" :src="item.image" />
           
           <div class="lottery-prizes__list-item-content">
-            <div class="lottery-prizes__list-item-title">
-              {{ item.title }}
-            </div>
+            <div class="lottery-prizes__list-item-title">{{ item.title }}</div>
             
             <div
               class="lottery-prizes__list-item-description"
@@ -47,42 +43,38 @@
   import { marked } from "marked";
   const { openModal } = useModalStore();
   
-  const lotteryContent = ref<Maybe<ILotteryPage>>(inject('lotteryContent'));
-  const defaultLocaleLotteryContent = ref<Maybe<ILotteryPage>>(inject('defaultLocaleLotteryContent'));
+  const lotteryPageContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageContent'));
+  const lotteryPageDefaultContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageDefaultContent'));
   
-  const title = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'prizes.title'));
+  const title = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.title')) || '';
   
   const description = computed(() => {
-    const contentText = getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'prizes.description');
-    if (!contentText) return '';
-    return DOMPurify.sanitize(marked.parseInline(contentText) as string, { FORBID_TAGS: ['style'] });
+    const contentText = getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.description');
+    return DOMPurify.sanitize(marked.parseInline(contentText || '') as string, { FORBID_TAGS: ['style'] });
   });
   
-  const image = computed(() => getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'prizes.image'));
+  const image = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.image'));
   
   const listItems = computed(() => {
-    return getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'prizes.items') || [];
+    return getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.items') || [];
   });
   
   const formatItemDescription = (description: string, addLink: boolean) => {
     if (!description) return '';
-    let textContent = description;
     if (addLink) {
-      const linkText = getContent(lotteryContent.value, defaultLocaleLotteryContent.value, 'prizes.lastItemLinkText');
-      const linkHtml = `<span class="lottery-prizes__custom-link">${linkText}</span>`;
-      textContent = description + ' ' + linkHtml;
+      const linkText = getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.lastItemLinkText');
+      description += ` <span class="lottery-prizes__custom-link">${linkText}</span>`;
     }
-    return DOMPurify.sanitize(marked.parseInline(textContent) as string, { FORBID_TAGS: ['style'] });
+    return DOMPurify.sanitize(marked.parseInline(description) as string, { FORBID_TAGS: ['style'] });
   };
   
   const prizesRoot = useTemplateRef<HTMLElement | null>('prizes-root');
   
   const lastPrizeLinkClickHandler = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.classList.contains('lottery-prizes__custom-link')) {
-      e.preventDefault();
-      openModal('lottery-prizes');
-    }
+    const el = e.target as HTMLElement;
+    if (!el.classList?.contains('lottery-prizes__custom-link')) return;
+    e.preventDefault();
+    openModal('lottery-reward');
   };
   
   onMounted(() => {

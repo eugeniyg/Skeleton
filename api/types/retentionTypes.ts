@@ -303,3 +303,48 @@ export interface IWheelSpinIssuedEvent {
     amount: number;
   };
 }
+
+export interface ILotteryRequest {
+  page?: number;
+  perPage?: number;
+  state?: number[];
+  identity?: string[];
+  currency?: string;
+}
+
+export interface ILotteryResponse {
+  data: ILottery[];
+  meta: IPaginationMeta;
+}
+
+export interface ILotteryTicketPrice {
+  isoCode: string | null;
+  minAmount: number;
+  price: number;
+}
+
+export interface ILotteryPrize {
+  type: number;
+  title: string;
+  bonusId: string | null;
+  order: number;
+}
+
+export interface ILottery {
+  id: string;
+  title: string;
+  identity: string;
+  state: number;
+  segmentsExcluded: boolean;
+  currencies: string[] | null;
+  minPlayerTickets: number;
+  maxPlayerTickets: number | null;
+  ticketPrices: ILotteryTicketPrice[];
+  maxPlayerPrizes: number;
+  prizes: ILotteryPrize[];
+  ticketsCount: number;
+  startAt: string;
+  endAt: string;
+  createdAt: string;
+  updatedAt: string;
+}

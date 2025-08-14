@@ -13,7 +13,7 @@
   }
 
   &__container {
-    max-width: 1376px;
+    max-width: 1280px;
     position: relative;
     margin: 0 auto;
     padding: 24px 16px 0;
@@ -50,6 +50,7 @@
     @include font($heading-7);
     color: var(--text-primary);
     --line-height: auto;
+    word-break: break-word;
 
     @include media(l) {
       padding-right: 0;
@@ -60,6 +61,7 @@
   &__sub-title {
     margin-top: 8px;
     color: var(--text-accent);
+    word-break: break-word;
     @include font($heading-uppercase-3);
 
     @include media(l) {
@@ -114,6 +116,10 @@
     min-width: 288px;
     margin-top: 40px;
 
+    @include media(md) {
+      max-width: 288px;
+    }
+
     &::before {
       content: '';
       position: absolute;
@@ -142,6 +148,7 @@
         text-align: center;
         position: relative;
         z-index: 1;
+        word-break: break-word;
       }
 
       img {
@@ -230,6 +237,15 @@
       .icon {
         --icon-size: 20px;
         --color: var(--icon-inverse);
+      }
+    }
+  }
+
+  &__custom-link {
+    cursor: pointer;
+    @include use-hover {
+      &:hover {
+        color: var(--button-text-primary-hover);
       }
     }
   }
