@@ -47,7 +47,7 @@
     </div>
 
     <div class="referral-card__footer">
-      <referral-link-copy v-if="showCreateLink" :value="createLink" name="copyRefLink" />
+      <referral-link-copy v-if="profile?.referralCode" :value="createLink" name="copyRefLink" />
       <referral-unavailable-msg v-if="isReferralDisabled" />
     </div>
   </div>
@@ -101,12 +101,13 @@
     return total && max && total >= max ? 'is-accent' : null;
   });
 
-  const showCreateLink = computed(() => {
-    const hasCode = Boolean(profile.value?.referralCode);
-    const total = props.totalCount ?? 0;
-    const max = referralMaxCount.value ?? 0;
-    return hasCode && total < max;
-  });
+  // const showCreateLink = computed(() => {
+  //   //const hasCode = Boolean(profile.value?.referralCode);
+  //   // const hasCode = Boolean(null);
+  //   // const total = props.totalCount ?? 0;
+  //   // const max = referralMaxCount.value ?? 0;
+  //   // return hasCode && total <= max;
+  // });
 
   const createLink = computed(() => {
     if (!window) return '';

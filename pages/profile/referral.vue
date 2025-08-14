@@ -4,8 +4,10 @@
 
     <referral-info />
 
-    <referral-card :total-count="pageMeta?.totalRows || 0" />
-
+    <client-only>
+      <referral-card :total-count="pageMeta?.totalRows || 0" />
+    </client-only>
+    
     <referral-how-it-works v-if="isHowItWorksExist" />
 
     <referral-rewards v-if="referralsList.length && !isLoading" :referralsList :pageMeta @change-Page="changePage" />

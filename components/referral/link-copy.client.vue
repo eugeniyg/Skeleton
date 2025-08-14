@@ -92,13 +92,20 @@
   const updateDisplayValue = async () => {
     displayValue.value = getDisplayValue();
   };
-
-  watch(() => props.value, updateDisplayValue);
+  
+  watch(
+    () => props.value,
+    async () => {
+      await nextTick();
+      await updateDisplayValue();
+    },
+    { immediate: true }
+  );
 
   const debouncedUpdateDisplayValue = debounce(updateDisplayValue, 200);
 
   onMounted(() => {
-    updateDisplayValue();
+    //updateDisplayValue();
     window.addEventListener('resize', debouncedUpdateDisplayValue);
   });
 
