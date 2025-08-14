@@ -105,7 +105,6 @@
   const debouncedUpdateDisplayValue = debounce(updateDisplayValue, 200);
 
   onMounted(() => {
-    //updateDisplayValue();
     window.addEventListener('resize', debouncedUpdateDisplayValue);
   });
 
