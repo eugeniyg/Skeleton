@@ -100,15 +100,7 @@
     const max = referralMaxCount.value ?? 0;
     return total && max && total >= max ? 'is-accent' : null;
   });
-
-  // const showCreateLink = computed(() => {
-  //   //const hasCode = Boolean(profile.value?.referralCode);
-  //   // const hasCode = Boolean(null);
-  //   // const total = props.totalCount ?? 0;
-  //   // const max = referralMaxCount.value ?? 0;
-  //   // return hasCode && total <= max;
-  // });
-
+  
   const createLink = computed(() => {
     if (!window) return '';
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
