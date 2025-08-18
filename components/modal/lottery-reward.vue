@@ -41,8 +41,7 @@
   
   const contentParams = {
     contentCollection: 'lotteries',
-    where: ['pageIdentity', '=', props.lotteryIdentity],
-    isPage: true,
+    where: ['pageIdentity', '=', props.lotteryIdentity]
   };
   const { getContentData } = useContentLogic<ILotteryPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(`lottery-${props.lotteryIdentity}`, getContentData);

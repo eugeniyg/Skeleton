@@ -138,26 +138,20 @@
       item => item.isoCode === activeAccount.value?.currency
     ) || [];
     
-    const ticketPricesHasBaseCurrency = props.lotteryData?.ticketPrices?.filter(
+    const ticketPricesHasEquivalentCurrency = props.lotteryData?.ticketPrices?.filter(
       item => item.isoCode === null
     ) || [];
     
-    if (ticketPricesHasActiveCurrency.length || ticketPricesHasBaseCurrency.length) {
-      let depositAmount = '';
-      
-      if (!ticketPricesHasActiveCurrency.length && ticketPricesHasBaseCurrency.length) {
-        const { minAmount } = findMinimalDeposit(ticketPricesHasBaseCurrency);
-        const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
-        depositAmount = `${ amount } ${ currency }`;
-        
-      } else if (ticketPricesHasActiveCurrency.length) {
-        const { minAmount, isoCode } = findMinimalDeposit(ticketPricesHasActiveCurrency);
-        const { amount, currency } = formatBalance(isoCode, minAmount);
-        depositAmount = `${ amount } ${ currency }`;
-      }
-      return depositAmountLabel.value?.replace('{amount}', depositAmount);
+    if (!ticketPricesHasActiveCurrency.length && !ticketPricesHasEquivalentCurrency.length) {
+      return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
     }
-    return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
+    
+    const { minAmount } = ticketPricesHasActiveCurrency.length
+      ? findMinimalDeposit(ticketPricesHasActiveCurrency)
+      : findMinimalDeposit(ticketPricesHasEquivalentCurrency);
+    const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
+    const depositAmount = `${ amount } ${ currency }`;
+    return depositAmountLabel.value?.replace('{amount}', depositAmount);
   };
   
   const minDepositForActiveCurrency = ref();
