@@ -76,6 +76,8 @@ export const spinWheel = async (wheelId: string): Promise<IWheelSector> => {
 };
 
 export const getLotteriesPricing = async (currency: string): Promise<any> => {
-  const { data } = await apiGuestInstance(`/api/retention/lotteries/pricing/${currency}`);
+  const { data } = await apiAuthInstance('/api/retention/lotteries/pricing', {
+    params: { currency }
+  });
   return data;
 }

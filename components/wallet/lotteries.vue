@@ -7,7 +7,7 @@
       
       <form-input-toggle
         class="wallet-lotteries__decline"
-        name="bonus-decline"
+        name="lottery-decline"
         :value="lotteryDeclined"
         @change="declineLotteries"
         @click="showConfirm"
@@ -16,15 +16,14 @@
       </form-input-toggle>
     </div>
     
-    <div class="wallet-lotteries__list">
-      <template v-if="!lotteryDeclined" v-for="(lottery, index) in lotteriesList" :key="lottery.id">
-        <wallet-lottery
-          :lottery-info="lottery"
-          :selected="checkSelected(lottery, index === 0)"
-          @lottery-change="onTicketChange(lottery)"
-          :disabled="false"
-        />
-      </template>
+    <div class="wallet-lottery__tickets" v-if="!lotteryDeclined">
+      <wallet-lottery
+        v-for="(lottery, index) in tickets" :key="lottery.id"
+        :lottery-info="lottery"
+        :selected="checkSelected(lottery, index === 0)"
+        @lottery-change="onTicketChange(lottery)"
+        :disabled="false"
+      />
     </div>
     
   </div>
@@ -73,10 +72,16 @@
   }
   
   
+  const tickets = ref([]);
+  
+  
+  
   onMounted(async () => {
-    const { data } = await getLotteriesPricing(activeAccount.value?.currency);
-    console.log(data)
+    const ticketsData = await getLotteriesPricing(activeAccount.value?.currency);
+    tickets.value = ticketsData;
+    console.log('Tickets fetched:', tickets);
   })
+  
 </script>
 
 <style src="~/assets/styles/components/wallet/lotteries.scss" lang="scss" />
