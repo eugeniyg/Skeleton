@@ -20,15 +20,22 @@
           <div v-if="!item.image" class="lottery-prizes__list-item-icon">
             {{ index + 1 }}
           </div>
-          <atomic-picture else class="lottery-prizes__list-item-icon" :src="item.image" />
+          <atomic-picture v-else class="lottery-prizes__list-item-icon" :src="item.image" />
           
           <div class="lottery-prizes__list-item-content">
             <div class="lottery-prizes__list-item-title">{{ item.title }}</div>
             
-            <div
-              class="lottery-prizes__list-item-description"
-              v-html="formatItemDescription(item.description, index === listItems.length - 1)"
-            />
+            <div class="lottery-prizes__list-item-description">
+              {{ item.description }}
+              <span
+                v-if="index === listItems.length - 1"
+                class="lottery-prizes__custom-link"
+                @click="openModal('lottery-reward', { props: { lotteryIdentity }})"
+              >
+                {{ linkText }}
+              </span>
+            </div>
+          
           </div>
         </li>
       </ul>
@@ -42,6 +49,9 @@
   import DOMPurify from "isomorphic-dompurify";
   import { marked } from "marked";
   const { openModal } = useModalStore();
+  
+  const route = useRoute();
+  const lotteryIdentity = route.params.lotteryIdentity as string;
   
   const lotteryPageContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageContent'));
   const lotteryPageDefaultContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageDefaultContent'));
@@ -59,31 +69,7 @@
     return getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.items') || [];
   });
   
-  const formatItemDescription = (description: string, addLink: boolean) => {
-    if (!description) return '';
-    if (addLink) {
-      const linkText = getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.lastItemLinkText');
-      description += ` <span class="lottery-prizes__custom-link">${linkText}</span>`;
-    }
-    return DOMPurify.sanitize(marked.parseInline(description) as string, { FORBID_TAGS: ['style'] });
-  };
-  
-  const prizesRoot = useTemplateRef<HTMLElement | null>('prizes-root');
-  
-  const lastPrizeLinkClickHandler = (e: MouseEvent) => {
-    const el = e.target as HTMLElement;
-    if (!el.classList?.contains('lottery-prizes__custom-link')) return;
-    e.preventDefault();
-    openModal('lottery-reward');
-  };
-  
-  onMounted(() => {
-    prizesRoot.value?.addEventListener('click', lastPrizeLinkClickHandler);
-  });
-  
-  onUnmounted(() => {
-    prizesRoot.value?.removeEventListener('click', lastPrizeLinkClickHandler);
-  });
+  const linkText = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'prizes.lastItemLinkText') || '');
 </script>
 
 <style src="~/assets/styles/components/lottery/prizes.scss" lang="scss"/>

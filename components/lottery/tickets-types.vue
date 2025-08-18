@@ -4,12 +4,11 @@
     <div v-if="description" class="lottery-tickets-types__description" v-html="description"/>
     
     <div v-if="tickets?.length" class="lottery-tickets-types__tickets">
-      <template v-for="(ticket, index) in tickets" :key="index">
-        <lottery-ticket
-          v-bind="ticket"
-          :type="index <= 2 ? 'vertical' : 'horizontal'"
-        />
-      </template>
+      <lottery-ticket
+        v-for="(ticket, index) in tickets" :key="index"
+        v-bind="ticket"
+        :type="index < 3 ? 'vertical' : 'horizontal'"
+      />
     </div>
   </div>
 </template>
@@ -20,7 +19,9 @@
   import DOMPurify from "isomorphic-dompurify";
   import { getContent } from "#imports";
   import { marked } from "marked";
-  import { formatBalance } from '@skeleton/helpers/amountMethods';
+  import { formatBalance, getEquivalentFromBase } from '@skeleton/helpers/amountMethods';
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
   
   const props = defineProps<{
     items: ILotteryTicketPrice[];
@@ -28,9 +29,7 @@
   
   const lotteryPageContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageContent'));
   const lotteryPageDefaultContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageDefaultContent'));
-  
-  const globalStore = useGlobalStore();
-  const { baseCurrency } = storeToRefs(globalStore);
+  const tickets = ref();
   
   const title = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'ticketsTypes.title') || '');
   
@@ -39,9 +38,9 @@
     return DOMPurify.sanitize(marked.parseInline(contentText || '') as string, { FORBID_TAGS: ['style'] });
   });
   
-  const tickets = computed(() => {
+  const getTickets = () => {
     return props.items.map(item => {
-      const currencyCode = item.isoCode || baseCurrency.value?.code;
+      const currencyCode = item.isoCode || activeAccount.value?.currency;
       const minAmountBalance = formatBalance(currencyCode, item.minAmount);
       
       return {
@@ -50,7 +49,13 @@
         price: formatBalance(currencyCode, item.price).amount,
       };
     })?.sort((a, b) => parseFloat(b.minAmount) - parseFloat(a.minAmount))
-  });
+  };
+  
+  watch(() => props.items, (newValue) => {
+    if (newValue) {
+      tickets.value = getTickets();
+    }
+  }, { immediate: true })
 </script>
 
 <style src="~/assets/styles/components/lottery/tickets-types.scss" lang="scss"/>

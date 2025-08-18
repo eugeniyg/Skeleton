@@ -36,18 +36,16 @@
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['lotteryReward']>;
     defaultLocaleData: Maybe<IModalsContent['lotteryReward']>;
+    lotteryIdentity: string;
   }>();
-  
-  const route = useRoute();
-  const lotteryIdentity = route.params.lotteryIdentity as string;
   
   const contentParams = {
     contentCollection: 'lotteries',
-    where: ['pageIdentity', '=', lotteryIdentity],
+    where: ['pageIdentity', '=', props.lotteryIdentity],
     isPage: true,
   };
   const { getContentData } = useContentLogic<ILotteryPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent } = await useLazyAsyncData(`lottery-${props.lotteryIdentity}`, getContentData);
   
   const { closeModal } = useModalStore();
   

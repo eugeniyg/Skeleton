@@ -52,7 +52,7 @@
   
   const props = defineProps<{
     label: string;
-    date: string;
+    date?: string;
   }>();
   
   const { days, hours, minutes, seconds, startTimer } = useTimer();

@@ -1,35 +1,33 @@
 <template>
   <div>
-  <not-found v-if="pageNotFound"/>
-  <transition name="fade" mode="out-in" v-else-if="lotteryData">
-    <div class="lottery-page">
-      <div class="lottery">
-        <lottery-banner :lotteryData/>
-        
-        <lottery-prizes/>
-        
-        <lottery-steps/>
-        
-        <client-only>
+    <not-found v-if="pageNotFound"/>
+    <transition name="fade" mode="out-in" v-else-if="status === 'success'">
+      <div class="lottery-page">
+        <div class="lottery">
+          <lottery-banner :lotteryData/>
+          
+          <lottery-prizes/>
+          
+          <lottery-steps/>
+          
           <lottery-tickets-types
             v-if="ticketPrices.length && showTicketsTypes"
             :items="ticketPrices"
           />
-        </client-only>
-        
-        <terms-expander
-          v-if="termsData?.title && termsData?.content"
-          v-bind="termsData"
-        />
-        
-        <atomic-seo-text
-          v-if="lotteryPageContent?.pageMeta?.seoText"
-          v-bind="lotteryPageContent.pageMeta.seoText"
-        />
+          
+          <terms-expander
+            v-if="termsData?.title && termsData?.content"
+            v-bind="termsData"
+          />
+          
+          <atomic-seo-text
+            v-if="lotteryPageContent?.pageMeta?.seoText"
+            v-bind="lotteryPageContent.pageMeta.seoText"
+          />
+        </div>
+      
       </div>
-    
-    </div>
-  </transition>
+    </transition>
   </div>
 </template>
 
@@ -70,23 +68,28 @@
   const { getContentData: getCommonContent } = useContentLogic<ILotteryCommon>(lotteryCommonContentParams);
   
   const requestId = useId();
-  const { data, status } = await useLazyAsyncData(
+  const { data, status, error } = await useLazyAsyncData(
     requestId,
     async () => {
+      const isServer = import.meta.server;
+      let hasLottery = false;
+      
       const [lotteryPageContent, lotteryContent, lotteryData] = await Promise.all([
         getPageContent(),
         getCommonContent(),
         getLotteryData(),
       ]);
       
+      hasLottery = !!lotteryData;
       const emptyContent = !lotteryPageContent.currentLocaleData && !lotteryContent?.defaultLocaleData;
-      if (emptyContent || !lotteryData) throw createError({ statusCode: 404, statusMessage: 'Lottery Not Found' });
-      return { lotteryPageContent, lotteryContent, lotteryData };
+      
+      if (emptyContent || !hasLottery) throw createError({ statusCode: 404, statusMessage: 'Lottery Not Found' });
+      return isServer ? { lotteryPageContent, lotteryContent, hasLottery } : { lotteryPageContent, lotteryContent, lotteryData, hasLottery };
     },
-    {
-      deep: true,
-    }
+    { deep: true }
   );
+  
+  if (error.value) throw createError(error.value);
 
   const lotteryPageContent = computed(() => data.value?.lotteryPageContent?.currentLocaleData);
   const lotteryPageDefaultContent = computed(() => data.value?.lotteryPageContent?.defaultLocaleData);
@@ -121,7 +124,7 @@
   
   const pageNotFound = computed(() => {
     const emptyContent = !lotteryPageContent.value && !lotteryPageDefaultContent.value;
-    const lotteryNotFound = !lotteryData.value;
+    const lotteryNotFound = !data.value?.hasLottery;
     return ['error', 'success'].includes(status.value) && (emptyContent || lotteryNotFound);
   });
   
@@ -137,6 +140,9 @@
     }
   };
   
-  watch(isLoggedIn, updateLotteryData);
-  watch(activeAccount, updateLotteryData);
+  watch([isLoggedIn, activeAccount], updateLotteryData);
+  
+  onMounted(() => {
+    if (!lotteryData.value) updateLotteryData();
+  })
 </script>

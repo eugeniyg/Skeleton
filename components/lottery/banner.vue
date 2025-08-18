@@ -26,8 +26,12 @@
         
         <div class="lottery-banner__info-body">
           <div class="lottery-banner__info-body-title">
-            <span class="lottery-banner__custom-link" v-if="!isLoggedIn" @click="openModal('sign-in');">{{ loginRequiredLabel }}</span>
-            <span v-else>{{ minDepositForActiveCurrency }}</span>
+            <template v-if="!isLoggedIn">
+              <div class="lottery-banner__custom-link" @click="openModal('sign-in');">
+                {{ loginRequiredLabel }}
+              </div>
+            </template>
+            <div v-else>{{ minDepositForActiveCurrency }}</div>
           </div>
           <div v-if="additionalLabel" class="lottery-banner__info-body-sub-title">{{ additionalLabel }}</div>
           <div class="lottery-banner__info-divider"/>
@@ -35,13 +39,15 @@
         </div>
         
         <div class="lottery-banner__info-footer">
-          <div class="lottery-banner__info-footer-title" v-if="!isLoggedIn">
+          <client-only>
+            <div class="lottery-banner__info-footer-title" v-if="!isLoggedIn">
               {{ getContent(lotteryContent, lotteryDefaultContent, 'banner.info.guestTicketsCountLabel') }}
-          </div>
-          <div class="lottery-banner__info-footer-title" v-else>
-            <atomic-icon id="lottery"/>
-            <div class="lottery-banner__info-footer-title-text" v-html="ticketsCountLabel"/>
-          </div>
+            </div>
+            <div class="lottery-banner__info-footer-title" v-else>
+              <atomic-icon id="lottery"/>
+              <div class="lottery-banner__info-footer-title-text" v-html="ticketsCountLabel"/>
+            </div>
+          </client-only>
         </div>
       </div>
     </div>
@@ -123,7 +129,11 @@
     return DOMPurify.sanitize(marked.parseInline(contentText || '') as string, { FORBID_TAGS: ['style'] });
   });
   
-  const minDepositForActiveCurrency = computed(() => {
+  const depositAmountLabel = computed(() => {
+    return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.depositAmountLabel') || '';
+  });
+  
+  const getMinDepositForActiveCurrency = () => {
     const ticketPricesHasActiveCurrency = props.lotteryData?.ticketPrices?.filter(
       item => item.isoCode === activeAccount.value?.currency
     ) || [];
@@ -133,22 +143,30 @@
     ) || [];
     
     if (ticketPricesHasActiveCurrency.length || ticketPricesHasBaseCurrency.length) {
-      let textContent = getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.depositAmountLabel') || '';
       let depositAmount = '';
       
       if (!ticketPricesHasActiveCurrency.length && ticketPricesHasBaseCurrency.length) {
         const { minAmount } = findMinimalDeposit(ticketPricesHasBaseCurrency);
         const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
-        depositAmount = `${amount} ${currency}`;
+        depositAmount = `${ amount } ${ currency }`;
+        
       } else if (ticketPricesHasActiveCurrency.length) {
         const { minAmount, isoCode } = findMinimalDeposit(ticketPricesHasActiveCurrency);
         const { amount, currency } = formatBalance(isoCode, minAmount);
-        depositAmount = `${amount} ${currency}`;
+        depositAmount = `${ amount } ${ currency }`;
       }
-      return textContent.replace('{amount}', depositAmount);
+      return depositAmountLabel.value?.replace('{amount}', depositAmount);
     }
     return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
-  });
+  };
+  
+  const minDepositForActiveCurrency = ref();
+  
+  watch(() => props.lotteryData, (newValue) => {
+    if (newValue) {
+      minDepositForActiveCurrency.value = getMinDepositForActiveCurrency();
+    }
+  }, { immediate: true });
   
   const timerDate = computed(() => {
     return props.lotteryData?.state === 2 ? props.lotteryData?.startAt : props.lotteryData?.endAt;
@@ -158,7 +176,7 @@
     const contentKey = props.lotteryData?.state === 2
       ? 'plannedTitle'
       : 'activeTitle';
-      return getContent(lotteryContent.value, lotteryDefaultContent.value, `banner.timer.${contentKey}`) || ''
+    return getContent(lotteryContent.value, lotteryDefaultContent.value, `banner.timer.${ contentKey }`) || ''
   });
   
   const additionalLabel = computed(() => {
