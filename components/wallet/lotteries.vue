@@ -33,13 +33,14 @@
 <script setup lang="ts">
   import type { IWalletModal } from "~/types";
   import { getContent } from "#imports";
+  import { getLotteriesPricing } from '@skeleton/api/retention';
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   
   const { openModal } = useModalStore();
   const walletStore = useWalletStore();
-  const { activeAccountType } = storeToRefs(walletStore);
+  const { activeAccountType, activeAccount } = storeToRefs(walletStore);
   
   const lotteriesList = [
     {
@@ -70,6 +71,12 @@
       openModal('cancel-lottery');
     }
   }
+  
+  
+  onMounted(async () => {
+    const { data } = await getLotteriesPricing(activeAccount.value?.currency);
+    console.log(data)
+  })
 </script>
 
 <style src="~/assets/styles/components/wallet/lotteries.scss" lang="scss" />
