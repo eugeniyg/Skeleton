@@ -25,14 +25,15 @@
         </div>
         
         <div class="lottery-banner__info-body">
-          <div class="lottery-banner__info-body-title">
-            <template v-if="!isLoggedIn">
-              <div class="lottery-banner__custom-link" @click="openModal('sign-in');">
+          <client-only>
+            <div class="lottery-banner__info-body-title">
+              <div v-if="!isLoggedIn" class="lottery-banner__custom-link" @click="openModal('sign-in');">
                 {{ loginRequiredLabel }}
               </div>
-            </template>
-            <div v-else>{{ minDepositForActiveCurrency }}</div>
-          </div>
+              <div v-else>{{ minDepositForActiveCurrency }}</div>
+            </div>
+          </client-only>
+          
           <div v-if="additionalLabel" class="lottery-banner__info-body-sub-title">{{ additionalLabel }}</div>
           <div class="lottery-banner__info-divider"/>
           <lottery-timer :date="timerDate" :label="timerLabel"/>
@@ -133,60 +134,31 @@
     return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.depositAmountLabel') || '';
   });
   
-  /*
   const getMinDepositForActiveCurrency = () => {
-    const ticketPricesHasActiveCurrency = props.lotteryData?.ticketPrices?.filter(
-      item => item.isoCode === activeAccount.value?.currency
+    const ticketPrices = props.lotteryData?.ticketPrices || [];
+    const currencies = props.lotteryData?.currencies;
+    const activeCurrency = activeAccount.value?.currency || '';
+    
+    const ticketPricesHasActiveCurrency = ticketPrices.filter(
+      item => item.isoCode === activeCurrency
     ) || [];
     
-    const ticketPricesHasEquivalentCurrency = props.lotteryData?.ticketPrices?.filter(
+    const ticketPricesHasEquivalentCurrency = ticketPrices.filter(
       item => item.isoCode === null
     ) || [];
     
-    if (!ticketPricesHasActiveCurrency.length && !ticketPricesHasEquivalentCurrency.length) {
-      return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
-    }
+    const supportsAllCurrencies = currencies === null && ticketPricesHasEquivalentCurrency.length > 0;
+    const supportsActiveCurrency = Array.isArray(currencies) && currencies.includes(activeCurrency) && ticketPricesHasActiveCurrency.length > 0;
     
-    const { minAmount } = ticketPricesHasActiveCurrency.length
-      ? findMinimalDeposit(ticketPricesHasActiveCurrency)
-      : findMinimalDeposit(ticketPricesHasEquivalentCurrency);
-    const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
-    const depositAmount = `${ amount } ${ currency }`;
-    return depositAmountLabel.value?.replace('{amount}', depositAmount);
-  };
-  
-  */
-  
-  
-  const getMinDepositForActiveCurrency = () => {
-    const lotteryHasActiveCurrency = props.lotteryData?.currencies?.includes(activeAccount.value?.currency);
-    
-    const ticketPricesHasActiveCurrency = props.lotteryData?.ticketPrices?.filter(
-      item => item.isoCode === activeAccount.value?.currency
-    ) || [];
-    
-    const ticketPricesHasEquivalentCurrency = props.lotteryData?.ticketPrices?.filter(
-      item => item.isoCode === null
-    ) || [];
-    
-    
-    if (!lotteryHasActiveCurrency) {
-      return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
-    }
-    
-    const hasActiveCurrencyPrices = ticketPricesHasActiveCurrency.length > 0;
-    const hasEquivalentCurrencyPrices = ticketPricesHasEquivalentCurrency.length > 0;
-    
-    if (hasActiveCurrencyPrices || hasEquivalentCurrencyPrices) {
-      const prices = hasActiveCurrencyPrices ? ticketPricesHasActiveCurrency : ticketPricesHasEquivalentCurrency;
+    if (supportsAllCurrencies || supportsActiveCurrency) {
+      const prices = supportsActiveCurrency ? ticketPricesHasActiveCurrency : ticketPricesHasEquivalentCurrency;
       const { minAmount } = findMinimalDeposit(prices);
-      const { amount, currency } = formatBalance(activeAccount.value?.currency || '', minAmount);
+      const { amount, currency } = formatBalance(activeCurrency, minAmount);
       const depositAmount = `${amount} ${currency}`;
       return depositAmountLabel.value?.replace('{amount}', depositAmount);
     }
     
-    return '';
-    
+    return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
   };
   
   const minDepositForActiveCurrency = ref();
@@ -214,11 +186,17 @@
   
   const ticketsCountLabel = computed(() => {
     let contentText = '';
-    if (props.lotteryData?.minPlayerTickets !== undefined && props.lotteryData?.maxPlayerTickets !== undefined) {
-      contentText = getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.ticketsCountLabel')
-        ?.replace('{ticketsCount}', String(props.lotteryData.minPlayerTickets))
-        ?.replace('{totalTicketsCount}', String(props.lotteryData.maxPlayerTickets));
+    
+    if (props.lotteryData?.maxPlayerTickets !== null && props.lotteryData?.maxPlayerTickets !== undefined) {
+      contentText = getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.ticketsCountWithTotal')
+        ?.replace('{ticketsCount}', String(props.lotteryData.ticketsCount))
+        ?.replace('{totalTicketsCount}', String(props.lotteryData.maxPlayerTickets)
+      );
+    } else {
+      contentText = getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.ticketsCountWithoutTotal')
+        ?.replace('{ticketsCount}', String(props.lotteryData?.ticketsCount || 0));
     }
+    
     return DOMPurify.sanitize(marked.parseInline(contentText || '') as string, { FORBID_TAGS: ['style'] });
   });
 </script>
