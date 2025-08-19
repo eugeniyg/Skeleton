@@ -35,9 +35,7 @@
       />
       
       <atomic-divider />
-      <wallet-lotteries :amount="amountValue"/>
-      
-      <pre>{{ props.amountMax }}</pre>
+      <wallet-lotteries :amount="props.amountMin"/>
 
       <atomic-divider />
       <wallet-bonuses crypto />

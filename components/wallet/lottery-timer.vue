@@ -28,7 +28,10 @@
 <script setup lang="ts">
   import type { IWalletModal } from "~/types";
   import { getContent } from "#imports";
-  import dayjs from "dayjs";
+  
+  const props = defineProps<{
+    date?: string;
+  }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
@@ -41,12 +44,9 @@
     return getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.timerFinishedLabel') || '';
   });
   
-  onMounted(() => {
-    const now = dayjs()
-    const expiredAt = now.add(40, 'minute').format();
-    
-    startTimer(expiredAt);
-  });
+  watch(() => props.date, (newDate) => {
+    if (newDate) startTimer(newDate);
+  }, { immediate: true });
 </script>
 
 <style src="~/assets/styles/components/wallet/lottery-timer.scss" lang="scss"/>

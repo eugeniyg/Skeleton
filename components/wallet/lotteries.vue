@@ -16,7 +16,7 @@
       </form-input-toggle>
     </div>
     
-    <div class="wallet-lottery__tickets" v-if="!lotteryDeclined">
+    <div class="wallet-lotteries__list" v-if="!lotteryDeclined">
       <wallet-lottery
         v-for="(lottery, index) in tickets" :key="lottery.id"
         :lottery-info="lottery"
