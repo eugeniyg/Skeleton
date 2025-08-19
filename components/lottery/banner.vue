@@ -94,7 +94,7 @@
     return null;
   });
   
-  const lotteryTitle = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'title'));
+  const lotteryTitle = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.title'));
   const lotterySubTitle = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.subTitle'));
   const lotteryDescription = computed(() => {
     const contentText = getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.description');
@@ -133,6 +133,7 @@
     return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.depositAmountLabel') || '';
   });
   
+  /*
   const getMinDepositForActiveCurrency = () => {
     const ticketPricesHasActiveCurrency = props.lotteryData?.ticketPrices?.filter(
       item => item.isoCode === activeAccount.value?.currency
@@ -152,6 +153,40 @@
     const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
     const depositAmount = `${ amount } ${ currency }`;
     return depositAmountLabel.value?.replace('{amount}', depositAmount);
+  };
+  
+  */
+  
+  
+  const getMinDepositForActiveCurrency = () => {
+    const lotteryHasActiveCurrency = props.lotteryData?.currencies?.includes(activeAccount.value?.currency);
+    
+    const ticketPricesHasActiveCurrency = props.lotteryData?.ticketPrices?.filter(
+      item => item.isoCode === activeAccount.value?.currency
+    ) || [];
+    
+    const ticketPricesHasEquivalentCurrency = props.lotteryData?.ticketPrices?.filter(
+      item => item.isoCode === null
+    ) || [];
+    
+    
+    if (!lotteryHasActiveCurrency) {
+      return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
+    }
+    
+    const hasActiveCurrencyPrices = ticketPricesHasActiveCurrency.length > 0;
+    const hasEquivalentCurrencyPrices = ticketPricesHasEquivalentCurrency.length > 0;
+    
+    if (hasActiveCurrencyPrices || hasEquivalentCurrencyPrices) {
+      const prices = hasActiveCurrencyPrices ? ticketPricesHasActiveCurrency : ticketPricesHasEquivalentCurrency;
+      const { minAmount } = findMinimalDeposit(prices);
+      const { amount, currency } = formatBalance(activeAccount.value?.currency || '', minAmount);
+      const depositAmount = `${amount} ${currency}`;
+      return depositAmountLabel.value?.replace('{amount}', depositAmount);
+    }
+    
+    return '';
+    
   };
   
   const minDepositForActiveCurrency = ref();

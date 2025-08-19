@@ -13,6 +13,7 @@
           <lottery-tickets-types
             v-if="ticketPrices.length && showTicketsTypes"
             :items="ticketPrices"
+            :currencies="lotteryData?.currencies"
           />
           
           <terms-expander

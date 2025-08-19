@@ -31,6 +31,7 @@
 
   &__content {
     align-items: flex-start;
+    flex-grow: 1;
 
     @include media(l) {
       padding: 96px 48px 104px 0;

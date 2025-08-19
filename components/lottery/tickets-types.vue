@@ -25,6 +25,7 @@
   
   const props = defineProps<{
     items: ILotteryTicketPrice[];
+    currencies?: string[];
   }>();
   
   const lotteryPageContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageContent'));
@@ -39,10 +40,30 @@
   });
   
   const getTickets = () => {
-    return props.items.map(item => {
+    const lotteryHasActiveCurrency = props.currencies?.includes(activeAccount.value?.currency);
+    
+    const ticketPricesHasActiveCurrency = props.items?.filter(
+      item => item.isoCode === activeAccount.value?.currency
+    ) || [];
+    
+    const ticketPricesHasEquivalentCurrency = props.items?.filter(
+      item => item.isoCode === null
+    ) || [];
+    
+    const hasActiveCurrencyPrices = ticketPricesHasActiveCurrency.length > 0;
+    const hasEquivalentCurrencyPrices = ticketPricesHasEquivalentCurrency.length > 0;
+    
+    const resultPrices: ILotteryTicketPrice[] =
+      lotteryHasActiveCurrency && hasActiveCurrencyPrices
+        ? ticketPricesHasActiveCurrency
+        : hasEquivalentCurrencyPrices
+          ? ticketPricesHasEquivalentCurrency
+          : [];
+    
+    return resultPrices?.map(item => {
       const currencyCode = item.isoCode || activeAccount.value?.currency;
       const minAmountBalance = formatBalance(currencyCode, item.minAmount);
-      
+
       return {
         currency: minAmountBalance.currency,
         minAmount: minAmountBalance.amount,
