@@ -187,7 +187,7 @@
   });
   
   const additionalLabel = computed(() => {
-    return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.additionalLabel') || '';
+    return getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.info.additionalLabel') || '';
   });
   
   const ticketsCountLabel = computed(() => {
