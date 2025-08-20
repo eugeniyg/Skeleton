@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import type { ILotteryPage } from "~/types";
-  import type { ILotteryTicketPrice } from "@skeleton/api/types";
+  import type { ILottery, ILotteryTicketPrice } from "@skeleton/api/types";
   import DOMPurify from "isomorphic-dompurify";
   import { getContent } from "#imports";
   import { marked } from "marked";
@@ -24,8 +24,7 @@
   const { activeAccount } = storeToRefs(walletStore);
   
   const props = defineProps<{
-    items: ILotteryTicketPrice[];
-    currencies?: string[];
+    lotteryData?: ILottery;
   }>();
   
   const lotteryPageContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageContent'));
@@ -40,19 +39,30 @@
   });
   
   const getTickets = () => {
-    const ticketPricesHasActiveCurrency = props.items?.filter(
-      item => item.isoCode === activeAccount.value?.currency
+    const activeCurrency = activeAccount.value?.currency || '';
+    const ticketPrices = props.lotteryData?.ticketPrices || [];
+    const currencies = props.lotteryData?.currencies;
+    
+    const ticketPricesHasActiveCurrency = ticketPrices.filter(
+      item => item.isoCode === activeCurrency
     ) || [];
     
-    const lotteryHasActiveCurrency = props.currencies?.includes(activeAccount.value?.currency);
-    const hasActiveCurrencyPrices = ticketPricesHasActiveCurrency.length > 0;
+    const ticketPricesHasEquivalentCurrency = ticketPrices.filter(
+      item => item.isoCode === null
+    ) || [];
     
-    const resultPrices: ILotteryTicketPrice[] = lotteryHasActiveCurrency && hasActiveCurrencyPrices
-      ? ticketPricesHasActiveCurrency
-      : props.items;
+    let resultPrices: ILotteryTicketPrice[];
+    
+    if (ticketPricesHasActiveCurrency.length) {
+      resultPrices = ticketPricesHasActiveCurrency;
+    } else if (currencies === null && ticketPricesHasEquivalentCurrency.length) {
+      resultPrices = ticketPricesHasEquivalentCurrency;
+    } else {
+      resultPrices = ticketPrices;
+    }
     
     return resultPrices?.map(item => {
-      const currencyCode = item.isoCode || activeAccount.value?.currency;
+      const currencyCode = item.isoCode || activeCurrency;
       const minAmountBalance = formatBalance(currencyCode, item.minAmount);
 
       return {
@@ -63,7 +73,7 @@
     })?.sort((a, b) => parseFloat(b.minAmount) - parseFloat(a.minAmount))
   };
   
-  watch(() => props.items, (newValue) => {
+  watch(() => props.lotteryData, (newValue) => {
     if (newValue) {
       tickets.value = getTickets();
     }

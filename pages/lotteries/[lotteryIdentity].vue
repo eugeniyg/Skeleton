@@ -12,8 +12,7 @@
           
           <lottery-tickets-types
             v-if="ticketPrices.length && showTicketsTypes"
-            :items="ticketPrices"
-            :currencies="lotteryData?.currencies"
+            :lotteryData
           />
           
           <terms-expander
@@ -109,14 +108,10 @@
   });
   
   const showTicketsTypes = computed(() => {
-    const currency = activeAccount.value?.currency;
-    
     const pricesForCurrency = lotteryData.value?.ticketPrices;
     
     return (
       isLoggedIn.value &&
-      currency &&
-      lotteryData.value?.currencies?.includes(currency) &&
       pricesForCurrency.length > 1
     );
   });

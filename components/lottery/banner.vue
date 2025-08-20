@@ -156,10 +156,10 @@
     
     if (ticketPricesHasActiveCurrency.length) {
       minAmount = findMinimalDeposit(ticketPricesHasActiveCurrency).minAmount;
-    } else if (currencies === null) {
-      minAmount = findMinimalDeposit(ticketPrices).minAmount;
-    } else {
+    } else if (currencies === null && ticketPricesHasEquivalentCurrency.length) {
       minAmount = findMinimalDeposit(ticketPricesHasEquivalentCurrency).minAmount;
+    } else {
+      minAmount = findMinimalDeposit(ticketPrices).minAmount;
     }
     
     const { amount, currency } = formatBalance(activeCurrency, minAmount);
