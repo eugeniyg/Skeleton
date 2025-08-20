@@ -111,9 +111,7 @@
   const showTicketsTypes = computed(() => {
     const currency = activeAccount.value?.currency;
     
-    const pricesForCurrency = lotteryData.value?.ticketPrices?.filter(
-      (item: ILotteryTicketPrice) => item.isoCode === currency || item.isoCode === null
-    ) || [];
+    const pricesForCurrency = lotteryData.value?.ticketPrices;
     
     return (
       isLoggedIn.value &&

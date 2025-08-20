@@ -19,7 +19,7 @@
   import DOMPurify from "isomorphic-dompurify";
   import { getContent } from "#imports";
   import { marked } from "marked";
-  import { formatBalance, getEquivalentFromBase } from '@skeleton/helpers/amountMethods';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   
@@ -40,25 +40,16 @@
   });
   
   const getTickets = () => {
-    const lotteryHasActiveCurrency = props.currencies?.includes(activeAccount.value?.currency);
-    
     const ticketPricesHasActiveCurrency = props.items?.filter(
       item => item.isoCode === activeAccount.value?.currency
     ) || [];
     
-    const ticketPricesHasEquivalentCurrency = props.items?.filter(
-      item => item.isoCode === null
-    ) || [];
-    
+    const lotteryHasActiveCurrency = props.currencies?.includes(activeAccount.value?.currency);
     const hasActiveCurrencyPrices = ticketPricesHasActiveCurrency.length > 0;
-    const hasEquivalentCurrencyPrices = ticketPricesHasEquivalentCurrency.length > 0;
     
-    const resultPrices: ILotteryTicketPrice[] =
-      lotteryHasActiveCurrency && hasActiveCurrencyPrices
-        ? ticketPricesHasActiveCurrency
-        : hasEquivalentCurrencyPrices
-          ? ticketPricesHasEquivalentCurrency
-          : [];
+    const resultPrices: ILotteryTicketPrice[] = lotteryHasActiveCurrency && hasActiveCurrencyPrices
+      ? ticketPricesHasActiveCurrency
+      : props.items;
     
     return resultPrices?.map(item => {
       const currencyCode = item.isoCode || activeAccount.value?.currency;

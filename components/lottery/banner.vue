@@ -135,9 +135,14 @@
   });
   
   const getMinDepositForActiveCurrency = () => {
-    const ticketPrices = props.lotteryData?.ticketPrices || [];
     const currencies = props.lotteryData?.currencies;
     const activeCurrency = activeAccount.value?.currency || '';
+    
+    if (currencies !== null && !currencies?.includes(activeCurrency)) {
+      return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
+    }
+    
+    const ticketPrices = props.lotteryData?.ticketPrices || [];
     
     const ticketPricesHasActiveCurrency = ticketPrices.filter(
       item => item.isoCode === activeCurrency
@@ -147,18 +152,19 @@
       item => item.isoCode === null
     ) || [];
     
-    const supportsAllCurrencies = currencies === null && ticketPricesHasEquivalentCurrency.length > 0;
-    const supportsActiveCurrency = Array.isArray(currencies) && currencies.includes(activeCurrency) && ticketPricesHasActiveCurrency.length > 0;
+    let minAmount: number;
     
-    if (supportsAllCurrencies || supportsActiveCurrency) {
-      const prices = supportsActiveCurrency ? ticketPricesHasActiveCurrency : ticketPricesHasEquivalentCurrency;
-      const { minAmount } = findMinimalDeposit(prices);
-      const { amount, currency } = formatBalance(activeCurrency, minAmount);
-      const depositAmount = `${amount} ${currency}`;
-      return depositAmountLabel.value?.replace('{amount}', depositAmount);
+    if (ticketPricesHasActiveCurrency.length) {
+      minAmount = findMinimalDeposit(ticketPricesHasActiveCurrency).minAmount;
+    } else if (currencies === null) {
+      minAmount = findMinimalDeposit(ticketPrices).minAmount;
+    } else {
+      minAmount = findMinimalDeposit(ticketPricesHasEquivalentCurrency).minAmount;
     }
     
-    return getContent(lotteryContent.value, lotteryDefaultContent.value, 'banner.info.notAvailableCurrencyLabel') || '';
+    const { amount, currency } = formatBalance(activeCurrency, minAmount);
+    const depositAmount = `${ amount } ${ currency }`;
+    return depositAmountLabel.value?.replace('{amount}', depositAmount);
   };
   
   const minDepositForActiveCurrency = ref();
