@@ -3,7 +3,7 @@
     <div class="lottery-tickets-types__title">{{ title }}</div>
     <div v-if="description" class="lottery-tickets-types__description" v-html="description"/>
     
-    <div v-if="tickets?.length" class="lottery-tickets-types__tickets">
+    <div class="lottery-tickets-types__tickets">
       <lottery-ticket
         v-for="(ticket, index) in tickets" :key="index"
         v-bind="ticket"
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import type { ILotteryPage } from "~/types";
-  import type { ILottery, ILotteryTicketPrice } from "@skeleton/api/types";
+  import type { ILotteryTicketPrice } from "@skeleton/api/types";
   import DOMPurify from "isomorphic-dompurify";
   import { getContent } from "#imports";
   import { marked } from "marked";
@@ -24,7 +24,7 @@
   const { activeAccount } = storeToRefs(walletStore);
   
   const props = defineProps<{
-    lotteryData?: ILottery;
+    tickets?: ILotteryTicketPrice[];
   }>();
   
   const lotteryPageContent = ref<Maybe<ILotteryPage>>(inject('lotteryPageContent'));
@@ -39,30 +39,8 @@
   });
   
   const getTickets = () => {
-    const activeCurrency = activeAccount.value?.currency || '';
-    const ticketPrices = props.lotteryData?.ticketPrices || [];
-    const currencies = props.lotteryData?.currencies;
-    
-    const ticketPricesHasActiveCurrency = ticketPrices.filter(
-      item => item.isoCode === activeCurrency
-    ) || [];
-    
-    const ticketPricesHasEquivalentCurrency = ticketPrices.filter(
-      item => item.isoCode === null
-    ) || [];
-    
-    let resultPrices: ILotteryTicketPrice[];
-    
-    if (ticketPricesHasActiveCurrency.length) {
-      resultPrices = ticketPricesHasActiveCurrency;
-    } else if (currencies === null && ticketPricesHasEquivalentCurrency.length) {
-      resultPrices = ticketPricesHasEquivalentCurrency;
-    } else {
-      resultPrices = ticketPrices;
-    }
-    
-    return resultPrices?.map(item => {
-      const currencyCode = item.isoCode || activeCurrency;
+    return props.tickets?.map(item => {
+      const currencyCode = item.isoCode || activeAccount.value?.currency;
       const minAmountBalance = formatBalance(currencyCode, item.minAmount);
 
       return {
@@ -73,7 +51,7 @@
     })?.sort((a, b) => parseFloat(b.minAmount) - parseFloat(a.minAmount))
   };
   
-  watch(() => props.lotteryData, (newValue) => {
+  watch(() => props.tickets, (newValue) => {
     if (newValue) {
       tickets.value = getTickets();
     }

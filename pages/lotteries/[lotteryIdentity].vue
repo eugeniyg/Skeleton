@@ -11,8 +11,8 @@
           <lottery-steps/>
           
           <lottery-tickets-types
-            v-if="ticketPrices.length && showTicketsTypes"
-            :lotteryData
+            v-if="tickets.length > 1"
+            :tickets="tickets"
           />
           
           <terms-expander
@@ -107,14 +107,31 @@
     return lotteryData.value?.ticketPrices || [];
   });
   
-  const showTicketsTypes = computed(() => {
-    const pricesForCurrency = lotteryData.value?.ticketPrices;
+  const tickets = ref<ILotteryTicketPrice[]>([]);
+  
+  const getTicketsType = (): ILotteryTicketPrice[] => {
+    if (!isLoggedIn.value) return [];
+    const currencies = lotteryData.value?.currencies;
+    const activeCurrency = activeAccount.value?.currency || '';
     
-    return (
-      isLoggedIn.value &&
-      pricesForCurrency.length > 1
+    if (currencies !== null && !currencies?.includes(activeCurrency)) return [];
+    
+    const ticketPricesHasActiveCurrency = ticketPrices.value?.filter(
+      item => item.isoCode === activeCurrency
     );
-  });
+    
+    const ticketPricesHasEquivalentCurrency = ticketPrices.value?.filter(
+      item => item.isoCode === null
+    );
+    
+    if (ticketPricesHasActiveCurrency.length) {
+      return ticketPricesHasActiveCurrency;
+    } else if (currencies === null && ticketPricesHasEquivalentCurrency.length) {
+      return ticketPricesHasEquivalentCurrency
+    }
+    
+    return ticketPricesHasEquivalentCurrency;
+  };
   
   const pageNotFound = computed(() => {
     const emptyContent = !lotteryPageContent.value && !lotteryPageDefaultContent.value;
@@ -135,6 +152,12 @@
   };
   
   watch([isLoggedIn, activeAccount], updateLotteryData);
+  
+  watch(() => lotteryData.value, (newValue) => {
+    if (newValue) {
+      tickets.value = getTicketsType();
+    }
+  }, { immediate: true });
   
   onMounted(() => {
     if (!lotteryData.value) updateLotteryData();
