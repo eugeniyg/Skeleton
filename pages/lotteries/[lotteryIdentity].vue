@@ -8,7 +8,7 @@
           
           <lottery-prizes/>
           
-          <lottery-steps/>
+          <lottery-steps v-if="lotteryContent?.howGet?.showBlock"/>
           
           <lottery-tickets-types
             v-if="tickets.length > 1"

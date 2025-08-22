@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILotteryCommon, ILotteryPage } from "~/types";
+  import type { ILotteryCommon } from "~/types";
   import { getContent } from "#imports";
   
   const lotteryContent = ref<Maybe<ILotteryCommon>>(inject('lotteryContent'));

@@ -95,7 +95,7 @@
     return null;
   });
   
-  const lotteryTitle = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.title'));
+  const lotteryTitle = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'title'));
   const lotterySubTitle = computed(() => getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.subTitle'));
   const lotteryDescription = computed(() => {
     const contentText = getContent(lotteryPageContent.value, lotteryPageDefaultContent.value, 'banner.description');
