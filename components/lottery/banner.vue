@@ -152,15 +152,9 @@
       item => item.isoCode === null
     ) || [];
     
-    let minAmount: number;
-    
-    if (ticketPricesHasActiveCurrency.length) {
-      minAmount = findMinimalDeposit(ticketPricesHasActiveCurrency).minAmount;
-    } else if (currencies === null && ticketPricesHasEquivalentCurrency.length) {
-      minAmount = findMinimalDeposit(ticketPricesHasEquivalentCurrency).minAmount;
-    } else {
-      minAmount = findMinimalDeposit(ticketPrices).minAmount;
-    }
+    const { minAmount } = ticketPricesHasActiveCurrency.length && ticketPricesHasEquivalentCurrency.length ?
+      findMinimalDeposit(ticketPricesHasActiveCurrency) :
+      findMinimalDeposit(ticketPricesHasEquivalentCurrency);
     
     const { amount, currency } = formatBalance(activeCurrency, minAmount);
     const depositAmount = `${ amount } ${ currency }`;
