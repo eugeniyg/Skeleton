@@ -255,7 +255,7 @@
       fields: props.fields.length
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
         : undefined,
-      lotteryId: lotteryDeclined.value ? undefined : lotteryStore.selectedLotteryId,
+      lotteryId: lotteryDeclined.value ? null : lotteryStore.selectedLotteryId,
     };
   };
 

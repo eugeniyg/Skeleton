@@ -1,11 +1,11 @@
 interface ILotteryState {
   lotteryDeclined: boolean;
-  selectedLotteryId: string | undefined;
+  selectedLotteryId: string | null;
 }
 
 export const useLotteryStore = defineStore('lotteryStore', {
   state: (): ILotteryState => ({
     lotteryDeclined: false,
-    selectedLotteryId: undefined,
+    selectedLotteryId: null,
   }),
 })
