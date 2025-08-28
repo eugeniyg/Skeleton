@@ -170,7 +170,7 @@
     1000,
     { leading: false }
   );
-
+  
   const infoContent = computed(() => {
     const contentText = getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info');
     if (!contentText) return '';
@@ -179,6 +179,10 @@
 
   watch(selectedDepositBonus, (newValue: IBonus | undefined) => {
     debounceDeposit(newValue);
+  });
+  
+  watch(selectedLotteryId, newValue => {
+    if (newValue) debounceDeposit(undefined);
   });
 
   watch(bonusDeclined, newValue => {
