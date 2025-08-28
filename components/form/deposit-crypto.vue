@@ -68,7 +68,7 @@
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
   
   const lotteryStore = useLotteryStore();
-  const { lotteryDeclined } = storeToRefs(lotteryStore);
+  const { lotteryDeclined, selectedLotteryId } = storeToRefs(lotteryStore);
 
   const bonusStore = useBonusStore();
   const { selectedDepositBonus, bonusDeclined, showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
@@ -125,7 +125,7 @@
       fields: undefined,
       bonusId: selectedDepositBonus.value?.id,
       isBonusDecline: bonusDeclined.value,
-      lotteryId: lotteryDeclined.value ? undefined : lotteryStore.selectedLotteryId,
+      lotteryId: lotteryDeclined.value ? undefined : selectedLotteryId.value,
     },
   });
 
