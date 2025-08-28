@@ -60,6 +60,7 @@ export interface IRequestDeposit extends Record<string, any> {
   bonusId?: string;
   isBonusDecline: boolean;
   country: Maybe<string>;
+  lotteryId?: string;
 }
 
 export interface IRequestWithdraw extends Record<string, any> {

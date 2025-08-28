@@ -21,8 +21,7 @@
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'cancelButton') }}
         </button-base>
 
-        <button-base type="ghost" size="xs" :is-disabled="bonusesUpdating" @click="emit('confirm')">
-          <atomic-spinner :is-shown="props.bonusesUpdating" />
+        <button-base type="ghost" size="xs" :is-disabled="lotteryUpdating" @click="confirmAction">
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'confirmButton') }}
         </button-base>
       </div>
@@ -32,19 +31,27 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IPlayerBonus } from '~/skeleton/api/types';
-  import type { IConfirmBonusActionModal } from '~/types';
-  import { getContent } from '#imports';
+  import type { ICancelLotteryModal } from '~/types';
+  import { getContent, useLotteryStore } from '#imports';
 
   const props = defineProps<{
-    currentLocaleData: Maybe<IConfirmBonusActionModal>;
-    defaultLocaleData: Maybe<IConfirmBonusActionModal>;
-    bonusesUpdating?: boolean;
-    bonusInfo?: IPlayerBonus;
+    currentLocaleData: Maybe<ICancelLotteryModal>;
+    defaultLocaleData: Maybe<ICancelLotteryModal>;
+    lotteryDeclined: boolean;
+    lotteryUpdating?: boolean;
   }>();
-
-  const emit = defineEmits(['confirm']);
+  
+  const lotteryStore = useLotteryStore();
+  const { lotteryDeclined } = storeToRefs(lotteryStore);
+  
   const { closeModal } = useModalStore();
+  
+  const confirmAction =  () => {
+    closeModal('cancel-lottery');
+    setTimeout(() => {
+      lotteryDeclined.value = true;
+    }, 500)
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/cancel-lottery.scss" lang="scss" />

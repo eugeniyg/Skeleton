@@ -7,19 +7,25 @@
     <wallet-lottery-timer :date="props.lotteryInfo.endAt || props.lotteryInfo.startAt"/>
     
     <div class="wallet-lottery__hints">
-<!--      <pre style="color:white">{{ label }}</pre>-->
-<!--      -->
-<!--      <pre style="color:green">{{ activeEquivalentAccount }}</pre>-->
       
-      <div class="wallet-lottery__hint">
-        <span class="wallet-lottery__hint-label">You will get <b>1 ticket(s)</b>,</span>
-        <span class="wallet-lottery__hint-label has-accent">min amount 0.00000001 mBTC</span>
+      <div class="wallet-lottery__hint" v-if="activeAccountType === 'crypto'">
+        <div
+          class="wallet-lottery__hint-label"
+          v-html="DOMPurify.sanitize(marked.parse(minAmountForCrypto || '') as string, { FORBID_TAGS: ['style'] })"
+        />
       </div>
       
-      <div class="wallet-lottery__hint">
-        <div class="wallet-lottery__hint-label has-deposit">Deposit 0.00000007 mBTC to get <b>3 tickets</b></div>
-        <atomic-picture class="wallet-lottery__hint-icon" src="/img/uploads/wallet-lottery-icon.png"/>
+      <div class="wallet-lottery__hint" v-else-if="activeAccountType === 'fiat'">
+        <div class="wallet-lottery__hint-label"
+             v-html="DOMPurify.sanitize(marked.parseInline(firstLabel || '') as string, { FORBID_TAGS: ['style'] })"
+        />
         
+        <div v-if="depositLabel" class="wallet-lottery__hint-second-label">
+          <div
+            v-html="DOMPurify.sanitize(marked.parseInline(depositLabel || '') as string, { FORBID_TAGS: ['style'] })"
+          />
+          <atomic-picture class="wallet-lottery__hint-icon" src="/img/uploads/wallet-lottery-icon.png"/>
+        </div>
       </div>
     </div>
   </div>
@@ -28,44 +34,22 @@
 <script setup lang="ts">
   import type { IWalletModal } from "~/types";
   import { getContent } from "#imports";
-  import { getEquivalentFromBase } from "@skeleton/helpers/amountMethods";
   
   const walletStore = useWalletStore();
-  const { activeAccount, activeAccountType, activeEquivalentAccount, showEquivalentBalance } = storeToRefs(walletStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+  import DOMPurify from "isomorphic-dompurify";
+  import { marked } from "marked";
   
   const props = defineProps<{
     lotteryInfo: any; // Replace 'any' with the actual type of lotteryInfo
     selected: boolean;
     disabled: boolean;
-    amountValue?: number;
+    amountValue: number;
   }>();
-  
-  
-  const { amount, currency } = getEquivalentFromBase(20, activeAccount.value?.currency);
-  
-  console.log('amount', amount, 'currency', currency);
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  
-  
-  const activeFiatLabel = computed(() => {
-    return getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.fiatActiveLabel') || '';
-  });
-  
-  const activeCryptoLabel = computed(() => {
-    return getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.cryptoActiveLabel') || '';
-  });
-  
-  
-  const label = computed(() => {
-    const contentKey = activeAccountType.value === 'fiat' ? activeFiatLabel.value : activeCryptoLabel.value;
-  });
-  
-  
-  
-  
-  
   
   const emit = defineEmits(['lottery-change']);
   
@@ -73,6 +57,81 @@
     if (props.disabled || props.selected) return;
     emit('lottery-change');
   };
+  
+  interface ILotteryTicketPrice {
+    isoCode: string;
+    minAmount: number;
+    price: number;
+  }
+  
+  const getTicketsType = (): ILotteryTicketPrice[] => {
+    const currencies = props.lotteryInfo?.currencies;
+    const activeCurrency = activeAccount.value?.currency || '';
+    const ticketPrices = props.lotteryInfo?.ticketPrices || [];
+    
+    if (currencies !== null && !currencies?.includes(activeCurrency)) return [];
+    
+    const ticketPricesHasActiveCurrency = ticketPrices.filter(
+      item => item.isoCode === activeCurrency
+    );
+    
+    const ticketPricesHasEquivalentCurrency = ticketPrices.filter(
+      item => item.isoCode === null
+    );
+    
+    if (ticketPricesHasActiveCurrency.length) return ticketPricesHasActiveCurrency;
+    if (currencies === null && ticketPricesHasEquivalentCurrency.length) return ticketPricesHasEquivalentCurrency;
+    
+    return ticketPricesHasEquivalentCurrency;
+  };
+  
+  const getMinAmount = (): ILotteryTicketPrice => {
+    return getTicketsType()?.reduce((obj, current) =>
+      current.minAmount < obj.minAmount ? current : obj
+    )
+  };
+  
+  const getMaxMinAmount = (): ILotteryTicketPrice => {
+    return getTicketsType().reduce((obj, current) =>
+      current.minAmount > obj.minAmount ? current : obj
+    )
+  };
+  
+  const getTicketsLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.getTicketsLabel'))
+  
+  const minAmountLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.minAmountLabel'));
+  
+  const isHighlightFirstLabel = computed(() => !props.amountValue || props.amountValue < getMinAmount().minAmount);
+  
+  const firstLabel = computed(() => {
+    const result = getMinAmount();
+    const { currency, amount } = formatBalance(activeAccount.value?.currency, result.minAmount);
+    const amountLabel = isHighlightFirstLabel.value ? `<span class="has-accent">${ minAmountLabel.value }</span>` : minAmountLabel.value;
+    
+    return `${ getTicketsLabel.value } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
+  })
+  
+  const depositLabel = computed(() => {
+    const hasMaxMinAmount = getMaxMinAmount();
+    if (props.amountValue < hasMaxMinAmount.minAmount) {
+      const hasMinAmount = getMinAmount();
+      const label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.depositLabel');
+      
+      const { currency, amount } = formatBalance(activeAccount.value?.currency, hasMinAmount.minAmount);
+      const ticketsCount = Math.floor(hasMinAmount.minAmount / hasMinAmount.price);
+      
+      return label?.replace('{amount}', `${ amount } ${ currency }`)?.replace('{ticketsCount}', `${ ticketsCount }`);
+    }
+    return '';
+  })
+  
+  const minAmountForCrypto = computed(() => {
+    if (!props.lotteryInfo?.ticketPrices) return '';
+    
+    const result = getMinAmount();
+    const { currency, amount } = formatBalance(activeAccount.value?.currency, result.minAmount);
+    return `${ getTicketsLabel.value } ${ minAmountLabel.value?.replace('{amount}', `${ amount } ${ currency }`) }`;
+  });
 </script>
 
 <style src="~/assets/styles/components/wallet/lottery.scss" lang="scss"/>

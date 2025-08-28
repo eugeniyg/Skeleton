@@ -31,9 +31,7 @@
   }
 
   &__hint {
-    display: flex;
-    align-items: center;
-    grid-column-gap: 4px;
+    display: block;
 
     &-icon {
       display: flex;
@@ -59,14 +57,19 @@
     @include font($body-0);
     color: var(--text-tertiary);
 
+    p {
+      margin: 0;
+    }
 
-    &.has-accent {
+    .has-accent {
       color: var(--text-alert);
     }
+  }
 
-    &.has-deposit {
-      color: var(--text-warning);
-    }
+  &__hint-second-label {
+    @include font($body-0);
+    color: var(--text-warning);
+    display: flex;
   }
 
   .input-lottery-radio {

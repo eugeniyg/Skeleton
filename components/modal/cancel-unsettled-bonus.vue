@@ -26,7 +26,7 @@
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'confirmButton') }}
         </button-base>
 
-        <button-base type="ghost" size="xs" :is-disabled="bonusesUpdating" @click="emit('confirm')">
+        <button-base type="ghost" size="xs" :is-disabled="props.bonusesUpdating" @click="emit('confirm')">
           <atomic-spinner :is-shown="props.bonusesUpdating" />
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'cancelButton') }}
         </button-base>

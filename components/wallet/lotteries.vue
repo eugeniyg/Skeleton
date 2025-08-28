@@ -10,7 +10,6 @@
         name="lottery-decline"
         :value="lotteryDeclined"
         @change="declineLotteries"
-        @click="showConfirm"
       >
         {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.declineLabel') }}
       </form-input-toggle>
@@ -18,11 +17,13 @@
     
     <div class="wallet-lotteries__list" v-if="!lotteryDeclined">
       <wallet-lottery
-        v-for="(lottery, index) in tickets" :key="lottery.id"
+        v-for="lottery in lotteryList"
+        :key="lottery.id"
         :lottery-info="lottery"
-        :selected="checkSelected(lottery, index === 0)"
+        :selected="selectedLotteryId === lottery.id"
         @lottery-change="onTicketChange(lottery)"
         :disabled="false"
+        :amount-value="props.amount ? parseFloat(props.amount) : undefined"
       />
     </div>
     
@@ -33,54 +34,49 @@
   import type { IWalletModal } from "~/types";
   import { getContent } from "#imports";
   import { getLotteriesPricing } from '@skeleton/api/retention';
+  import { useLotteryStore } from "@skeleton/stores/useLotteryStore";
+  
+  const lotteryStore = useLotteryStore();
+  const { lotteryDeclined, selectedLotteryId } = storeToRefs(lotteryStore);
+  
+  const props = defineProps<{
+    amount?: number;
+  }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   
   const { openModal } = useModalStore();
   const walletStore = useWalletStore();
-  const { activeAccountType, activeAccount } = storeToRefs(walletStore);
-  
-  const lotteriesList = [
-    {
-      id: "1"
-    },
-    {
-      id: "2"
-    },
-  ];
-  
-  const lotteryDeclined = ref(false);
-  
-  const checkSelected = (ticket: any, selectFirst: boolean) => {
-    return selectFirst;
-  };
+  const { activeAccount } = storeToRefs(walletStore);
   
   const onTicketChange = (lottery: any) => {
-    // Logic to handle ticket change
-    console.log('Ticket changed:', lottery);
+    selectedLotteryId.value = lottery.id;
   };
   
   const declineLotteries = () => {
-    //lotteryDeclined.value = !lotteryDeclined.value;
+    if (!lotteryDeclined.value) {
+      openModal('cancel-lottery', { props: { lotteryDeclined: false } });
+      return;
+    }
+    lotteryDeclined.value = !lotteryDeclined.value;
   };
   
-  const showConfirm = () => {
-    if (!lotteryDeclined.value) {
-      openModal('cancel-lottery');
+  const lotteryList = ref<any[]>([]);
+  
+  const getLotteryData = async () => {
+    try {
+      const lotteryData = await getLotteriesPricing(activeAccount.value?.currency);
+      lotteryList.value = lotteryData;
+      selectedLotteryId.value = lotteryData[0]?.id;
+    } catch (error) {
+      console.error('Error fetching lottery data:', error);
     }
   }
   
-  
-  const tickets = ref([]);
-  
-  
-  
-  onMounted(async () => {
-    const ticketsData = await getLotteriesPricing(activeAccount.value?.currency);
-    tickets.value = ticketsData;
-    console.log('Tickets fetched:', tickets);
-  })
+  watch(() => props.amount, () => {
+    getLotteryData();
+  }, { immediate: true });
   
 </script>
 

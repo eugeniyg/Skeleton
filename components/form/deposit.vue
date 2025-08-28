@@ -106,6 +106,9 @@
     walletDepositBonus,
     depositBonuses,
   } = storeToRefs(bonusStore);
+  
+  const lotteryStore = useLotteryStore();
+  const { lotteryDeclined } = storeToRefs(lotteryStore);
 
   const getFieldComponent = (field: IPaymentField): string => {
     const fieldComponent = fieldsMap[field.key]?.component;
@@ -252,6 +255,7 @@
       fields: props.fields.length
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
         : undefined,
+      lotteryId: lotteryDeclined.value ? undefined : lotteryStore.selectedLotteryId,
     };
   };
 
