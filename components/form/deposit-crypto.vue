@@ -133,7 +133,7 @@
     state.params.bonusId = selectedDepositBonus.value?.id;
     state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;
     state.params.country = requestPaymentMethodsRegion.value;
-    state.params.lotteryId = lotteryDeclined.value ? null : lotteryStore.selectedLotteryId;
+    state.params.lotteryId = lotteryDeclined.value ? undefined : lotteryStore.selectedLotteryId;
 
     try {
       const depositResponse = await depositAccount(state.params);
