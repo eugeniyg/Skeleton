@@ -262,6 +262,21 @@
     const params = getRequestParams();
     windowReference.value = null;
 
+    if (props.processingType === 'sdk') {
+      const LinkSdk = await import('@meshconnect/web-link-sdk');
+      const linkToken = params.fields?.meshConnectLinkToken as string;
+      console.log(linkToken);
+      const meshLink =
+        LinkSdk.createLink({
+          clientId: 'd03bd185-b79c-4a73-b0dd-08ddce68a08d',
+          onIntegrationConnected: (payload) => {},
+        })
+
+      meshLink.openLink(linkToken);
+      isSending.value = false;
+      return;
+    }
+
     if (props.processingType === 'form') {
       windowReference.value = window.open();
     }
