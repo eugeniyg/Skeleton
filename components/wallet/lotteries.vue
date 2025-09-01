@@ -8,14 +8,15 @@
       <form-input-toggle
         class="wallet-lotteries__decline"
         name="lottery-decline"
-        :value="lotteryDeclined"
+        :value="isLotteryDeclined"
         @change="declineLotteries"
+        :loading="isLotteryUpdating"
       >
         {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.declineLabel') }}
       </form-input-toggle>
     </div>
     
-    <div class="wallet-lotteries__list" v-if="!lotteryDeclined">
+    <div class="wallet-lotteries__list" v-if="!isLotteryDeclined && lotteryList.length > 0">
       <wallet-lottery
         v-for="lottery in lotteryList"
         :key="lottery.id"
@@ -23,7 +24,7 @@
         :selected="selectedLotteryId === lottery.id"
         @lottery-change="onTicketChange(lottery)"
         :disabled="false"
-        :amount-value="props.amount ? parseFloat(props.amount) : undefined"
+        :amount-value="props.amount"
       />
     </div>
     
@@ -35,12 +36,18 @@
   import { getContent } from "#imports";
   import { getLotteriesPricing } from '@skeleton/api/retention';
   import { useLotteryStore } from "@skeleton/stores/useLotteryStore";
+  import { changeProfileData } from '@skeleton/api/profile';
+  import type { ILottery } from "@skeleton/api/types";
+  
+  const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
   
   const lotteryStore = useLotteryStore();
-  const { lotteryDeclined, selectedLotteryId } = storeToRefs(lotteryStore);
+  const { selectedLotteryId, isLotteryUpdating } = storeToRefs(lotteryStore);
+  const { setProfileData } = useProfileStore()
   
   const props = defineProps<{
-    amount?: number;
+    amount: number | string;
   }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
@@ -50,34 +57,45 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   
-  const onTicketChange = (lottery: any) => {
+  const lotteryList = ref<ILottery[]>([]);
+  
+  const isLotteryDeclined = computed(() => {
+   return !profile.value?.inLottery;
+  });
+  
+  const onTicketChange = (lottery: ILottery) => {
     selectedLotteryId.value = lottery.id;
   };
   
-  const declineLotteries = () => {
-    if (!lotteryDeclined.value) {
-      openModal('cancel-lottery', { props: { lotteryDeclined: false } });
+  const declineLotteries = async () => {
+    if (!isLotteryDeclined.value) {
+      await openModal('cancel-lottery');
       return;
     }
-    lotteryDeclined.value = !lotteryDeclined.value;
+    try {
+      isLotteryUpdating.value = true;
+      const submitResult = await changeProfileData({ inLottery: true });
+      setProfileData(submitResult);
+      isLotteryUpdating.value = false;
+    } catch (error) {
+      console.error('Error updating lottery status:', error);
+      return;
+    }
   };
-  
-  const lotteryList = ref<any[]>([]);
   
   const getLotteryData = async () => {
     try {
       const lotteryData = await getLotteriesPricing(activeAccount.value?.currency);
-      lotteryList.value = lotteryData;
+      lotteryList.value = lotteryData || [];
       selectedLotteryId.value = lotteryData[0]?.id;
     } catch (error) {
       console.error('Error fetching lottery data:', error);
     }
   }
   
-  watch(() => props.amount, () => {
+  watch(() => [props.amount, activeAccount.value?.currency], () => {
     getLotteryData();
   }, { immediate: true });
-  
 </script>
 
 <style src="~/assets/styles/components/wallet/lotteries.scss" lang="scss" />

@@ -12,6 +12,7 @@ import type {
   IWheelSector,
   IWheelsRequest,
   IWheelsResponse,
+  ILottery,
 } from './types';
 import { apiGuestInstance } from './apiGuestInstance';
 import { apiAuthInstance } from './apiAuthInstance';
@@ -75,7 +76,7 @@ export const spinWheel = async (wheelId: string): Promise<IWheelSector> => {
   return data;
 };
 
-export const getLotteriesPricing = async (currency: string): Promise<any> => {
+export const getLotteriesPricing = async (currency: string): Promise<ILottery[]> => {
   const { data } = await apiAuthInstance('/api/retention/lotteries/pricing', {
     params: { currency }
   });

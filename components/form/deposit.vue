@@ -96,6 +96,7 @@
   const { alertsData, defaultLocaleAlertsData } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
   const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
 
   const bonusStore = useBonusStore();
   const {
@@ -108,7 +109,7 @@
   } = storeToRefs(bonusStore);
   
   const lotteryStore = useLotteryStore();
-  const { lotteryDeclined, selectedLotteryId } = storeToRefs(lotteryStore);
+  const { selectedLotteryId } = storeToRefs(lotteryStore);
 
   const getFieldComponent = (field: IPaymentField): string => {
     const fieldComponent = fieldsMap[field.key]?.component;
@@ -255,7 +256,7 @@
       fields: props.fields.length
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
         : undefined,
-      lotteryId: lotteryDeclined.value ? undefined : selectedLotteryId.value,
+      lotteryId: profile.value?.inLottery ? undefined : selectedLotteryId.value,
     };
   };
 

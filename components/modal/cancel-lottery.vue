@@ -21,7 +21,8 @@
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'cancelButton') }}
         </button-base>
 
-        <button-base type="ghost" size="xs" :is-disabled="lotteryUpdating" @click="confirmAction">
+        <button-base type="ghost" size="xs" :is-disabled="isLotteryUpdating" @click="confirmAction">
+          <atomic-spinner :is-shown="isLotteryUpdating" />
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'confirmButton') }}
         </button-base>
       </div>
@@ -32,25 +33,29 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { ICancelLotteryModal } from '~/types';
-  import { getContent, useLotteryStore } from '#imports';
+  import { getContent } from '#imports';
+  import { changeProfileData } from '@skeleton/api/profile';
+  const { setProfileData } = useProfileStore();
+  const lotteryStore = useLotteryStore();
+  const { isLotteryUpdating } = storeToRefs(lotteryStore);
 
   const props = defineProps<{
     currentLocaleData: Maybe<ICancelLotteryModal>;
     defaultLocaleData: Maybe<ICancelLotteryModal>;
-    lotteryDeclined: boolean;
-    lotteryUpdating?: boolean;
   }>();
-  
-  const lotteryStore = useLotteryStore();
-  const { lotteryDeclined } = storeToRefs(lotteryStore);
   
   const { closeModal } = useModalStore();
   
-  const confirmAction =  () => {
-    closeModal('cancel-lottery');
-    setTimeout(() => {
-      lotteryDeclined.value = true;
-    }, 500)
+  const confirmAction =  async () => {
+    try {
+      isLotteryUpdating.value = true;
+      const submitResult = await changeProfileData({ inLottery: false });
+      setProfileData(submitResult);
+      isLotteryUpdating.value = false;
+      await closeModal('cancel-lottery');
+    } catch (error) {
+      console.error('Error updating profile data:', error);
+    }
   };
 </script>
 

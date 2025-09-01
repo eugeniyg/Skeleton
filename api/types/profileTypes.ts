@@ -37,6 +37,7 @@ export interface IProfile extends Record<string, any> {
   externalId: number;
   referralCode: string | null;
   qualifiedReferralsCount: number | null;
+  inLottery: boolean;
 }
 
 export interface IAuthorizationRequest extends Record<any, any> {

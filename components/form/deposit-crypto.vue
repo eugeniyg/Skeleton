@@ -64,11 +64,13 @@
   const walletNumber = ref<string>('');
   const destinationTag = ref<string | undefined>();
   const walletStore = useWalletStore();
+  const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
   const { openModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
   
   const lotteryStore = useLotteryStore();
-  const { lotteryDeclined, selectedLotteryId } = storeToRefs(lotteryStore);
+  const { selectedLotteryId } = storeToRefs(lotteryStore);
 
   const bonusStore = useBonusStore();
   const { selectedDepositBonus, bonusDeclined, showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
@@ -125,7 +127,7 @@
       fields: undefined,
       bonusId: selectedDepositBonus.value?.id,
       isBonusDecline: bonusDeclined.value,
-      lotteryId: lotteryDeclined.value ? undefined : selectedLotteryId.value,
+      lotteryId: profile.value?.inLottery ? undefined : selectedLotteryId.value,
     },
   });
 
@@ -133,7 +135,7 @@
     state.params.bonusId = selectedDepositBonus.value?.id;
     state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;
     state.params.country = requestPaymentMethodsRegion.value;
-    state.params.lotteryId = lotteryDeclined.value ? undefined : lotteryStore.selectedLotteryId;
+    state.params.lotteryId = profile.value?.inLottery ? undefined : lotteryStore.selectedLotteryId;
 
     try {
       const depositResponse = await depositAccount(state.params);

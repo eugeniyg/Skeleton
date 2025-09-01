@@ -303,3 +303,26 @@ export interface IWheelSpinIssuedEvent {
     amount: number;
   };
 }
+
+export interface ILotteryPrice {
+  isoCode: string | null;
+  minAmount: number;
+  price: number;
+}
+
+export interface ILottery {
+  id: string;
+  title: string;
+  identity: string;
+  segmentsExcluded: boolean;
+  currencies: null | string[];
+  minPlayerTickets: number;
+  maxPlayerTickets: number;
+  ticketPrices: ILotteryPrice[];
+  maxPlayerPrizes: number;
+  ticketsCount: number;
+  startAt: string;
+  endAt?: string;
+  createdAt: string;
+  updatedAt?: string;
+}

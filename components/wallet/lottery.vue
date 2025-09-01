@@ -1,10 +1,10 @@
 <template>
-  <div class="wallet-lottery" @click="handleBonusClick">
-    <form-input-lottery-radio :id="props.lotteryInfo.id" name="input-lottery-radio" :value="props.selected"/>
+  <div class="wallet-lottery" @click="handleLotteryClick">
+    <form-input-lottery-radio :id="props.lotteryInfo?.id" name="input-lottery-radio" :value="props.selected"/>
     
-    <div class="wallet-lottery__title">{{ props.lotteryInfo.title }}</div>
+    <div class="wallet-lottery__title">{{ props.lotteryInfo?.title }}</div>
     
-    <wallet-lottery-timer :date="props.lotteryInfo.endAt || props.lotteryInfo.startAt"/>
+    <wallet-lottery-timer :date="props.lotteryInfo?.endAt || props.lotteryInfo?.startAt"/>
     
     <div class="wallet-lottery__hints">
       
@@ -16,15 +16,16 @@
       </div>
       
       <div class="wallet-lottery__hint" v-else-if="activeAccountType === 'fiat'">
-        <div class="wallet-lottery__hint-label"
-             v-html="DOMPurify.sanitize(marked.parseInline(firstLabel || '') as string, { FORBID_TAGS: ['style'] })"
+        <div
+          class="wallet-lottery__hint-label"
+          v-html="DOMPurify.sanitize(marked.parseInline(firstLabel || '') as string, { FORBID_TAGS: ['style'] })"
         />
         
         <div v-if="depositLabel" class="wallet-lottery__hint-second-label">
           <div
             v-html="DOMPurify.sanitize(marked.parseInline(depositLabel || '') as string, { FORBID_TAGS: ['style'] })"
           />
-          <atomic-picture class="wallet-lottery__hint-icon" src="/img/uploads/wallet-lottery-icon.png"/>
+          <atomic-picture v-if="iconImage" class="wallet-lottery__hint-icon" :src="iconImage"/>
         </div>
       </div>
     </div>
@@ -40,12 +41,13 @@
   import { formatBalance } from '@skeleton/helpers/amountMethods';
   import DOMPurify from "isomorphic-dompurify";
   import { marked } from "marked";
+  import type { ILottery } from "@skeleton/api/types";
   
   const props = defineProps<{
-    lotteryInfo: any; // Replace 'any' with the actual type of lotteryInfo
+    lotteryInfo: ILottery;
     selected: boolean;
     disabled: boolean;
-    amountValue: number;
+    amountValue: number | string;
   }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
@@ -53,10 +55,12 @@
   
   const emit = defineEmits(['lottery-change']);
   
-  const handleBonusClick = () => {
+  const handleLotteryClick = () => {
     if (props.disabled || props.selected) return;
     emit('lottery-change');
   };
+  
+  const amountValue = computed(() => props.amountValue ? parseFloat(props.amountValue) :  undefined);
   
   interface ILotteryTicketPrice {
     isoCode: string;
@@ -101,7 +105,9 @@
   
   const minAmountLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.minAmountLabel'));
   
-  const isHighlightFirstLabel = computed(() => !props.amountValue || props.amountValue < getMinAmount().minAmount);
+  const iconImage = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.image'));
+  
+  const isHighlightFirstLabel = computed(() => !amountValue.value || amountValue.value < getMinAmount().minAmount);
   
   const firstLabel = computed(() => {
     const result = getMinAmount();
@@ -113,7 +119,7 @@
   
   const depositLabel = computed(() => {
     const hasMaxMinAmount = getMaxMinAmount();
-    if (props.amountValue < hasMaxMinAmount.minAmount) {
+    if (amountValue.value && amountValue.value < hasMaxMinAmount.minAmount) {
       const hasMinAmount = getMinAmount();
       const label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.depositLabel');
       
