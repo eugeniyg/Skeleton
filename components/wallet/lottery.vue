@@ -47,7 +47,7 @@
     lotteryInfo: ILottery;
     selected: boolean;
     disabled: boolean;
-    amountValue: number | string;
+    amountValue?: number | string;
   }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');

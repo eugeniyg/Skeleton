@@ -87,7 +87,7 @@
     try {
       const lotteryData = await getLotteriesPricing(activeAccount.value?.currency);
       lotteryList.value = lotteryData || [];
-      selectedLotteryId.value = lotteryData[0]?.id;
+      selectedLotteryId.value = !selectedLotteryId.value ? lotteryData[0]?.id : selectedLotteryId.value;
     } catch (error) {
       console.error('Error fetching lottery data:', error);
     }

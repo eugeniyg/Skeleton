@@ -144,7 +144,7 @@ export default defineNuxtConfig({
     inlineDynamicImports: true,
     devProxy: {
       '/api': {
-        target: 'https://qa4.dev.getplatform.tech/api',
+        target: 'https://uat.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },
