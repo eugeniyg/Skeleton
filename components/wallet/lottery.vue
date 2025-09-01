@@ -41,7 +41,7 @@
   import { formatBalance } from '@skeleton/helpers/amountMethods';
   import DOMPurify from "isomorphic-dompurify";
   import { marked } from "marked";
-  import type { ILottery } from "@skeleton/api/types";
+  import type { ILottery, ILotteryPrice } from "@skeleton/api/types";
   
   const props = defineProps<{
     lotteryInfo: ILottery;
@@ -62,13 +62,7 @@
   
   const amountValue = computed(() => props.amountValue ? parseFloat(props.amountValue) :  undefined);
   
-  interface ILotteryTicketPrice {
-    isoCode: string;
-    minAmount: number;
-    price: number;
-  }
-  
-  const getTicketsType = (): ILotteryTicketPrice[] => {
+  const getTicketsType = (): ILotteryPrice[] => {
     const currencies = props.lotteryInfo?.currencies;
     const activeCurrency = activeAccount.value?.currency || '';
     const ticketPrices = props.lotteryInfo?.ticketPrices || [];
@@ -89,13 +83,13 @@
     return ticketPricesHasEquivalentCurrency;
   };
   
-  const getMinAmount = (): ILotteryTicketPrice => {
+  const getMinAmount = (): ILotteryPrice => {
     return getTicketsType()?.reduce((obj, current) =>
       current.minAmount < obj.minAmount ? current : obj
     )
   };
   
-  const getMaxMinAmount = (): ILotteryTicketPrice => {
+  const getMaxMinAmount = (): ILotteryPrice => {
     return getTicketsType().reduce((obj, current) =>
       current.minAmount > obj.minAmount ? current : obj
     )
