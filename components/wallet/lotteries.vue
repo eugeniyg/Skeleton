@@ -47,7 +47,7 @@
   const { setProfileData } = useProfileStore()
   
   const props = defineProps<{
-    amount: number | string;
+    amount?: number | string;
   }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
