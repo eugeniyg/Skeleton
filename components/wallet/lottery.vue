@@ -115,7 +115,10 @@
     const hasMinAmount = getMinAmount();
     const ticketsCount = amountValue.value ? Math.floor(amountValue.value / hasMinAmount.price)  : 0;
     
-    return `${ getTicketsLabel.value?.replace('{ticketsCount}', ticketsCount) } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
+    const maxTicketsToBuy = props.lotteryInfo.maxPlayerTickets - props.lotteryInfo.ticketsCount;
+    let ticketsCountResult = (ticketsCount >= maxTicketsToBuy) ?  maxTicketsToBuy : ticketsCount;
+    
+    return `${ getTicketsLabel.value?.replace('{ticketsCount}', ticketsCountResult) } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
   })
   
   const depositLabel = computed(() => {
