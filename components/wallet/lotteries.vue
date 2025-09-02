@@ -78,6 +78,7 @@
       const submitResult = await changeProfileData({ inLottery: true });
       setProfileData(submitResult);
       isLotteryUpdating.value = false;
+      await getLotteryData();
     } catch (error) {
       console.error('Error updating lottery status:', error);
       return;

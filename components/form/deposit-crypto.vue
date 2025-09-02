@@ -127,7 +127,7 @@
       fields: undefined,
       bonusId: selectedDepositBonus.value?.id,
       isBonusDecline: bonusDeclined.value,
-      lotteryId: profile.value?.inLottery ? undefined : selectedLotteryId.value,
+      lotteryId: profile.value?.inLottery ? selectedLotteryId.value : undefined,
     },
   });
 

@@ -95,6 +95,11 @@
     )
   };
   
+  const getNextMinAmount = (): ILotteryPrice | undefined => {
+    if (!amountValue.value) return undefined;
+    return getTicketsType().filter(ticket => ticket.minAmount > amountValue.value)[0]
+  };
+  
   const getTicketsLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.getTicketsLabel'))
   
   const minAmountLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.minAmountLabel'));
@@ -107,19 +112,22 @@
     const result = getMinAmount();
     const { currency, amount } = formatBalance(activeAccount.value?.currency, result.minAmount);
     const amountLabel = isHighlightFirstLabel.value ? `<span class="has-accent">${ minAmountLabel.value }</span>` : minAmountLabel.value;
+    const hasMinAmount = getMinAmount();
+    const ticketsCount = amountValue.value ? Math.floor(amountValue.value / hasMinAmount.price)  : 0;
     
-    return `${ getTicketsLabel.value } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
+    return `${ getTicketsLabel.value?.replace('{ticketsCount}', ticketsCount) } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
   })
   
   const depositLabel = computed(() => {
     const hasMaxMinAmount = getMaxMinAmount();
-    if (amountValue.value && amountValue.value < hasMaxMinAmount.minAmount) {
-      const hasMinAmount = getMinAmount();
+    const hasNextMinAmount = getNextMinAmount();
+    
+    if (amountValue.value && amountValue.value < hasMaxMinAmount?.minAmount && hasNextMinAmount) {
       const label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.depositLabel');
-      
-      const { currency, amount } = formatBalance(activeAccount.value?.currency, hasMinAmount.minAmount);
-      const ticketsCount = Math.floor(hasMinAmount.minAmount / hasMinAmount.price);
-      
+
+      const { currency, amount } = formatBalance(activeAccount.value?.currency, hasNextMinAmount.minAmount);
+      const ticketsCount = Math.floor(hasNextMinAmount.minAmount / hasNextMinAmount.price);
+
       return label?.replace('{amount}', `${ amount } ${ currency }`)?.replace('{ticketsCount}', `${ ticketsCount }`);
     }
     return '';
