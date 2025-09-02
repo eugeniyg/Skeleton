@@ -4,7 +4,7 @@
     
     <div class="wallet-lottery__title">{{ props.lotteryInfo?.title }}</div>
     
-    <wallet-lottery-timer :date="props.lotteryInfo?.endAt || props.lotteryInfo?.startAt"/>
+    <wallet-lottery-timer :date="props.lotteryInfo?.endAt || props.lotteryInfo?.startAt" @done="emit('lottery-ended')"/>
     
     <div class="wallet-lottery__hints">
       
@@ -53,7 +53,7 @@
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   
-  const emit = defineEmits(['lottery-change']);
+  const emit = defineEmits(['lottery-change', 'lottery-ended']);
   
   const handleLotteryClick = () => {
     if (props.disabled || props.selected) return;

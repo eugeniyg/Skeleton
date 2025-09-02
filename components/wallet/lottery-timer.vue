@@ -33,6 +33,8 @@
     date?: string;
   }>();
   
+  const emit = defineEmits(['done'])
+  
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   
@@ -47,6 +49,10 @@
   watch(() => props.date, (newDate) => {
     if (newDate) startTimer(newDate);
   }, { immediate: true });
+  
+  watch(isAlmostDone, () => {
+    emit('done')
+  });
 </script>
 
 <style src="~/assets/styles/components/wallet/lottery-timer.scss" lang="scss"/>

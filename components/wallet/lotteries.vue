@@ -22,9 +22,10 @@
         :key="lottery.id"
         :lottery-info="lottery"
         :selected="selectedLotteryId === lottery.id"
-        @lottery-change="onTicketChange(lottery)"
         :disabled="false"
         :amount-value="props.amount"
+        @lottery-change="onTicketChange(lottery)"
+        @lottery-ended="getLotteryData"
       />
     </div>
     
@@ -93,7 +94,7 @@
     }
   }
   
-  watch(() => [props.amount, activeAccount.value?.currency], () => {
+  watch(() => activeAccount.value?.currency, () => {
     getLotteryData();
   }, { immediate: true });
 </script>
