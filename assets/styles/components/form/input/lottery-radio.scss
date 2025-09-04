@@ -6,12 +6,13 @@
   top: var(--top, 8px);
   right: var(--right, 8px);
 
+
   &__label {
-    border: 2px solid var(--border-color, var(--border-02-low-contrast));
+    border: 2px solid var(--radio-border-color, var(--border-02));
+    background-color: var(--radio-bg-color, transparent);
     border-radius: 50%;
     width: 20px;
     height: 20px;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,13 +21,13 @@
       content: '';
       width: 10px;
       height: 10px;
-      background: var(--dot-bg, transparent);
+      background: var(--radio-dot-bg, transparent);
       border-radius: 50%;
     }
 
     &:hover {
+
       cursor: pointer;
-      --border-color: var(--support-success-default);
     }
   }
 
@@ -35,8 +36,14 @@
     visibility: hidden;
   }
 
-  &.is-checked {
-    --dot-bg: var(--support-success-default);
-    --border-color: var(--support-success-default);
+  &.is-checked:not(.is-disabled) {
+    --radio-dot-bg: var(--support-success-default);
+    --radio-border-color: var(--support-success-default);
+  }
+
+  &.is-disabled {
+    --radio-border-color: var(--field-00);
+    --radio-dot-bg: var(--field-00);
+    --radio-bg-color: var(--field-00);
   }
 }

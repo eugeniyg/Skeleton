@@ -317,7 +317,7 @@ export interface ILottery {
   segmentsExcluded: boolean;
   currencies: null | string[];
   minPlayerTickets: number;
-  maxPlayerTickets: number;
+  maxPlayerTickets: number | null;
   ticketPrices: ILotteryPrice[];
   maxPlayerPrizes: number;
   ticketsCount: number;

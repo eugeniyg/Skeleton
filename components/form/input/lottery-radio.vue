@@ -1,5 +1,5 @@
 <template>
-  <div class="input-lottery-radio" :class="{ 'is-checked': !!props.value }">
+  <div class="input-lottery-radio" :class="{ 'is-checked': !!props.value, 'is-disabled': props.isDisabled }">
     <label class="input-lottery-radio__label">
       <input
         class="input-lottery-radio__input"

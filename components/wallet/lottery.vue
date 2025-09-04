@@ -1,6 +1,11 @@
 <template>
-  <div class="wallet-lottery" @click="handleLotteryClick">
-    <form-input-lottery-radio :id="props.lotteryInfo?.id" name="input-lottery-radio" :value="props.selected"/>
+  <div class="wallet-lottery" @click="handleLotteryClick" :class="{ 'is-disabled': props.disabled || isHighlightFirstLabel }">
+    <form-input-lottery-radio
+      name="input-lottery-radio"
+      :id="props.lotteryInfo?.id"
+      :value="props.selected"
+      :is-disabled="props.disabled"
+    />
     
     <div class="wallet-lottery__title">{{ props.lotteryInfo?.title }}</div>
     
@@ -18,6 +23,7 @@
       <div class="wallet-lottery__hint" v-else-if="activeAccountType === 'fiat'">
         <div
           class="wallet-lottery__hint-label"
+          :class="{'is-highlighted': isHighlightFirstLabel }"
           v-html="DOMPurify.sanitize(marked.parseInline(firstLabel || '') as string, { FORBID_TAGS: ['style'] })"
         />
         
@@ -47,7 +53,7 @@
     lotteryInfo: ILottery;
     selected: boolean;
     disabled: boolean;
-    amountValue?: number | string;
+    amountValue: number | string;
   }>();
   
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
@@ -100,6 +106,15 @@
     return getTicketsType().filter(ticket => ticket.minAmount > amountValue.value)[0]
   };
   
+  const findAvailableTicket = () => {
+    if (!amountValue.value) return undefined;
+    const hasTicket = getTicketsType().filter(item => item.minAmount <= amountValue.value);
+    if (hasTicket.length === 0) return undefined;
+    return hasTicket.reduce((prev, curr) =>
+      curr.minAmount > prev.minAmount ? curr : prev
+    );
+  }
+  
   const getTicketsLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.getTicketsLabel'))
   
   const minAmountLabel = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.minAmountLabel'));
@@ -109,39 +124,43 @@
   const isHighlightFirstLabel = computed(() => !amountValue.value || amountValue.value < getMinAmount().minAmount);
   
   const firstLabel = computed(() => {
-    const result = getMinAmount();
-    const { currency, amount } = formatBalance(activeAccount.value?.currency, result.minAmount);
-    const amountLabel = isHighlightFirstLabel.value ? `<span class="has-accent">${ minAmountLabel.value }</span>` : minAmountLabel.value;
     const hasMinAmount = getMinAmount();
-    const ticketsCount = amountValue.value ? Math.floor(amountValue.value / hasMinAmount.price)  : 0;
+    const hasAvailableTicket = findAvailableTicket();
+    const ticketsLimit = props.lotteryInfo?.maxPlayerTickets;
     
-    const maxTicketsToBuy = props.lotteryInfo.maxPlayerTickets - props.lotteryInfo.ticketsCount;
-    let ticketsCountResult = (ticketsCount >= maxTicketsToBuy) ?  maxTicketsToBuy : ticketsCount;
+    let ticketsCount = hasAvailableTicket && amountValue.value ?  Math.floor(amountValue.value / hasAvailableTicket.price) : 1;
     
-    return `${ getTicketsLabel.value?.replace('{ticketsCount}', ticketsCountResult) } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
-  })
+    if (ticketsLimit !== null  && ticketsCount > ticketsLimit) {
+      ticketsCount = ticketsLimit;
+    }
+    
+    const { currency, amount } = formatBalance(activeAccount.value?.currency, hasMinAmount.minAmount);
+    const amountLabel = isHighlightFirstLabel.value ? `<span class="has-accent">${ minAmountLabel.value }</span>` : minAmountLabel.value;
+    
+    return `${ getTicketsLabel.value?.replace('{ticketsCount}', ticketsCount) } ${ amountLabel?.replace('{amount}', `${ amount } ${ currency }`) }`;
+  });
   
   const depositLabel = computed(() => {
+    if (!amountValue.value) return '';
     const hasMaxMinAmount = getMaxMinAmount();
     const hasNextMinAmount = getNextMinAmount();
     
-    if (amountValue.value && amountValue.value < hasMaxMinAmount?.minAmount && hasNextMinAmount) {
+    if (amountValue.value && amountValue.value < hasMaxMinAmount?.minAmount && hasNextMinAmount && props.selected) {
       const label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.depositLabel');
-
+      
       const { currency, amount } = formatBalance(activeAccount.value?.currency, hasNextMinAmount.minAmount);
       const ticketsCount = Math.floor(hasNextMinAmount.minAmount / hasNextMinAmount.price);
 
       return label?.replace('{amount}', `${ amount } ${ currency }`)?.replace('{ticketsCount}', `${ ticketsCount }`);
     }
     return '';
-  })
+  });
   
   const minAmountForCrypto = computed(() => {
-    if (!props.lotteryInfo?.ticketPrices) return '';
-    
     const result = getMinAmount();
     const { currency, amount } = formatBalance(activeAccount.value?.currency, result.minAmount);
-    return `${ getTicketsLabel.value } ${ minAmountLabel.value?.replace('{amount}', `${ amount } ${ currency }`) }`;
+    const ticketsCount = 1;
+    return `${ getTicketsLabel.value?.replace('{ticketsCount}', ticketsCount) } ${ minAmountLabel.value?.replace('{amount}', `${ amount } ${ currency }`) }`;
   });
 </script>
 

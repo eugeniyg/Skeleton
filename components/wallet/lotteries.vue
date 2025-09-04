@@ -22,13 +22,13 @@
         :key="lottery.id"
         :lottery-info="lottery"
         :selected="selectedLotteryId === lottery.id"
-        :disabled="false"
+        :disabled="!hasAvailableIds.includes(lottery.id)"
         :amount-value="props.amount"
         @lottery-change="onTicketChange(lottery)"
         @lottery-ended="getLotteryData"
       />
     </div>
-    
+  
   </div>
 </template>
 
@@ -61,7 +61,7 @@
   const lotteryList = ref<ILottery[]>([]);
   
   const isLotteryDeclined = computed(() => {
-   return !profile.value?.inLottery;
+    return !profile.value?.inLottery;
   });
   
   const onTicketChange = (lottery: ILottery) => {
@@ -89,15 +89,34 @@
     try {
       const lotteryData = await getLotteriesPricing(activeAccount.value?.currency);
       lotteryList.value = lotteryData || [];
-      selectedLotteryId.value = !selectedLotteryId.value ? lotteryData[0]?.id : selectedLotteryId.value;
+      getAvailableLotteryIds();
     } catch (error) {
       console.error('Error fetching lottery data:', error);
     }
   }
   
+  const hasAvailableIds = ref<string[]>([]);
+  
+  const getAvailableLotteryIds = () => {
+    if (!props.amount && lotteryList.value.length > 0) {
+      hasAvailableIds.value = lotteryList.value.map(item => item.id);
+      return;
+    }
+    
+    hasAvailableIds.value = lotteryList.value
+      .filter(lottery => lottery.ticketPrices.some(ticket => props.amount >= ticket.minAmount ))
+      .map(item => item.id);
+    
+    selectedLotteryId.value = hasAvailableIds.value[0];
+  }
+  
   watch(() => activeAccount.value?.currency, () => {
     getLotteryData();
   }, { immediate: true });
+  
+  watch(() => props.amount, (newValue) => {
+    if (newValue) getAvailableLotteryIds();
+  }, { immediate: true });
 </script>
 
-<style src="~/assets/styles/components/wallet/lotteries.scss" lang="scss" />
+<style src="~/assets/styles/components/wallet/lotteries.scss" lang="scss"/>

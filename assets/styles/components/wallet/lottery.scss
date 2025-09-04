@@ -1,11 +1,20 @@
 .wallet-lottery {
   display: grid;
   grid-template-columns: 20px 1fr auto;
-  grid-template-areas: "radio title timer" "icon hints hints";;
+  grid-template-areas: "radio title timer" "icon hints hints";
   align-items: center;
   grid-column-gap: 8px;
   position: relative;
-  cursor: pointer;
+
+  &:not(.is-disabled) {
+    cursor: pointer;
+  }
+
+  &.is-disabled {
+    .wallet-lottery__title {
+      color: var(--text-helper);
+    }
+  }
 
   &__title {
     color: var(--text-secondary);
@@ -64,23 +73,15 @@
     .has-accent {
       color: var(--text-alert);
     }
+
+    &.is-highlighted {
+      color: var(--text-alert);
+    }
   }
 
   &__hint-second-label {
     @include font($body-0);
     color: var(--text-warning);
     display: flex;
-  }
-
-  .input-lottery-radio {
-    .input-lottery-radio__label {
-      --border-color: var(--border-02);
-    }
-
-    &.is-checked {
-      .input-lottery-radio__label {
-        --border-color: var(--support-success-default);
-      }
-    }
   }
 }
