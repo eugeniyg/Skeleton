@@ -26,6 +26,10 @@
     emit('change', e.target.checked);
     emit('update:value', e.target.checked ? 1 : '');
   };
+  
+  watch(() => props.isDisabled, (newValue) => {
+    if (newValue) console.log(props.isDisabled);
+  });
 </script>
 
 <style src="~/assets/styles/components/form/input/lottery-radio.scss" lang="scss" />

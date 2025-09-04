@@ -121,7 +121,7 @@
   
   const iconImage = computed(() => getContent(walletContent, defaultLocaleWalletContent, 'deposit.lotteries.image'));
   
-  const isHighlightFirstLabel = computed(() => !amountValue.value || amountValue.value < getMinAmount().minAmount);
+  const isHighlightFirstLabel = computed(() => !amountValue.value || amountValue.value < getMinAmount().minAmount && activeAccountType.value === 'fiat');
   
   const firstLabel = computed(() => {
     const hasMinAmount = getMinAmount();

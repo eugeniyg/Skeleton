@@ -22,7 +22,7 @@
         :key="lottery.id"
         :lottery-info="lottery"
         :selected="selectedLotteryId === lottery.id"
-        :disabled="!hasAvailableIds.includes(lottery.id)"
+        :disabled="activeAccountType === 'fiat' ? !hasAvailableIds.includes(lottery.id) : false"
         :amount-value="props.amount"
         @lottery-change="onTicketChange(lottery)"
         @lottery-ended="getLotteryData"
@@ -56,7 +56,7 @@
   
   const { openModal } = useModalStore();
   const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   
   const lotteryList = ref<ILottery[]>([]);
   
@@ -99,13 +99,40 @@
   
   const getAvailableLotteryIds = () => {
     if (!props.amount && lotteryList.value.length > 0) {
-      hasAvailableIds.value = lotteryList.value.map(item => item.id);
+      hasAvailableIds.value = [];
       return;
     }
     
-    hasAvailableIds.value = lotteryList.value
-      .filter(lottery => lottery.ticketPrices.some(ticket => props.amount >= ticket.minAmount ))
-      .map(item => item.id);
+    if (activeAccountType.value === 'fiat') {
+      hasAvailableIds.value = lotteryList.value.filter(lottery => {
+        const currencyTickets = lottery.ticketPrices.filter(
+          ticket => ticket.isoCode === activeAccount.value?.currency
+        );
+        
+        if (currencyTickets.length > 0) {
+          return currencyTickets.some(ticket => props.amount >= ticket.minAmount);
+        }
+        
+        return lottery.ticketPrices.some(
+          ticket => ticket.isoCode === null && props.amount >= ticket.minAmount
+        );
+      }).map(item => item.id);
+      
+    } else if (activeAccountType.value === 'crypto') {
+      hasAvailableIds.value = lotteryList.value.filter(lottery => {
+        const currencyTickets = lottery.ticketPrices.filter(
+          ticket => ticket.isoCode === activeAccount.value?.currency
+        );
+        
+        if (currencyTickets.length > 0) {
+          return currencyTickets;
+        }
+        
+        return lottery.ticketPrices.some(
+          ticket => ticket.isoCode === null
+        );
+      }).map(item => item.id);
+    }
     
     selectedLotteryId.value = hasAvailableIds.value[0];
   }
@@ -114,8 +141,8 @@
     getLotteryData();
   }, { immediate: true });
   
-  watch(() => props.amount, (newValue) => {
-    if (newValue) getAvailableLotteryIds();
+  watch(() => props.amount, () => {
+    getAvailableLotteryIds();
   }, { immediate: true });
 </script>
 
