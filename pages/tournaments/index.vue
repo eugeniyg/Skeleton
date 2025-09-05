@@ -182,7 +182,7 @@
     const tournamentsObject: { [key: string]: ITournamentPage } = {};
     tournamentPages.forEach(tournamentPage => {
       const contentBody = tournamentPage.meta.body as ITournamentPage;
-      tournamentsObject[contentBody.identity] = contentBody;
+      tournamentsObject[contentBody.pageIdentity] = contentBody;
     });
     return tournamentsObject;
   };
@@ -194,7 +194,7 @@
 
     if (contentPagesResponse?.length) {
       state.tournamentsContent = completeTournamentsObject(contentPagesResponse);
-      state.tournamentIdentities = contentPagesResponse.map(item => (item.meta.body as ITournamentPage).identity);
+      state.tournamentIdentities = contentPagesResponse.map(item => (item.meta.body as ITournamentPage).pageIdentity);
       await Promise.all([getActiveTournaments(), getFinishedTournaments()]);
     }
     state.globalLoading = false;
