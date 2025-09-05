@@ -24,14 +24,11 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <ModalsContainer />
     <atomic-alert />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ModalsContainer } from 'vue-final-modal';
-
   const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
