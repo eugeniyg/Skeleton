@@ -304,6 +304,35 @@ export interface IWheelSpinIssuedEvent {
   };
 }
 
+export interface ILotteryIssuedEvent {
+  data: {
+    event: 'lottery.tickets.issued';
+    playerId: string;
+    ticketsCount: number;
+    lottery: {
+      id: string;
+      title: string;
+    }
+  };
+}
+
+export interface ILotteryWonEvent {
+  data: {
+    event: 'lottery.ticket.won';
+    playerId: string;
+    ticketId: string;
+    lottery: {
+      id: string;
+      title: string;
+    },
+    prize: {
+      id: string;
+      title: string;
+      bonusId: string;
+    }
+  };
+}
+
 export interface ILotteryPrice {
   isoCode: string | null;
   minAmount: number;

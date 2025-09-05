@@ -187,6 +187,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { subscribeAccountSocket, subscribeInvoicesSocket, getPaymentStatistics } = useWalletStore();
       const { subscribeTournamentSocket } = useTournamentsStore();
       const { subscribeWheelsSocket } = useWheelsStore();
+      const { subscribeLotterySocket } = useLotteryStore();
       const { setEquivalentCurrency } = useGlobalStore();
       const runtimeConfig = useRuntimeConfig();
 
@@ -217,6 +218,7 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeNotificationSocket();
       subscribeTournamentSocket();
       subscribeWheelsSocket();
+      subscribeLotterySocket();
 
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
       if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
@@ -234,6 +236,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { unsubscribeNotificationSocket } = useNotificationStore();
       const { unsubscribeTournamentSocket } = useTournamentsStore();
       const { unsubscribeWheelsSocket } = useWheelsStore();
+      const { unsubscribeLotterySocket } = useLotteryStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
@@ -246,6 +249,7 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeNotificationSocket();
       unsubscribeTournamentSocket();
       unsubscribeWheelsSocket();
+      unsubscribeLotterySocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse): Promise<void> {
