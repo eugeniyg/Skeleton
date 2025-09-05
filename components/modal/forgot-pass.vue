@@ -113,8 +113,8 @@
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = useGlobalStore();
-  const currentLocaleSignInContent = currentLocaleModalsContent?.[camelCase(modalsList['sing-in'].content)];
-  const defaultLocaleSignInContent = defaultLocaleModalsContent?.[camelCase(modalsList['sing-in'].content)];
+  const currentLocaleSignInContent = currentLocaleModalsContent?.[camelCase(modalsList['sign-in'].content)];
+  const defaultLocaleSignInContent = defaultLocaleModalsContent?.[camelCase(modalsList['sign-in'].content)];
 
   const showPhoneVerification = ref<boolean>(false);
 
