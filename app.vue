@@ -3,11 +3,14 @@
     <NuxtLayout :name="layout">
       <NuxtPage />
     </NuxtLayout>
+
+    <ModalsContainer />
   </div>
 </template>
 
 <script setup lang="ts">
   import type { ILocale } from '@skeleton/api/types';
+  import { ModalsContainer } from 'vue-final-modal';
 
   const { currentLocale, countries, headerCountry, locales } = useGlobalStore();
 
